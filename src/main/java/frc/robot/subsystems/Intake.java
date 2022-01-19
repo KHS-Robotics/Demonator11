@@ -38,9 +38,11 @@ public class Intake extends SubsystemBase {
   public void stop() {
     driveMotor.set(0);
   }
+
   public void intake() {
     driveMotor.set(speed);
   }
+
   public void reverse() {
     driveMotor.set(-speed);
   }
@@ -49,5 +51,12 @@ public class Intake extends SubsystemBase {
     positionPid.setReference(angle, CANSparkMax.ControlType.kPosition);
   }
 
+  public double getPosition() {
+    return liftEnc.getPosition();
+  }
+
+  public double getSpeed() {
+      return driveEnc.getVelocity();
+  }
 
 }

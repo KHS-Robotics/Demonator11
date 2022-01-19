@@ -31,12 +31,15 @@ public class Indexer extends SubsystemBase {
   public void setMotor1 (double speed) {
     motor1.set(speed);
   }
+
   public void stopMotor1() {
     setMotor1(0);
   }
+
   public void setMotor2 (double speed) {
     motor2.set(speed);
   }
+
   public void stopMotor2() {
     setMotor2(0);
   }

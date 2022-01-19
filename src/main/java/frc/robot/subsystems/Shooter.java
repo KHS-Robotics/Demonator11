@@ -34,4 +34,8 @@ public class Shooter extends SubsystemBase {
     shooterPidSetpoint = speed;
     shooterPid.setReference(shooterPidSetpoint, CANSparkMax.ControlType.kVelocity);
   }
+
+  public boolean atSetpoint() {
+    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 200;
+  }
 }
