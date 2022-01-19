@@ -31,4 +31,19 @@ public class RobotMap {
   public static final int FRONT_RIGHT_DIGITAL_INPUT = 1;
   public static final int REAR_LEFT_DIGITAL_INPUT = 3;
   public static final int REAR_RIGHT_DIGITAL_INPUT = 0;
+
+  public static final int INTAKE_ROLLER = 8;
+  public static final int INTAKE_ANGLE = 9;
+
+  public static final int SHOOTER_LEADER = 10;
+  public static final int SHOOTER_FOLLOWER = 11;
+
+  public static final int CLIMBER_MOTOR1 = 12;
+  public static final int CLIMBER_MOTOR2 = 13;
+  public static final int CLIMBER_MOTOR3 = 14;
+  public static final int CLIMBER_MOTOR4 = 15;
+
+  public static final int INDEXER_MOTOR1 = 16;
+  public static final int INDEXER_MOTOR2 = 17;
+
 }
