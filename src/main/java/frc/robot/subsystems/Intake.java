@@ -5,29 +5,30 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.*;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase {
-  private CANSparkMax driveMotor, liftMotor;
+  private CANSparkMax driveMotor, positionMotor;
   private double speed = 0.5;
-  private RelativeEncoder driveEnc;
-  private RelativeEncoder liftEnc;
+  private RelativeEncoder driveEnc, positionEnc;
 
   private SparkMaxPIDController positionPid;
 
   /** Creates a new Intake. */
   public Intake() {
     driveMotor = new CANSparkMax(RobotMap.INTAKE_ROLLER, CANSparkMaxLowLevel.MotorType.kBrushless);
-    liftMotor = new CANSparkMax(RobotMap.INTAKE_ANGLE, CANSparkMaxLowLevel.MotorType.kBrushless);
+    positionMotor = new CANSparkMax(RobotMap.INTAKE_ANGLE, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    liftMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    positionMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     driveEnc = driveMotor.getEncoder();
-    liftEnc = liftMotor.getEncoder();
+    positionEnc = positionMotor.getEncoder();
 
-    positionPid = liftMotor.getPIDController();
+    positionPid = positionMotor.getPIDController();
   }
 
   @Override
@@ -51,12 +52,22 @@ public class Intake extends SubsystemBase {
     positionPid.setReference(angle, CANSparkMax.ControlType.kPosition);
   }
 
+  public void intakeUp() {
+    setPosition(40);
+    positionMotor.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void intakeDown() {
+    setPosition(0);
+    positionMotor.setIdleMode(IdleMode.kCoast);
+  }
+
   public double getPosition() {
-    return liftEnc.getPosition();
+    return positionEnc.getPosition();
   }
 
   public double getSpeed() {
-      return driveEnc.getVelocity();
+    return driveEnc.getVelocity();
   }
 
 }
