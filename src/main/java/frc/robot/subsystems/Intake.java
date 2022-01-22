@@ -12,15 +12,15 @@ import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax driveMotor, positionMotor;
-  private double speed = 0.5;
+  private double speed = 0.3;
   private RelativeEncoder driveEnc, positionEnc;
 
   private SparkMaxPIDController positionPid;
 
   /** Creates a new Intake. */
   public Intake() {
-    driveMotor = new CANSparkMax(RobotMap.INTAKE_ROLLER, CANSparkMaxLowLevel.MotorType.kBrushless);
-    positionMotor = new CANSparkMax(RobotMap.INTAKE_ANGLE, CANSparkMaxLowLevel.MotorType.kBrushless);
+    driveMotor = new CANSparkMax(RobotMap.INTAKE_DRIVE, CANSparkMaxLowLevel.MotorType.kBrushless);
+    positionMotor = new CANSparkMax(RobotMap.INTAKE_POSITION, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     positionMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);

@@ -33,7 +33,7 @@ import frc.robot.commands.drive.rotate.RotateToAngle;
  */
 public class AutoCommands {
   private static boolean initialized = false;
-  public static SwerveControllerCommand threeBall, threeBallA, threeBallB;
+  public static SwerveControllerCommand threeBall, threeBallA, threeBallB, threeBallPlanner;
   public static SwerveControllerCommand twoBall;
   public static TrajectoryConfig config = new TrajectoryConfig(3.0, 6.0);
 
@@ -42,6 +42,8 @@ public class AutoCommands {
       new Thread(() -> {
 
         config.setKinematics(RobotContainer.swerveDrive.kinematics);
+
+        threeBallPlanner = loadPathFromJSON("3Ball");
 
         twoBall = generatePath(new Pose2d[] {
             new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
@@ -124,7 +126,7 @@ public class AutoCommands {
   public static SwerveControllerCommand loadPathFromJSON(String json) {
     Trajectory trajectory;
     try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve("output/" + json + ".wpilib.json");
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve("/pathplanner/generatedJSON/" + json + ".wpilib.json");
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + json, ex.getStackTrace());
@@ -154,6 +156,7 @@ public class AutoCommands {
   public static Command threeBall() {
     Command shoot = new InstantCommand();
     return shoot.andThen(threeBall).andThen(shoot);
+    //threeBallPlanner
   }
 
   public static Command threeBallRace() {
@@ -163,4 +166,5 @@ public class AutoCommands {
     return shoot.andThen(threeBallA.raceWith(checkForIntake)).andThen(threeBallB.raceWith(checkForIntake))
         .andThen(new RotateToAngle(90)).andThen(shoot);
   }
+
 }
