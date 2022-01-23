@@ -10,7 +10,6 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -38,7 +37,6 @@ public class RobotContainer {
   public static final AHRS navx = new AHRS();
 
   public static final SwerveDrive swerveDrive = new SwerveDrive();
-  public static final PowerDistribution pdp = new PowerDistribution();
 
   public static final XboxController xboxController = new XboxController(RobotMap.XBOX_PORT);
   //public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
