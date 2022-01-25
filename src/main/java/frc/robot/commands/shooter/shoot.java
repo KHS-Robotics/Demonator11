@@ -7,10 +7,14 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class shoot extends CommandBase {
+public class Shoot extends CommandBase {
   /** Creates a new shoot. */
-  public shoot() {
+  double speed;
+
+  public Shoot(double speed) {
     addRequirements(RobotContainer.shooter);
+
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -21,11 +25,13 @@ public class shoot extends CommandBase {
   @Override
   public void execute() {
     //TODO set speed
-    RobotContainer.shooter.setShooter(0);
+    RobotContainer.shooter.setShooter(speed);
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    RobotContainer.shooter.stop();
+  }
 
   // Returns true when the command should end.
   @Override

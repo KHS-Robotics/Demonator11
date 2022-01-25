@@ -24,6 +24,7 @@ import frc.robot.commands.CenterSwerveModules;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
+import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -102,6 +103,9 @@ public class RobotContainer {
     Button outtakeBall = new Button( switchbox::outtake );
     outtakeBall.whileHeld( () -> intake.reverse(), intake );
     outtakeBall.whenReleased( () -> intake.stop(), intake );
+
+    Button shoot = new Button( switchbox::shoot );
+    shoot.whenHeld(new Shoot(0));
   }
 
   /**
