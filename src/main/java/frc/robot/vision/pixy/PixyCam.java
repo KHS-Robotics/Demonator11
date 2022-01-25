@@ -30,7 +30,7 @@ public class PixyCam {
     }
 
     public Cargo[] getCargoInFrame() {
-        blockCount = pixy.getCCC().getBlocks(true, Pixy2CCC.CCC_SIG1, 2);
+        blockCount = pixy.getCCC().getBlocks(true, Pixy2CCC.CCC_SIG_ALL, 2);
 		if (blockCount <= 0) {
 			return new Cargo[]{};
 		}
