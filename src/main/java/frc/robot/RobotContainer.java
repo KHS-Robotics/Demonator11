@@ -24,6 +24,10 @@ import frc.robot.commands.CenterSwerveModules;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
 
 /**
@@ -38,6 +42,11 @@ public class RobotContainer {
   public static final AHRS navx = new AHRS();
 
   public static final SwerveDrive swerveDrive = new SwerveDrive();
+  public static final Intake intake = new Intake();
+  public static final Shooter shooter = new Shooter();
+  public static final Indexer indexer = new Indexer();
+  public static final Climber climber = new Climber();
+  
   public static final PowerDistribution pdp = new PowerDistribution();
 
   public static final XboxController xboxController = new XboxController(RobotMap.XBOX_PORT);
