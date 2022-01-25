@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.vision.Limelight.LightMode;
-import frc.robot.vision.pixy.PixyCam;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.vision.Limelight;
 
@@ -20,17 +19,16 @@ public class Robot extends TimedRobot {
   RobotContainer robotContainer;
 
   Command autonCommand;
-  private static PixyCam pixy;
 
   @Override
   public void robotInit() {
     robotContainer = new RobotContainer();
-    pixy = new PixyCam();
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    RobotContainer.pixy.updateCargoInFrame();
   }
 
   @Override
@@ -39,7 +37,6 @@ public class Robot extends TimedRobot {
 
     SwerveDrive.kMaxSpeed = 3.5;
     SwerveDrive.kMaxAngularSpeed = Math.PI;
-    pixy.setLamp(false);
   }
 
   @Override
@@ -54,7 +51,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Limelight.setLedMode(LightMode.eOn);
-    pixy.setLamp(true);
   }
 
   @Override
@@ -66,7 +62,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Limelight.setLedMode(LightMode.eOff);
     RobotContainer.swerveDrive.setOffset(0);
-    pixy.setLamp(true);
 
     if(autonCommand != null) {
       autonCommand.cancel();

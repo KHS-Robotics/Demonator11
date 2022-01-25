@@ -11,6 +11,7 @@ import io.github.pseudoresonance.pixy2api.links.SPILink;
 public class PixyCam {
     private final Pixy2 pixy;
     private int blockCount;
+    private Cargo[] cargos = {};
 
     public PixyCam() {
         pixy = Pixy2.createInstance(new SPILink());
@@ -29,21 +30,19 @@ public class PixyCam {
             pixy.setLamp((byte) 0, (byte) 0);
     }
 
-    public Cargo[] getCargoInFrame() {
-        blockCount = pixy.getCCC().getBlocks(true, Pixy2CCC.CCC_SIG1, 2);
-		if (blockCount <= 0) {
-			return new Cargo[]{};
+    public void updateCargoInFrame() {
+        blockCount = pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1 | Pixy2CCC.CCC_SIG2, 2);
+		if (blockCount < 0) {
+			return;
 		}
         ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
-        Cargo[] cargos = new Cargo[blocks.size()];
+        cargos = new Cargo[blocks.size()];
         for (int i = 0; i < cargos.length; i++) {
             cargos[i] = Cargo.fromBlock(blocks.get(i));
         }
-        return cargos;
     }
 
     public boolean hasRedInFrame() {
-        Cargo[] cargos = getCargoInFrame();
         if (cargos.length == 1)
             return cargos[0].isRed();
         if (cargos.length == 2)
@@ -52,7 +51,6 @@ public class PixyCam {
     }
 
     public boolean hasBlueInFrame() {
-        Cargo[] cargos = getCargoInFrame();
         if (cargos.length == 1)
             return cargos[0].isBlue();
         if (cargos.length == 2)
