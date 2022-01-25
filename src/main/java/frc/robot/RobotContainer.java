@@ -94,7 +94,6 @@ public class RobotContainer {
     Button slowDrive = new Button( () -> (xboxController.getLeftTriggerAxis() > 0.3) );
     slowDrive.whenPressed( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI / 2; SwerveDrive.kMaxSpeed = 2; } );
     slowDrive.whenReleased( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI; SwerveDrive.kMaxSpeed = 3.5; } );
-
   }
 
   /**
