@@ -83,11 +83,8 @@ public class RobotContainer {
     JoystickButton rotateToTarget = new JoystickButton(xboxController, XboxController.Button.kY.value);
     rotateToTarget.whenHeld(new RotateToTargetWhileDriving());
 
-    Button holdAngle = new Button(() -> xboxController.getAButton());
+    Button holdAngle = new Button(() -> ( (Math.abs(xboxController.getRightX()) < 0.05) || xboxController.getAButton()));
     holdAngle.whenHeld(new HoldAngleWhileDriving());
-
-    Button holdAngleWithJoystick = new Button(() -> ( (Math.abs(xboxController.getRightX()) < 0.05) || xboxController.getAButton()));
-    holdAngleWithJoystick.whenHeld(new HoldAngleWhileDriving());
 
     Button resetNavxButton = new Button(xboxController::getStartButton);
     resetNavxButton.whenPressed( () -> swerveDrive.resetNavx(), swerveDrive);
