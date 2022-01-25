@@ -46,11 +46,11 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   public static final Indexer indexer = new Indexer();
   public static final Climber climber = new Climber();
-  
+
   public static final PowerDistribution pdp = new PowerDistribution();
 
   public static final XboxController xboxController = new XboxController(RobotMap.XBOX_PORT);
-  //public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
+  public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -94,6 +94,14 @@ public class RobotContainer {
     Button slowDrive = new Button( () -> (xboxController.getLeftTriggerAxis() > 0.3) );
     slowDrive.whenPressed( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI / 2; SwerveDrive.kMaxSpeed = 2; } );
     slowDrive.whenReleased( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI; SwerveDrive.kMaxSpeed = 3.5; } );
+
+    Button intakeBall = new Button( switchbox::intake );
+    intakeBall.whileHeld( () -> intake.intake(), intake );
+    intakeBall.whenReleased( () -> intake.stop(), intake );
+
+    Button outtakeBall = new Button( switchbox::outtake );
+    outtakeBall.whileHeld( () -> intake.reverse(), intake );
+    outtakeBall.whenReleased( () -> intake.stop(), intake );
   }
 
   /**
