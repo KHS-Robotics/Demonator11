@@ -38,4 +38,8 @@ public class Shooter extends SubsystemBase {
   public boolean atSetpoint() {
     return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 200;
   }
+
+  public void stop() {
+    leader.set(0);
+  }
 }

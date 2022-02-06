@@ -10,6 +10,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -23,6 +24,11 @@ import frc.robot.commands.CenterSwerveModules;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
+import frc.robot.commands.shooter.Shoot;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.vision.pixy.PixyCam;
 
@@ -40,9 +46,15 @@ public class RobotContainer {
   public static final PixyCam pixy = new PixyCam();
 
   public static final SwerveDrive swerveDrive = new SwerveDrive();
+  public static final Intake intake = new Intake();
+  public static final Shooter shooter = new Shooter();
+  public static final Indexer indexer = new Indexer();
+  public static final Climber climber = new Climber();
+
+  public static final PowerDistribution pdp = new PowerDistribution();
 
   public static final XboxController xboxController = new XboxController(RobotMap.XBOX_PORT);
-  //public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
+  public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -74,11 +86,8 @@ public class RobotContainer {
     JoystickButton rotateToTarget = new JoystickButton(xboxController, XboxController.Button.kY.value);
     rotateToTarget.whenHeld(new RotateToTargetWhileDriving());
 
-    Button holdAngle = new Button(() -> xboxController.getAButton());
+    Button holdAngle = new Button(() -> ( (Math.abs(xboxController.getRightX()) < 0.05) || xboxController.getAButton()));
     holdAngle.whenHeld(new HoldAngleWhileDriving());
-
-    Button holdAngleWithJoystick = new Button(() -> ( (Math.abs(xboxController.getRightX()) < 0.05) || xboxController.getAButton()));
-    holdAngleWithJoystick.whenHeld(new HoldAngleWhileDriving());
 
     Button resetNavxButton = new Button(xboxController::getStartButton);
     resetNavxButton.whenPressed( () -> swerveDrive.resetNavx(), swerveDrive);
@@ -87,6 +96,16 @@ public class RobotContainer {
     slowDrive.whenPressed( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI / 2; SwerveDrive.kMaxSpeed = 2; } );
     slowDrive.whenReleased( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI; SwerveDrive.kMaxSpeed = 3.5; } );
 
+    Button intakeBall = new Button( switchbox::intake );
+    intakeBall.whileHeld( () -> intake.intake(), intake );
+    intakeBall.whenReleased( () -> intake.stop(), intake );
+
+    Button outtakeBall = new Button( switchbox::outtake );
+    outtakeBall.whileHeld( () -> intake.reverse(), intake );
+    outtakeBall.whenReleased( () -> intake.stop(), intake );
+
+    Button shoot = new Button( switchbox::shoot );
+    shoot.whenHeld(new Shoot(0));
   }
 
   /**

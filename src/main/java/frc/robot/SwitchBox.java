@@ -39,7 +39,6 @@ public class SwitchBox extends Joystick {
 
 	public boolean outtake() {
 		return this.getRawButton(6);
-
 	}
 
 	public boolean shoot() {
