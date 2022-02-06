@@ -32,13 +32,12 @@ public class PixyCam {
 
     public void updateCargoInFrame() {
         blockCount = pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1 | Pixy2CCC.CCC_SIG2, 2);
-		if (blockCount < 0) {
-			return;
-		}
-        ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
-        cargos = new Cargo[blocks.size()];
-        for (int i = 0; i < cargos.length; i++) {
-            cargos[i] = Cargo.fromBlock(blocks.get(i));
+        if (blockCount >= 0) {
+            ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
+            cargos = new Cargo[blocks.size()];
+            for (int i = 0; i < cargos.length; i++) {
+                cargos[i] = Cargo.fromBlock(blocks.get(i));
+            }
         }
     }
 

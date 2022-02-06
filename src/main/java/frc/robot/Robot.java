@@ -28,7 +28,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    RobotContainer.pixy.updateCargoInFrame();
+    if (RobotContainer.pixy != null) {
+      RobotContainer.pixy.updateCargoInFrame();
+    }
   }
 
   @Override
