@@ -31,6 +31,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    if (RobotContainer.pixy != null) {
+      RobotContainer.pixy.updateCargoInFrame();
+    }
   }
 
   @Override
@@ -43,13 +46,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() { 
-
     if(RobotContainer.xboxController.getXButtonPressed()) {
       Limelight.setLedMode(LightMode.eOn);
     } else if(RobotContainer.xboxController.getYButtonPressed()) {
       Limelight.setLedMode(LightMode.eOff);
     }
-
   }
 
   @Override
@@ -89,8 +90,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    // CommandScheduler.getInstance().cancelAll();
-    // RobotContainer.intake.stop();
+    
   }
 
   @Override
