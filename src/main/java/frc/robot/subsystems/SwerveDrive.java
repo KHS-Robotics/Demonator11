@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
-import frc.robot.commands.CenterSwerveModules;
 
 /**
  * Represents a swerve drive style drivetrain.
@@ -35,6 +34,8 @@ public class SwerveDrive extends SubsystemBase {
   private final Translation2d frontRightLocation = new Translation2d(0.29845, -0.29845);
   private final Translation2d rearLeftLocation = new Translation2d(-0.29845, 0.29845);
   private final Translation2d rearRightLocation = new Translation2d(-0.29845, -0.29845);
+
+  public boolean isCalibrated = false;
 
   public static final SwerveModule frontLeft = new SwerveModule(
     "FL", 
@@ -111,10 +112,10 @@ public class SwerveDrive extends SubsystemBase {
     tab.addNumber("Pose Y", () -> this.getPose().getTranslation().getY());
     tab.addNumber("Pose Norm", () -> this.getPose().getTranslation().getNorm());
     tab.addNumber("Pose Rotation", () -> this.getPose().getRotation().getDegrees());
-    tab.addBoolean("Calibrated", CenterSwerveModules::hasCalibrated);
+    tab.addBoolean("Calibrated", () -> this.isCalibrated);
 
     var matchTab = Shuffleboard.getTab("Match");
-    matchTab.addBoolean("Calibrated", CenterSwerveModules::hasCalibrated); 
+    matchTab.addBoolean("Calibrated", () -> this.isCalibrated); 
   }
 
   /**
@@ -164,11 +165,6 @@ public class SwerveDrive extends SubsystemBase {
       rearLeft.setDesiredState(swerveModuleStates[2]);
       rearRight.setDesiredState(swerveModuleStates[3]);
     }
-
-    // System.out.println("FR " + swerveModuleStates[0].angle.getDegrees());
-    // System.out.println("FL " + swerveModuleStates[1].angle.getDegrees());
-    // System.out.println("RL" + swerveModuleStates[2].angle.getDegrees());
-    // System.out.println("RR " + swerveModuleStates[3].angle.getDegrees());
   }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -220,8 +216,9 @@ public class SwerveDrive extends SubsystemBase {
 
   public void resetNavx(Pose2d currentPose) {
     targetPid.reset();
+    offset = currentPose.getRotation().getDegrees();
     RobotContainer.navx.reset();
-    odometry.resetPosition(currentPose, getAngle()); 
+    odometry.resetPosition(currentPose, currentPose.getRotation()); 
   }
 
   public void resetPid() {

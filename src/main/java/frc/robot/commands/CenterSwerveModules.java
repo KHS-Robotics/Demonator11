@@ -11,39 +11,43 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class CenterSwerveModules extends CommandBase {
-  private static boolean hasCalibrated = false;
+  private boolean force;
   /**
    * Creates a new CenterSwerveModules.
    */
-  public CenterSwerveModules() {
+  public CenterSwerveModules(boolean force) {
     this.addRequirements(RobotContainer.swerveDrive);
+    this.force = force;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     RobotContainer.swerveDrive.stop();
+    System.out.println("isCal before" + RobotContainer.swerveDrive.isCalibrated);
+    RobotContainer.swerveDrive.isCalibrated = !force && RobotContainer.swerveDrive.isCalibrated;
+    System.out.println("force" + this.force);
+    System.out.println("isCal after" + RobotContainer.swerveDrive.isCalibrated);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!RobotContainer.swerveDrive.isCalibrated) {
+      RobotContainer.swerveDrive.isCalibrated = RobotContainer.swerveDrive.resetEncoders();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     RobotContainer.swerveDrive.stop();
-    hasCalibrated = !interrupted;
-  }
-
-  public static boolean hasCalibrated() {
-    return hasCalibrated;
+    RobotContainer.swerveDrive.isCalibrated = !interrupted;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return RobotContainer.swerveDrive.resetEncoders();
+    return RobotContainer.swerveDrive.isCalibrated;
   }
 }

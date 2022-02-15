@@ -10,7 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.vision.Limelight.LightMode;
+import frc.robot.AutoRoutineBuilder.AutonomousRoutine;
+import frc.robot.commands.CenterSwerveModules;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.vision.Limelight;
 
@@ -51,7 +54,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    if(autonCommand != null) {
+      autonCommand.cancel();
+      CommandScheduler.getInstance().run();
+    }
     Limelight.setLedMode(LightMode.eOn);
+    AutonomousRoutine selectedAuton = RobotContainer.getCommand( (int) RobotContainer.id.getDouble(0) );
+
+    RobotContainer.swerveDrive.resetNavx( selectedAuton.getStartingPose() );
+
+    autonCommand = (new CenterSwerveModules(false).andThen(new InstantCommand( () -> RobotContainer.intake.intake() )).andThen( selectedAuton.getAsCommand() ) );
+    autonCommand.schedule();
   }
 
   @Override
@@ -71,7 +84,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    RobotContainer.swerveDrive.updateOdometry();
+    
   }
 
   @Override
