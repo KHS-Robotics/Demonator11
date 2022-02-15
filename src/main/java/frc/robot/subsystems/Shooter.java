@@ -43,7 +43,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setHoodAngle(double angle) {
-    double setpoint = angle;
+    double setpoint = calculateSetpointFromAngle(angle);
 
     hoodServo1.set(setpoint);
     hoodServo2.set(setpoint);
@@ -61,4 +61,14 @@ public class Shooter extends SubsystemBase {
   public void stop() {
     leader.set(0);
   }
+
+  static double calculateSetpointFromAngle(double angle) {
+		final double topLen = 0.291; // Length from top of servo to shooter wheel
+		final double bottomLen = 0.408; //Length from bottom of servo to shooter wheel
+
+		double length = Math.sqrt( 2 * bottomLen * topLen * (-Math.cos(angle + 0.174533) + (bottomLen / topLen) ) - (bottomLen * bottomLen) + (topLen * topLen) ) ;
+		double setpoint = (length - 0.1651) / 0.10627;
+
+		return setpoint;
+	}
 }

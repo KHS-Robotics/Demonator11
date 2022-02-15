@@ -12,26 +12,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax motor1, motor2, motor3, motor4;
-  private RelativeEncoder motor1Enc, motor2Enc, motor3Enc, motor4Enc;
-  private SparkMaxPIDController motor1Pid, motor2Pid, motor3Pid, motor4Pid;
+  private CANSparkMax elevatorLeader, elevatorMotorFollower1, elevatorMotorFollower2, pivotMotor;
+  private RelativeEncoder elevatorEnc, pivotEnc;
+  private SparkMaxPIDController elevatorPID, pivotPID;
 
   /** Creates a new Climber. */
   public Climber() {
-    motor1 = new CANSparkMax(RobotMap.CLIMBER_MOTOR1, CANSparkMaxLowLevel.MotorType.kBrushless);
-    motor2 = new CANSparkMax(RobotMap.CLIMBER_MOTOR2, CANSparkMaxLowLevel.MotorType.kBrushless);
-    motor3 = new CANSparkMax(RobotMap.CLIMBER_MOTOR3, CANSparkMaxLowLevel.MotorType.kBrushless);
-    motor4 = new CANSparkMax(RobotMap.CLIMBER_MOTOR4, CANSparkMaxLowLevel.MotorType.kBrushless);
+    elevatorLeader = new CANSparkMax(RobotMap.CLIMBER_MOTOR1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    elevatorMotorFollower1 = new CANSparkMax(RobotMap.CLIMBER_MOTOR2, CANSparkMaxLowLevel.MotorType.kBrushless);
+    elevatorMotorFollower2 = new CANSparkMax(RobotMap.CLIMBER_MOTOR3, CANSparkMaxLowLevel.MotorType.kBrushless);
+    pivotMotor = new CANSparkMax(RobotMap.CLIMBER_MOTOR4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    motor1Enc = motor1.getEncoder();
-    motor2Enc = motor2.getEncoder();
-    motor3Enc = motor3.getEncoder();
-    motor4Enc = motor4.getEncoder();
+    elevatorEnc = elevatorLeader.getEncoder();
+    pivotEnc = pivotMotor.getEncoder();
 
-    motor1Pid = motor1.getPIDController();
-    motor2Pid = motor2.getPIDController();
-    motor3Pid = motor3.getPIDController();
-    motor4Pid = motor4.getPIDController();
+    elevatorPID = elevatorLeader.getPIDController();
+    pivotPID = pivotMotor.getPIDController();
   }
 
   @Override

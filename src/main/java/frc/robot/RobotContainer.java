@@ -26,7 +26,7 @@ import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
-import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.ManualShoot;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -107,7 +107,7 @@ public class RobotContainer {
     outtakeBall.whenReleased( () -> intake.stop(), intake );
 
     Button shoot = new Button(switchbox::shoot);
-    shoot.whenHeld(new Shoot(1500));
+    shoot.whenHeld(new ManualShoot(1500));
   }
 
   public static AutonomousRoutine getCommand(int id) {
