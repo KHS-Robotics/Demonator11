@@ -30,6 +30,7 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.vision.pixy.PixyCam;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -41,6 +42,8 @@ import frc.robot.subsystems.SwerveDrive;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final AHRS navx = new AHRS();
+
+  public static final PixyCam pixy = new PixyCam();
 
   public static final SwerveDrive swerveDrive = new SwerveDrive();
   public static final Intake intake = new Intake();
