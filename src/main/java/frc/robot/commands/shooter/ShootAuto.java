@@ -7,10 +7,10 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class Shoot extends CommandBase {
+public class ShootAuto extends CommandBase {
   double dist, angle, speed;
 
-  public Shoot() {
+  public ShootAuto() {
     addRequirements(RobotContainer.shooter);
   }
 
@@ -32,31 +32,19 @@ public class Shoot extends CommandBase {
 
     RobotContainer.shooter.setHoodAngle(angle);
     RobotContainer.shooter.setShooter( msToRPM(speed) );
-
-    /*
-		double vX = Math.Cos(angle) * speed;
-    double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
-    double time = dist / ( speed * Math.Cos(angle) * Math.Cos(turn) );
-    
-    speed += (initDrag * time * time * 0.5 );
-    */
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.shooter.setHood(0.5);
+    RobotContainer.shooter.setShooter(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame());
   }
 
   public static double msToRPM(double metersPerSec) {

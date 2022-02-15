@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -21,6 +23,10 @@ public class Climber extends SubsystemBase {
     elevatorLeader = new CANSparkMax(RobotMap.CLIMBER_MOTOR1, CANSparkMaxLowLevel.MotorType.kBrushless);
     elevatorMotorFollower1 = new CANSparkMax(RobotMap.CLIMBER_MOTOR2, CANSparkMaxLowLevel.MotorType.kBrushless);
     elevatorMotorFollower2 = new CANSparkMax(RobotMap.CLIMBER_MOTOR3, CANSparkMaxLowLevel.MotorType.kBrushless);
+    
+    elevatorMotorFollower1.follow(elevatorLeader);
+    elevatorMotorFollower2.follow(elevatorLeader);
+    
     pivotMotor = new CANSparkMax(RobotMap.CLIMBER_MOTOR4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     elevatorEnc = elevatorLeader.getEncoder();
@@ -28,6 +34,14 @@ public class Climber extends SubsystemBase {
 
     elevatorPID = elevatorLeader.getPIDController();
     pivotPID = pivotMotor.getPIDController();
+  }
+
+  public void elevate(double height) {
+    elevatorPID.setReference(height, ControlType.kPosition);
+  }
+
+  public void pivot(double angle) {
+    pivotPID.setReference(angle, ControlType.kPosition);
   }
 
   @Override

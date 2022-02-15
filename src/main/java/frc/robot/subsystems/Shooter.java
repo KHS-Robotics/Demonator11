@@ -37,14 +37,14 @@ public class Shooter extends SubsystemBase {
     hoodServo2.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
   public void setHoodAngle(double angle) {
     double setpoint = calculateSetpointFromAngle(angle);
 
+    hoodServo1.set(setpoint);
+    hoodServo2.set(setpoint);
+  }
+
+  public void setHood(double setpoint) {
     hoodServo1.set(setpoint);
     hoodServo2.set(setpoint);
   }

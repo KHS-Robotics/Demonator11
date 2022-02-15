@@ -6,21 +6,16 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Indexer extends SubsystemBase {
   private CANSparkMax motor1, motor2;
-  private RelativeEncoder motor1Enc, motor2Enc;
 
   /** Creates a new Indexer. */
   public Indexer() {
     motor1 = new CANSparkMax(RobotMap.INDEXER_MOTOR1, CANSparkMaxLowLevel.MotorType.kBrushless);
     motor2 = new CANSparkMax(RobotMap.INDEXER_MOTOR2, CANSparkMaxLowLevel.MotorType.kBrushless);
-
-    motor1Enc = motor1.getEncoder();
-    motor2Enc = motor1.getEncoder();
   }
 
   @Override
