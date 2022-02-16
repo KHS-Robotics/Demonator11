@@ -27,10 +27,7 @@ import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.shooter.ManualShoot;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.*;
 import frc.robot.vision.pixy.PixyCam;
 
 /**
@@ -51,6 +48,7 @@ public class RobotContainer {
   public static final Intake intake = new Intake();
   public static final Shooter shooter = new Shooter();
   public static final Indexer indexer = new Indexer();
+  public static final Climber climber = new Climber();
 
   public static final PowerDistribution pdp = new PowerDistribution();
 
