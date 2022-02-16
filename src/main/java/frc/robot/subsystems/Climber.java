@@ -17,6 +17,7 @@ public class Climber extends SubsystemBase {
   private CANSparkMax elevatorLeader, elevatorFollower1, elevatorFollower2, pivotMotor;
   private RelativeEncoder elevatorEnc, pivotEnc;
   private SparkMaxPIDController elevatorPID, pivotPID;
+  double elevateSetpoint;
 
   private double pivotSetpoint;
   /** Creates a new Climber. */
@@ -38,9 +39,12 @@ public class Climber extends SubsystemBase {
   }
 
   public void elevate(double height) {
+    elevateSetpoint = height;
     elevatorPID.setReference(height, ControlType.kPosition);
   }
-
+  public boolean elevatorAtSetpoint( ){
+    return Math.abs(elevateSetpoint - elevatorEnc.getPosition()) < 0.5;
+  }
   public void pivot(double angle) {
     pivotSetpoint = angle;
 
