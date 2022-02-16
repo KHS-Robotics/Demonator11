@@ -17,9 +17,9 @@ public class Climber extends SubsystemBase {
   private CANSparkMax elevatorLeader, elevatorFollower1, elevatorFollower2, pivotMotor;
   private RelativeEncoder elevatorEnc, pivotEnc;
   private SparkMaxPIDController elevatorPID, pivotPID;
-  double elevateSetpoint;
 
-  private double pivotSetpoint;
+  private double pivotSetpoint, elevatorSetpoint;
+
   /** Creates a new Climber. */
   public Climber() {
     elevatorLeader = new CANSparkMax(RobotMap.CLIMBER_MOTOR1, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -39,12 +39,15 @@ public class Climber extends SubsystemBase {
   }
 
   public void elevate(double height) {
-    elevateSetpoint = height;
+    elevatorSetpoint = height;
+    
     elevatorPID.setReference(height, ControlType.kPosition);
   }
+  
   public boolean elevatorAtSetpoint( ){
-    return Math.abs(elevateSetpoint - elevatorEnc.getPosition()) < 0.5;
+    return Math.abs(elevatorSetpoint - elevatorEnc.getPosition()) < 0.5;
   }
+
   public void pivot(double angle) {
     pivotSetpoint = angle;
 
@@ -54,6 +57,7 @@ public class Climber extends SubsystemBase {
   public boolean pivotAtSetpoint() {
     return Math.abs(pivotSetpoint - pivotEnc.getPosition()) < 0.5;
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
