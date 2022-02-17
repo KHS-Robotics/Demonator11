@@ -120,10 +120,8 @@ public class RobotContainer {
         new Elevate(Level.Zero), 
         new Elevate(Level.ClearBar), 
         new Pivot(Angle.Tilt)
-        .deadlineWith(
-          new Elevate(Level.UnderBar)
-        ),
-        new WaitForNavx(Angle.Rest), 
+        .deadlineWith(new Elevate(Level.UnderBar)),
+        new WaitForNavx(Angle.Tilt), 
         new Elevate(Level.Reach) ) 
       );
   }
