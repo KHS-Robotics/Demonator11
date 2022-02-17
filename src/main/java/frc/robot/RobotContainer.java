@@ -22,6 +22,11 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.AutoRoutineBuilder.AutonomousRoutine;
 import frc.robot.commands.CenterSwerveModules;
+import frc.robot.commands.climber.Angle;
+import frc.robot.commands.climber.Elevate;
+import frc.robot.commands.climber.Level;
+import frc.robot.commands.climber.Pivot;
+import frc.robot.commands.climber.WaitForNavx;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
@@ -106,10 +111,24 @@ public class RobotContainer {
 
     Button shoot = new Button(switchbox::shoot);
     shoot.whenHeld(new ManualShoot(1500));
+  
+    Button climb = new Button( () -> false );
+    climb.whenPressed(
+      new SequentialCommandGroup(
+        new Elevate(Level.BelowMidHeight), 
+        new Elevate(Level.MidHeight), 
+        new Elevate(Level.Zero), 
+        new Elevate(Level.ClearBar), 
+        new Pivot(Angle.Tilt)
+        .deadlineWith(
+          new Elevate(Level.UnderBar)
+        ),
+        new WaitForNavx(Angle.Rest), 
+        new Elevate(Level.Reach) ) 
+      );
   }
 
   public static AutonomousRoutine getCommand(int id) {
-
     switch(id) {
       default:
         return new AutonomousRoutine(new Pose2d(), new SequentialCommandGroup());
@@ -119,13 +138,13 @@ public class RobotContainer {
         return getThreeBallClose();
       case 2:
         return getThreeBallFar();
-      case 4:
+      case 3:
         return getFourBallAuto();
     }
   }
 
   private static AutonomousRoutine getTwoBallAuto() {
-    return  new AutoRoutineBuilder()
+    return new AutoRoutineBuilder()
     .addTrajectoryCommand(
       new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)), 
       new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
