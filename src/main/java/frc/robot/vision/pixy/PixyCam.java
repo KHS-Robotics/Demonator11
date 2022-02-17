@@ -67,17 +67,17 @@ public class PixyCam {
         } else if (cargos.length == 1) {
             return cargos[0].getSignature();
         } else {
-            if (cargos[1].getY() > cargos[0].getY()) {
-                return cargos[0].getSignature();
-            } else {
+            if (cargos[1].getX() > cargos[0].getX()) {
                 return cargos[1].getSignature();
+            } else {
+                return cargos[0].getSignature();
             }
         }
     }
 
     public boolean isMerged() {
         //847098: frame area
-        return cargos.length == 1 && cargos[0].getWidth() * cargos[0].getHeight() > 847098 * 0.5;
+        return cargos.length == 1 && cargos[0].getWidth() * cargos[0].getHeight() > 35000;
     }
 
     public int getNumCargo() {
