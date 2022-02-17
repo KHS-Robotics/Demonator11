@@ -2,6 +2,8 @@ package frc.robot.vision.pixy;
 
 import java.util.ArrayList;
 
+import javax.imageio.plugins.tiff.GeoTIFFTagSet;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC;
@@ -55,5 +57,24 @@ public class PixyCam {
         if (cargos.length == 2)
             return cargos[0].isBlue() || cargos[1].isBlue();
         return false;
+    }
+
+    public boolean hasBothInFrame() {
+        return (hasBlueInFrame() && hasRedInFrame());
+    }
+
+    public int nextCargo() {
+        if(cargos.length == 0) {
+            return 0;
+        }
+        if(cargos.length == 1) {
+            return cargos[0].getSignature();
+        }
+        if(cargos[1].getY() > cargos[0].getY()) {
+            return cargos[0].getSignature();
+        }           
+        else {
+            return cargos[1].getSignature();
+        }
     }
 }

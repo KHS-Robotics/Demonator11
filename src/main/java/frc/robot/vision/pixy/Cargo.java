@@ -1,5 +1,7 @@
 package frc.robot.vision.pixy;
 
+import java.security.Signature;
+
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 public class Cargo extends Block {
