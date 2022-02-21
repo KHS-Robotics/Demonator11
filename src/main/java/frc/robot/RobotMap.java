@@ -32,18 +32,18 @@ public class RobotMap {
   public static final int REAR_LEFT_DIGITAL_INPUT = 3;
   public static final int REAR_RIGHT_DIGITAL_INPUT = 0;
 
-  public static final int INTAKE_DRIVE = 8;
-  public static final int INTAKE_POSITION = 9;
+  public static final int INTAKE_DRIVE = 9;
+  public static final int INTAKE_POSITION = 8;
 
-  public static final int SHOOTER_LEADER = 10;
-  public static final int SHOOTER_FOLLOWER = 11;
+  public static final int INDEXER_FLOOR = 10;
+  public static final int INDEXER_SIDE = 18;
+  public static final int INDEXER_FEEDER = 11;
 
-  public static final int CLIMBER_MOTOR1 = 12;
-  public static final int CLIMBER_MOTOR2 = 13;
-  public static final int CLIMBER_MOTOR3 = 14;
-  public static final int CLIMBER_MOTOR4 = 15;
+  public static final int SHOOTER_LEADER = 12;
+  public static final int SHOOTER_FOLLOWER = 13;
 
-  public static final int INDEXER_MOTOR1 = 16;
-  public static final int INDEXER_MOTOR2 = 17;
-
+  public static final int ELEVATOR_LEADER = 14;
+  public static final int ELEVATOR_FOLLOWER1 = 15;
+  public static final int ELEVATOR_FOLLOWER2 = 16;
+  public static final int PIVOT_MOTOR = 17;
 }

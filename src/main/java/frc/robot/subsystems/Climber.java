@@ -22,14 +22,14 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climber. */
   public Climber() {
-    elevatorLeader = new CANSparkMax(RobotMap.CLIMBER_MOTOR1, CANSparkMaxLowLevel.MotorType.kBrushless);
-    elevatorFollower1 = new CANSparkMax(RobotMap.CLIMBER_MOTOR2, CANSparkMaxLowLevel.MotorType.kBrushless);
-    elevatorFollower2 = new CANSparkMax(RobotMap.CLIMBER_MOTOR3, CANSparkMaxLowLevel.MotorType.kBrushless);
+    elevatorLeader = new CANSparkMax(RobotMap.ELEVATOR_LEADER, CANSparkMaxLowLevel.MotorType.kBrushless);
+    elevatorFollower1 = new CANSparkMax(RobotMap.ELEVATOR_FOLLOWER1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    elevatorFollower2 = new CANSparkMax(RobotMap.ELEVATOR_FOLLOWER2, CANSparkMaxLowLevel.MotorType.kBrushless);
     
     elevatorFollower1.follow(elevatorLeader);
     elevatorFollower2.follow(elevatorLeader);
     
-    pivotMotor = new CANSparkMax(RobotMap.CLIMBER_MOTOR4, CANSparkMaxLowLevel.MotorType.kBrushless);
+    pivotMotor = new CANSparkMax(RobotMap.PIVOT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     elevatorEnc = elevatorLeader.getEncoder();
     pivotEnc = pivotMotor.getEncoder();

@@ -11,14 +11,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class RotateToAngle extends CommandBase {
-  double angle;
+  double angle, error;
   /**
    * Creates a new RotateToAngle.
    */
   public RotateToAngle(double angle) {
+    this(angle, 1);
+  }
+
+  public RotateToAngle(double angle, double error) {
     this.angle = angle;
+    this.error = error;
     addRequirements(RobotContainer.swerveDrive);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -41,6 +47,6 @@ public class RotateToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return RobotContainer.swerveDrive.atSetpoint();
+    return RobotContainer.swerveDrive.atSetpoint(error);
   }
 }

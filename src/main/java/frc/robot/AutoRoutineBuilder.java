@@ -7,6 +7,8 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -19,10 +21,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /**
  * Used to build autonomous routines.
@@ -36,12 +41,12 @@ import edu.wpi.first.math.geometry.Translation2d;
  */
 public class AutoRoutineBuilder {
     /** The robot's trajectory config for {@link TrajectoryGenerator#generateTrajectory} */
-    public static final TrajectoryConfig RobotTrajectoryConfig = new TrajectoryConfig(3.0, 6.0);
-    /** The X-Coordinate PID Controller for the {@link SwerveControllerCommand} */
+    public TrajectoryConfig RobotTrajectoryConfig;
+    /** The X-Coordinate PID Controller for the {@link CustomSwerveControllerCommand} */
     public static final PIDController SwerveXPIDController = new PIDController(1.0, 0.001, 0.2);
-    /** The Y-Coordinate PID Controller for the {@link SwerveControllerCommand} */
+    /** The Y-Coordinate PID Controller for the {@link CustomSwerveControllerCommand} */
     public static final PIDController SwerveYPIDController = new PIDController(1.0, 0.001, 0.2);
-    /** The Theta (rotation) PID Controller for the {@link SwerveControllerCommand} */
+    /** The Theta (rotation) PID Controller for the {@link CustomSwerveControllerCommand} */
     public static final ProfiledPIDController SwerveThetaPIDController = new ProfiledPIDController(3.5, 0.002, 0.10, new TrapezoidProfile.Constraints(Math.PI, Math.PI));
 
     private Pose2d startingPose;
@@ -52,9 +57,14 @@ public class AutoRoutineBuilder {
      * @see AutonomousRoutine
      * @see AutoRoutineBuilder#build()
      */
-    public AutoRoutineBuilder() {
+    public AutoRoutineBuilder(double velo, double accel) {
+        this.RobotTrajectoryConfig = new TrajectoryConfig(velo, accel);
         startingPose = new Pose2d();
         commands = new ArrayList<>();
+    }
+
+    public AutoRoutineBuilder() {
+        this(2.0, 3.0);
     }
 
     /**
@@ -171,7 +181,7 @@ public class AutoRoutineBuilder {
      * @param trajectory the trajectory for the robot to follow
      * @return a scheduable command for the robot to follow the trajectory
      */
-    public static SwerveControllerCommand createTrajectoryCommand(Trajectory trajectory) {
+    public static CustomSwerveControllerCommand createTrajectoryCommand(Trajectory trajectory) {
         return generateSwerveCommand(trajectory);
     }
 
@@ -180,7 +190,7 @@ public class AutoRoutineBuilder {
      * @param json the trajectory as a JSON file
      * @return a scheduable command for the robot to follow the trajectory from the JSON
      */
-    public static SwerveControllerCommand createTrajectoryCommandFromJson(String json) {
+    public static CustomSwerveControllerCommand createTrajectoryCommandFromJson(String json) {
         return generateSwerveCommand(loadPathFromJson(json));
     }
 
@@ -190,7 +200,7 @@ public class AutoRoutineBuilder {
      * @param endingPose the desired ending pose of the robot
      * @return a scheduable command for the robot to follow the trajectory
      */
-    public static SwerveControllerCommand createTrajectoryCommandFromPose(Pose2d startingPose, Pose2d endingPose) {
+    public CustomSwerveControllerCommand createTrajectoryCommandFromPose(Pose2d startingPose, Pose2d endingPose) {
         return generateSwerveCommand(generateTrajectory(startingPose, endingPose));
     }
 
@@ -201,7 +211,7 @@ public class AutoRoutineBuilder {
      * @param endingPose the desired ending pose of the robot
      * @return a scheduable command for the robot to follow the trajectory
      */
-    public static SwerveControllerCommand createTrajectoryCommandFromPose(Pose2d startingPose, Translation2d[] interiorWaypoints, Pose2d endingPose) {
+    public CustomSwerveControllerCommand createTrajectoryCommandFromPose(Pose2d startingPose, Translation2d[] interiorWaypoints, Pose2d endingPose) {
         return generateSwerveCommand(generateTrajectory(startingPose, interiorWaypoints, endingPose));
     }
     
@@ -228,8 +238,8 @@ public class AutoRoutineBuilder {
      * @param trajectory the desired trajectory for the robot to follow
      * @return a scheduable command for the robot to follow a trajectory
      */
-    private static SwerveControllerCommand generateSwerveCommand(Trajectory trajectory) {
-        return new SwerveControllerCommand(
+    private static CustomSwerveControllerCommand generateSwerveCommand(Trajectory trajectory) {
+        return new CustomSwerveControllerCommand(
             trajectory,
             RobotContainer.swerveDrive::getPose,
             RobotContainer.swerveDrive.kinematics,
@@ -247,7 +257,7 @@ public class AutoRoutineBuilder {
      * @param endingPose the desired ending pose of the robot
      * @return a usable trajectory
      */
-    private static Trajectory generateTrajectory(Pose2d startingPose, Pose2d endingPose) {
+    private Trajectory generateTrajectory(Pose2d startingPose, Pose2d endingPose) {
         return generateTrajectory(startingPose, new Translation2d[] {}, endingPose);
     }
     
@@ -258,7 +268,7 @@ public class AutoRoutineBuilder {
      * @param endingPose the desired ending pose of the robot
      * @return a usable trajectory
      */
-    private static Trajectory generateTrajectory(Pose2d startingPose, Translation2d[] interiorWaypoints, Pose2d endingPose) {
+    private Trajectory generateTrajectory(Pose2d startingPose, Translation2d[] interiorWaypoints, Pose2d endingPose) {
         ArrayList<Translation2d> waypoints = new ArrayList<Translation2d>();
 
         for (int i = 0; i < interiorWaypoints.length; i++) {
@@ -314,5 +324,22 @@ public class AutoRoutineBuilder {
             CommandScheduler.getInstance().run();
             return routine;
         }
+    }
+
+    public static class CustomSwerveControllerCommand extends SwerveControllerCommand {
+
+        public CustomSwerveControllerCommand(Trajectory trajectory, Supplier<Pose2d> pose,
+                SwerveDriveKinematics kinematics, PIDController xController, PIDController yController,
+                ProfiledPIDController thetaController, Consumer<SwerveModuleState[]> outputModuleStates,
+                SwerveDrive swervedrive) {
+            super(trajectory, pose, kinematics, xController, yController, thetaController, outputModuleStates, swervedrive);
+        }
+
+        @Override
+        public void end(boolean interrupted) {
+            super.end(interrupted);
+            RobotContainer.swerveDrive.stop();
+        }
+        
     }
 }

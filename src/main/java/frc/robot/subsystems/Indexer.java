@@ -10,12 +10,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Indexer extends SubsystemBase {
-  private CANSparkMax motor1, motor2;
+  private CANSparkMax floor, side, feeder;
 
   /** Creates a new Indexer. */
   public Indexer() {
-    motor1 = new CANSparkMax(RobotMap.INDEXER_MOTOR1, CANSparkMaxLowLevel.MotorType.kBrushless);
-    motor2 = new CANSparkMax(RobotMap.INDEXER_MOTOR2, CANSparkMaxLowLevel.MotorType.kBrushless);
+    floor = new CANSparkMax(RobotMap.INDEXER_FLOOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+    side = new CANSparkMax(RobotMap.INDEXER_SIDE, CANSparkMaxLowLevel.MotorType.kBrushless);
+    feeder = new CANSparkMax(RobotMap.INDEXER_FEEDER, CANSparkMaxLowLevel.MotorType.kBrushless);
   }
 
   @Override
@@ -23,19 +24,32 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setMotor1 (double speed) {
-    motor1.set(speed);
+  public void setFloor (double speed) {
+    floor.setVoltage(speed * 12);
   }
 
-  public void stopMotor1() {
-    setMotor1(0);
+  public void stopFloor() {
+    setFloor(0);
   }
 
-  public void setMotor2 (double speed) {
-    motor2.set(speed);
+  public void setSide (double speed) {
+    side.setVoltage(speed * 12);
   }
 
-  public void stopMotor2() {
-    setMotor2(0);
+  public void stopSide() {
+    setSide(0);
+  }
+
+  public void setFeeder(double speed) {
+    feeder.setVoltage(speed * 12);
+  }
+
+  public void stopFeeder() {
+    setFeeder(0);
+  }
+
+  public void stop() {
+    stopFloor();
+    stopSide();
   }
 }
