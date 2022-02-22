@@ -39,8 +39,8 @@ public class RobotMap {
   public static final int INDEXER_SIDE = 18;
   public static final int INDEXER_FEEDER = 11;
 
-  public static final int SHOOTER_LEADER = 12;
-  public static final int SHOOTER_FOLLOWER = 13;
+  public static final int SHOOTER_LEADER = 13;
+  public static final int SHOOTER_FOLLOWER = 12;
 
   public static final int ELEVATOR_LEADER = 14;
   public static final int ELEVATOR_FOLLOWER1 = 15;
