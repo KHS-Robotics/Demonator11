@@ -25,6 +25,10 @@ public class ManualShoot extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.shooter.setShooter(speed);
+    if(RobotContainer.shooter.atSetpoint()) {
+      RobotContainer.indexer.feed();
+      RobotContainer.indexer.index();
+    }
   }
 
   @Override

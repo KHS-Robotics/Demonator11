@@ -203,8 +203,20 @@ public class SwerveDrive extends SubsystemBase {
    * Updates the field relative position of the robot.
    */
   public void updateOdometry() {
-    odometry.update(this.getAngle(), frontLeft.getState(), frontRight.getState(), rearLeft.getState(),
-        rearRight.getState());
+    odometry.update(this.getAngle(), this.getSwerveModuleStates());
+  }
+
+  public SwerveModuleState[] getSwerveModuleStates() {
+    return new SwerveModuleState[] { 
+      frontLeft.getState(), 
+      frontRight.getState(), 
+      rearLeft.getState(), 
+      rearRight.getState() 
+    };
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    return this.kinematics.toChassisSpeeds(this.getSwerveModuleStates());
   }
 
   public void stop() {

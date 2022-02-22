@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
@@ -29,6 +30,11 @@ public class Shooter extends SubsystemBase {
     leaderEnc = leader.getEncoder();
 
     shooterPid = leader.getPIDController();
+
+    shooterPid.setP(Constants.SHOOTER_P);
+    shooterPid.setI(Constants.SHOOTER_I);
+    shooterPid.setD(Constants.SHOOTER_D);
+    shooterPid.setFF(Constants.SHOOTER_FF);
   
     hoodServo1 = new Servo(0);
     hoodServo2 = new Servo(1);

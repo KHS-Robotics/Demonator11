@@ -19,6 +19,11 @@ public class WaitForNavx extends CommandBase {
   }
 
   @Override
+  public void initialize() {
+    timer.start();
+  }
+
+  @Override
   public void execute() {
     double pitch = 0;
     

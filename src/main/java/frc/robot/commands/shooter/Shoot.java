@@ -17,7 +17,11 @@ public class Shoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() {}
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
     double targetHeight = 2.64;
     double robotHeight = 0.6;
 
@@ -33,7 +37,6 @@ public class Shoot extends CommandBase {
 
     RobotContainer.shooter.setHoodAngle(angle);
     RobotContainer.shooter.setShooter( msToRPM(speed) );
-    RobotContainer.indexer.index();
 
     /*
 		double vX = Math.Cos(angle) * speed;
@@ -42,15 +45,12 @@ public class Shoot extends CommandBase {
     
     speed += (initDrag * time * time * 0.5 );
     */
-  }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
     if(RobotContainer.shooter.atSetpoint()) {
+      RobotContainer.indexer.index();
       RobotContainer.indexer.feed();
     } else {
-      RobotContainer.indexer.stopFeeder();
+      RobotContainer.indexer.stop();
     }
   }
 
