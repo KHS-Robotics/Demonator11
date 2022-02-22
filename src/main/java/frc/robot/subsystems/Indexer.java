@@ -48,6 +48,15 @@ public class Indexer extends SubsystemBase {
     setFeeder(0);
   }
 
+  public void index() {
+    setFloor(0.5);
+    setSide(0.5);
+  }
+
+  public void feed() {
+    setFeeder(0.5);
+  }
+
   public void stop() {
     stopFloor();
     stopSide();

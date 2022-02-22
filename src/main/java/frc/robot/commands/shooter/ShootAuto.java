@@ -38,7 +38,6 @@ public class ShootAuto extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.shooter.setHood(0.5);
-    RobotContainer.shooter.setShooter(0);
   }
 
   // Returns true when the command should end.
@@ -48,6 +47,8 @@ public class ShootAuto extends CommandBase {
   }
 
   public static double msToRPM(double metersPerSec) {
-    return 0;
+    //rad/s to rpm = rad/s * 30 / PI
+    double r = 0.0762;
+    return (metersPerSec / (r * 5.0 / 6.0) ) * 30.0 / Math.PI;
   }
 }
