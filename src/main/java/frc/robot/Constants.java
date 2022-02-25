@@ -14,9 +14,10 @@ package frc.robot;
  * floating around.
  */
 public class Constants {
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module.
   public static final double SENS = 0.5;
+
+  public static final double ROBOT_HEIGHT = 0.6;
+  public static final double TARGET_HEIGHT = 2.64;
 
   public static final double FRONT_LEFT_P = 0.015;
   public static final double FRONT_LEFT_I = 0.0;
@@ -65,10 +66,4 @@ public class Constants {
   public static final double SHOOTER_I = 0.000001;
   public static final double SHOOTER_D = 0.02;
   public static final double SHOOTER_FF = 0.00017024;
-  
-  //POSITION PID
- // public static final double INDEXER_P = 0.2;
- // public static final double INDEXER_I = 0.0000015;
- // public static final double INDEXER_D = 0.5;
- // I like pizza
 }

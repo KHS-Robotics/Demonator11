@@ -42,6 +42,9 @@ public class RobotMap {
   public static final int SHOOTER_LEADER = 13;
   public static final int SHOOTER_FOLLOWER = 12;
 
+  public static final int HOOD_SERVO_1 = 0;
+  public static final int HOOD_SERVO_2 = 1;
+
   public static final int ELEVATOR_LEADER = 14;
   public static final int ELEVATOR_FOLLOWER1 = 15;
   public static final int ELEVATOR_FOLLOWER2 = 16;
