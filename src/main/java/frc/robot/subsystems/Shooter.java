@@ -5,10 +5,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,8 +20,11 @@ public class Shooter extends SubsystemBase {
   private Servo hoodServo1, hoodServo2;
 
   private double shooterPidSetpoint;
-  /** Creates a new Shooter. */
-  public Shooter() {    
+
+  /**
+   * Creates a new Shooter.
+   */
+  public Shooter() {
     leader = new CANSparkMax(RobotMap.SHOOTER_LEADER, MotorType.kBrushless);
     follower = new CANSparkMax(RobotMap.SHOOTER_FOLLOWER, MotorType.kBrushless);
 
@@ -36,7 +38,7 @@ public class Shooter extends SubsystemBase {
     shooterPid.setI(Constants.SHOOTER_I);
     shooterPid.setD(Constants.SHOOTER_D);
     shooterPid.setFF(Constants.SHOOTER_FF);
-  
+
     hoodServo1 = new Servo(RobotMap.HOOD_SERVO_1);
     hoodServo2 = new Servo(RobotMap.HOOD_SERVO_2);
 
@@ -70,12 +72,12 @@ public class Shooter extends SubsystemBase {
   }
 
   static double calculateSetpointFromAngle(double angle) {
-		final double topLen = 0.291; // Length from top of servo to shooter wheel
-		final double bottomLen = 0.408; //Length from bottom of servo to shooter wheel
+    final double topLen = 0.291; // Length from top of servo to shooter wheel
+    final double bottomLen = 0.408; //Length from bottom of servo to shooter wheel
 
-		double length = Math.sqrt( 2 * bottomLen * topLen * (-Math.cos(angle + 0.174533) + (bottomLen / topLen) ) - (bottomLen * bottomLen) + (topLen * topLen) ) ;
-		double setpoint = (length - 0.1651) / 0.10627;
+    double length = Math.sqrt(2 * bottomLen * topLen * (-Math.cos(angle + 0.174533) + (bottomLen / topLen)) - (bottomLen * bottomLen) + (topLen * topLen));
+    double setpoint = (length - 0.1651) / 0.10627;
 
-		return setpoint;
-	}
+    return setpoint;
+  }
 }

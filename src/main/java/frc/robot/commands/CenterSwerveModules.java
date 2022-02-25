@@ -12,6 +12,7 @@ import frc.robot.RobotContainer;
 
 public class CenterSwerveModules extends CommandBase {
   private boolean force;
+
   /**
    * Creates a new CenterSwerveModules.
    */
@@ -30,7 +31,7 @@ public class CenterSwerveModules extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!RobotContainer.swerveDrive.isCalibrated) {
+    if (!RobotContainer.swerveDrive.isCalibrated) {
       RobotContainer.swerveDrive.isCalibrated = RobotContainer.swerveDrive.resetEncoders();
     }
   }

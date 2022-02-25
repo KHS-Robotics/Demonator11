@@ -12,6 +12,7 @@ import frc.robot.RobotContainer;
 
 public class RotateToAngle extends CommandBase {
   double angle, error;
+
   /**
    * Creates a new RotateToAngle.
    */

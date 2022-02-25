@@ -4,7 +4,6 @@
 
 package frc.robot.commands.climber;
 
-/** Add your docs here. */
 public enum Angle {
   Rest,
   Tilt,

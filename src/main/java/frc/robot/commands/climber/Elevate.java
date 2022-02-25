@@ -10,7 +10,9 @@ import frc.robot.RobotContainer;
 public class Elevate extends CommandBase {
   Level level;
 
-  /** Creates a new Elevate. */
+  /**
+   * Creates a new Elevate.
+   */
   public Elevate(Level level) {
     this.level = level;
   }
@@ -39,7 +41,7 @@ public class Elevate extends CommandBase {
         setpoint = 0;
         break;
     }
-    
+
     RobotContainer.climber.elevate(setpoint);
   }
 

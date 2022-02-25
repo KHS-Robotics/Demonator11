@@ -14,6 +14,7 @@ import frc.robot.subsystems.SwerveDrive;
 public class RotateToAngleWhileDriving extends CommandBase {
   private double angle;
   private boolean isFieldOriented;
+
   /**
    * Creates a new RotateToAngle.
    */

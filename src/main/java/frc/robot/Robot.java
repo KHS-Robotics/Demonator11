@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.vision.Limelight.LightMode;
 import frc.robot.AutoRoutineBuilder.AutonomousRoutine;
 import frc.robot.commands.CenterSwerveModules;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.vision.Limelight;
+import frc.robot.vision.Limelight.LightMode;
 
 
 public class Robot extends TimedRobot {
@@ -45,26 +45,26 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledPeriodic() { 
-    if(RobotContainer.xboxController.getXButtonPressed()) {
+  public void disabledPeriodic() {
+    if (RobotContainer.xboxController.getXButtonPressed()) {
       Limelight.setLedMode(LightMode.eOn);
-    } else if(RobotContainer.xboxController.getYButtonPressed()) {
+    } else if (RobotContainer.xboxController.getYButtonPressed()) {
       Limelight.setLedMode(LightMode.eOff);
     }
   }
 
   @Override
   public void autonomousInit() {
-    if(autonCommand != null) {
+    if (autonCommand != null) {
       autonCommand.cancel();
       CommandScheduler.getInstance().run();
     }
     Limelight.setLedMode(LightMode.eOn);
-    AutonomousRoutine selectedAuton = RobotContainer.getCommand( (int) RobotContainer.id.getDouble(0) );
+    AutonomousRoutine selectedAuton = RobotContainer.getCommand((int) RobotContainer.id.getDouble(0));
 
-    RobotContainer.swerveDrive.resetNavx( selectedAuton.getStartingPose() );
+    RobotContainer.swerveDrive.resetNavx(selectedAuton.getStartingPose());
 
-    autonCommand = (new CenterSwerveModules(false).andThen(new InstantCommand( () -> RobotContainer.intake.intake() )).andThen( selectedAuton.getAsCommand() ) );
+    autonCommand = (new CenterSwerveModules(false).andThen(new InstantCommand(() -> RobotContainer.intake.intake())).andThen(selectedAuton.getAsCommand()));
     autonCommand.schedule();
   }
 
@@ -78,23 +78,23 @@ public class Robot extends TimedRobot {
     Limelight.setLedMode(LightMode.eOff);
     RobotContainer.swerveDrive.setOffset(0);
 
-    if(autonCommand != null) {
+    if (autonCommand != null) {
       autonCommand.cancel();
     }
   }
 
   @Override
   public void teleopPeriodic() {
-    
+
   }
 
   @Override
   public void testInit() {
-    
+
   }
 
   @Override
   public void testPeriodic() {
-    
+
   }
 }
