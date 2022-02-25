@@ -21,6 +21,7 @@ public class PixyCam {
         tab.addNumber("BlockCount", () -> blockCount);
         tab.addBoolean("Red", this::hasRedInFrame);
         tab.addBoolean("Blue", this::hasBlueInFrame);
+        tab.addStringArray("Order", this::getColorOrder);
     }
 
     public void setLamp(boolean on) {
@@ -72,6 +73,18 @@ public class PixyCam {
             } else {
                 return cargos[0].getSignature();
             }
+        }
+    }
+
+    public String[] getColorOrder() {
+        if (cargos.length == 0) {
+            return new String[]{"none", "none"};
+        }
+        else if (cargos.length == 1) {
+            return new String[]{cargos[0].getColorString(), "none"};
+        }
+        else {
+            return new String[]{cargos[0].getColorString(), cargos[1].getColorString()};
         }
     }
 
