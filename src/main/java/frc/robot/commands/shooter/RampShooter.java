@@ -14,6 +14,8 @@ public class RampShooter extends CommandBase {
   
   double targetHeight = Constants.TARGET_HEIGHT;
   double robotHeight = Constants.ROBOT_HEIGHT;
+  double limelightHeight = Constants.LIMELIGHT_HEIGHT;
+  double limelightAngle = Constants.LIMELIGHT_ANGLE;
 
   /** Creates a new RampShooter. */
   public RampShooter() {
@@ -23,7 +25,7 @@ public class RampShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    dist = Math.tan(Math.toRadians(Limelight.getTy())) / targetHeight;
+    dist = (targetHeight-limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy()+limelightAngle));
 
     //SEE https://www.desmos.com/calculator/fu4kr1iq2a
     if(dist < 2.7) {
