@@ -24,14 +24,7 @@ public class Shoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    dist = (targetHeight-limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy()+limelightAngle));
-
-    //SEE https://www.desmos.com/calculator/fu4kr1iq2a
-    if(dist < 2.7) {
-      speed = (0.841735350123 * dist) + 6.38961786366;
-    } else {
-      speed = (0.501904048339 * dist) + 1.38023613293;
-    }
+    speed = 8;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
