@@ -31,8 +31,8 @@ public class RampShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = Math.tan(Math.toRadians(Limelight.getTy())) / targetHeight;
-
+    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle));
+    
     if (dist >= 2.7) {
       angle = Math.atan( ((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist );
     } else {
