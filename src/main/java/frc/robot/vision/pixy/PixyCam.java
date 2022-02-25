@@ -1,12 +1,12 @@
 package frc.robot.vision.pixy;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
-
-import java.util.ArrayList;
 
 public class PixyCam {
   private final Pixy2 pixy;
