@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Indexer extends SubsystemBase {
-  private CANSparkMax floor, side, feeder;
+  private CANSparkMax floor, feeder;//, side;
 
   /**
    * Creates a new Indexer.
    */
   public Indexer() {
     floor = new CANSparkMax(RobotMap.INDEXER_FLOOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-    side = new CANSparkMax(RobotMap.INDEXER_SIDE, CANSparkMaxLowLevel.MotorType.kBrushless);
+    //side = new CANSparkMax(RobotMap.INDEXER_SIDE, CANSparkMaxLowLevel.MotorType.kBrushless);
     feeder = new CANSparkMax(RobotMap.INDEXER_FEEDER, CANSparkMaxLowLevel.MotorType.kBrushless);
   }
 
@@ -34,13 +34,13 @@ public class Indexer extends SubsystemBase {
     setFloor(0);
   }
 
-  public void setSide(double speed) {
-    side.setVoltage(speed * 12);
-  }
+  // public void setSide(double speed) {
+  //   side.setVoltage(speed * 12);
+  // }
 
-  public void stopSide() {
-    setSide(0);
-  }
+  // public void stopSide() {
+  //   setSide(0);
+  // }
 
   public void setFeeder(double speed) {
     feeder.setVoltage(speed * 12);
@@ -52,7 +52,7 @@ public class Indexer extends SubsystemBase {
 
   public void index() {
     setFloor(0.5);
-    setSide(0.5);
+    //setSide(0.5);
   }
 
   public void feed() {
@@ -61,6 +61,6 @@ public class Indexer extends SubsystemBase {
 
   public void stop() {
     stopFloor();
-    stopSide();
+    //stopSide();
   }
 }
