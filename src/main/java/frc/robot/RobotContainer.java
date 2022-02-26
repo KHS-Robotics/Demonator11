@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -41,7 +42,7 @@ import frc.robot.vision.pixy.PixyCam;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static NetworkTableEntry id;
-  public static final AHRS navx = new AHRS();
+  public static final AHRS navx = new AHRS(Port.kUSB);
 
   public static final PixyCam pixy = new PixyCam();
 
