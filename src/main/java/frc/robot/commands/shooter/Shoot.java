@@ -11,7 +11,7 @@ import frc.robot.vision.Limelight;
 
 public class Shoot extends CommandBase {
   double dist, angle, speed;
-  
+
   double targetHeight = Constants.TARGET_HEIGHT;
   double robotHeight = Constants.ROBOT_HEIGHT;
   double limelightHeight = Constants.LIMELIGHT_HEIGHT;
@@ -31,24 +31,24 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle));
-    
+
     if (dist > 2.7) {
-      angle = Math.atan( ((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist );
+      angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
     } else {
-      angle = Math.atan( ((Math.tan(-1.21) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist );
+      angle = Math.atan(((Math.tan(-1.21) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
     }
 
-		double result = (targetHeight - robotHeight);
+    double result = (targetHeight - robotHeight);
     double error = result - eq(speed, angle, dist);
 
-    for(int i = 0; i < 40; i++) {
-      if(Math.abs(error) > 0.2) {
-        if(error > 0) {
-          speed += speed/2;
+    for (int i = 0; i < 40; i++) {
+      if (Math.abs(error) > 0.2) {
+        if (error > 0) {
+          speed += speed / 2;
         } else {
-          speed -= speed/2;
+          speed -= speed / 2;
         }
-      	error = result - eq(speed, angle, dist);
+        error = result - eq(speed, angle, dist);
       } else {
         break;
       }
@@ -56,15 +56,15 @@ public class Shoot extends CommandBase {
 
     double vX = Math.cos(angle) * speed;
     double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
-    double time = dist / ( speed * Math.cos(angle) );
+    double time = dist / (speed * Math.cos(angle));
 
-    RobotContainer.shooter.setHoodAngle((Math.PI / 2 ) - angle);
+    RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
 
-    if(Math.abs(error) < 0.5) {
-      RobotContainer.shooter.setShooter( msToRPM(speed + (initDrag * time * time * 0.5)) );
+    if (Math.abs(error) < 0.5) {
+      RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
     }
 
-    if(RobotContainer.shooter.atSetpoint() && Math.abs(error) < 0.2) {
+    if (RobotContainer.shooter.atSetpoint() && Math.abs(error) < 0.2) {
       RobotContainer.indexer.feed();
       RobotContainer.indexer.index();
     } else {
@@ -89,13 +89,15 @@ public class Shoot extends CommandBase {
   public static double msToRPM(double metersPerSec) {
     //rad/s to rpm = rad/s * 30 / PI
     double r = 0.0762;
-    return (metersPerSec / (r * 2.0 / 3.0) ) * 30.0 / Math.PI;
+    return (metersPerSec / (r * 2.0 / 3.0)) * 30.0 / Math.PI;
   }
 
   static double eq(double speed, double angle, double xDist) {
     double turn = 0;
-    if(xDist == 0) { xDist = 0.01; }
-    
-    return (speed * xDist * Math.sin(angle) / ((speed * Math.cos(turn) * Math.cos(angle) )) ) -  9.80665/2 * xDist * xDist / ((2*0 * speed * Math.cos(turn) * Math.cos(angle)) + (speed*Math.cos(turn)*Math.cos(angle)*speed*Math.cos(turn)*Math.cos(angle)) );
+    if (xDist == 0) {
+      xDist = 0.01;
+    }
+
+    return (speed * xDist * Math.sin(angle) / ((speed * Math.cos(turn) * Math.cos(angle)))) - 9.80665 / 2 * xDist * xDist / ((2 * 0 * speed * Math.cos(turn) * Math.cos(angle)) + (speed * Math.cos(turn) * Math.cos(angle) * speed * Math.cos(turn) * Math.cos(angle)));
   }
 }

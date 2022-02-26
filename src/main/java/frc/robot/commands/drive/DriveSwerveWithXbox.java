@@ -7,9 +7,9 @@
 
 package frc.robot.commands.drive;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.SwerveDrive;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveSwerveWithXbox extends CommandBase {
   private boolean fieldRelative = false;
@@ -43,10 +43,10 @@ public class DriveSwerveWithXbox extends CommandBase {
 
     //Deadband on new controller
     double rot = 0;
-    if(Math.abs(RobotContainer.xboxController.getRightX()) > 0.05) {
+    if (Math.abs(RobotContainer.xboxController.getRightX()) > 0.05) {
       rot = RobotContainer.swerveDrive.sensControl(-RobotContainer.xboxController.getRightX()) * SwerveDrive.kMaxAngularSpeed;
     }
-    
+
     fieldRelative = (!RobotContainer.xboxController.getLeftBumper());
     RobotContainer.swerveDrive.drive(xSpeed, ySpeed, rot, fieldRelative);
 

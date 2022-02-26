@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class ManualShoot extends CommandBase {
-  /** Creates a new shoot. */
+  /**
+   * Creates a new shoot.
+   */
   double speed;
 
   public ManualShoot(double speed) {
@@ -19,13 +21,14 @@ public class ManualShoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     RobotContainer.shooter.setShooter(speed);
-    if(RobotContainer.shooter.atSetpoint()) {
+    if (RobotContainer.shooter.atSetpoint()) {
       RobotContainer.indexer.feed();
       RobotContainer.indexer.index();
     }

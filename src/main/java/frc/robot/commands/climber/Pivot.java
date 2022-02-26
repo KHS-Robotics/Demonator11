@@ -37,7 +37,8 @@ public class Pivot extends CommandBase {
   }
 
   @Override
-  public void execute() {}
+  public void execute() {
+  }
 
   @Override
   public boolean isFinished() {
@@ -45,5 +46,6 @@ public class Pivot extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 }

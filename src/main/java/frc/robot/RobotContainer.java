@@ -8,26 +8,21 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.AutoRoutineBuilder.AutonomousRoutine;
 import frc.robot.commands.CenterSwerveModules;
-import frc.robot.commands.climber.Angle;
-import frc.robot.commands.climber.Elevate;
-import frc.robot.commands.climber.Level;
-import frc.robot.commands.climber.Pivot;
-import frc.robot.commands.climber.WaitForNavx;
+import frc.robot.commands.climber.*;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
@@ -83,7 +78,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Button autoCalibrateTeleop = new Button( () -> ( !swerveDrive.isCalibrated && RobotState.isTeleop() && RobotState.isEnabled() ) );
+    Button autoCalibrateTeleop = new Button(() -> (!swerveDrive.isCalibrated && RobotState.isTeleop() && RobotState.isEnabled()));
     autoCalibrateTeleop.whenPressed(new CenterSwerveModules(true));
 
     JoystickButton forceCalibrate = new JoystickButton(xboxController, XboxController.Button.kBack.value);
@@ -92,44 +87,51 @@ public class RobotContainer {
     JoystickButton rotateToTarget = new JoystickButton(xboxController, XboxController.Button.kY.value);
     rotateToTarget.whenHeld(new RotateToTargetWhileDriving());
 
-    Button holdAngle = new Button( xboxController::getAButton );
+    Button holdAngle = new Button(xboxController::getAButton);
     holdAngle.whenHeld(new HoldAngleWhileDriving());
 
     Button resetNavxButton = new Button(xboxController::getStartButton);
-    resetNavxButton.whenPressed( () -> swerveDrive.resetNavx(), swerveDrive);
+    resetNavxButton.whenPressed(() -> swerveDrive.resetNavx(), swerveDrive);
 
-    Button slowDrive = new Button( () -> (xboxController.getLeftTriggerAxis() > 0.3) );
-    slowDrive.whenPressed( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI / 2; SwerveDrive.kMaxSpeed = 2; } );
-    slowDrive.whenReleased( () -> {SwerveDrive.kMaxAngularSpeed = Math.PI; SwerveDrive.kMaxSpeed = 3.5; } );
+    Button slowDrive = new Button(() -> (xboxController.getLeftTriggerAxis() > 0.3));
+    slowDrive.whenPressed(() -> {
+      SwerveDrive.kMaxAngularSpeed = Math.PI / 2;
+      SwerveDrive.kMaxSpeed = 2;
+    });
+    slowDrive.whenReleased(() -> {
+      SwerveDrive.kMaxAngularSpeed = Math.PI;
+      SwerveDrive.kMaxSpeed = 3.5;
+    });
 
-    Button intakeBall = new Button( switchbox::intake );
-    intakeBall.whileHeld( () -> intake.intake(), intake );
-    intakeBall.whenReleased( () -> intake.stop(), intake );
+    Button intakeBall = new Button(switchbox::intake);
+    intakeBall.whileHeld(() -> intake.intake(), intake);
+    intakeBall.whenReleased(() -> intake.stop(), intake);
 
-    Button outtakeBall = new Button( switchbox::outtake );
-    outtakeBall.whileHeld( () -> intake.reverse(), intake );
-    outtakeBall.whenReleased( () -> intake.stop(), intake );
+    Button outtakeBall = new Button(switchbox::outtake);
+    outtakeBall.whileHeld(() -> intake.reverse(), intake);
+    outtakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button shoot = new Button(switchbox::shoot);
     shoot.whenHeld(new ManualShoot(1500));
-  
-    Button climb = new Button( () -> false );
+
+    Button climb = new Button(() -> false);
     climb.whenPressed(
       new SequentialCommandGroup(
-        new Elevate(Level.BelowMidHeight), 
-        new Elevate(Level.MidHeight), 
-        new Elevate(Level.Zero), 
-        new Elevate(Level.ClearBar), 
+        new Elevate(Level.BelowMidHeight),
+        new Elevate(Level.MidHeight),
+        new Elevate(Level.Zero),
+        new Elevate(Level.ClearBar),
         new Pivot(Angle.Tilt)
-        .deadlineWith(new Elevate(Level.UnderBar)),
-        new WaitForNavx(Angle.Tilt), 
-        new Elevate(Level.Reach) ) 
-      );
+          .deadlineWith(new Elevate(Level.UnderBar)),
+        new WaitForNavx(Angle.Tilt),
+        new Elevate(Level.Reach)
+      )
+    );
   }
 
   public static AutonomousRoutine getCommand(int id) {
 
-    switch(id) {
+    switch (id) {
       default:
         return new AutonomousRoutine(new Pose2d(), new SequentialCommandGroup());
       case 0:
@@ -148,153 +150,153 @@ public class RobotContainer {
   }
 
   private static AutonomousRoutine getTwoBallAuto() {
-    return  new AutoRoutineBuilder()
-    .addTrajectoryCommand(
-      new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)), 
-      new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
-      true
-    ).addCommand(new RotateToAngle(90)
-    //SHOOT
-    ).build();
+    return new AutoRoutineBuilder()
+      .addTrajectoryCommand(
+        new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
+        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
+        true
+      ).addCommand(new RotateToAngle(90)
+        //SHOOT
+      ).build();
   }
 
   private static AutonomousRoutine getThreeBallClose() {
     return new AutoRoutineBuilder()
-    .addCommand(new WaitCommand(0.5)
-    ) //SHOOT
-    .addTrajectoryCommand(
-      new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)), 
-      new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(180)), 
-      true
-    ).addCommand(
-      new RotateToAngle(318.27, 10)
-    ).addTrajectoryCommand(
-      new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(318.27)),
-      new Pose2d(7.3, 0.3, Rotation2d.fromDegrees(318.27))
-    ).addCommand(
-      new RotateToAngle(90)
-    ).addCommand(new WaitCommand(0.5)
-    ) //SHOOT
-    .build();
+      .addCommand(new WaitCommand(0.5)
+      ) //SHOOT
+      .addTrajectoryCommand(
+        new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
+        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(180)),
+        true
+      ).addCommand(
+        new RotateToAngle(318.27, 10)
+      ).addTrajectoryCommand(
+        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(318.27)),
+        new Pose2d(7.3, 0.3, Rotation2d.fromDegrees(318.27))
+      ).addCommand(
+        new RotateToAngle(90)
+      ).addCommand(new WaitCommand(0.5)
+      ) //SHOOT
+      .build();
   }
 
   private static AutonomousRoutine getThreeBallMid() {
     return new AutoRoutineBuilder(1.5, 2)
-    //SHOOT
-    .addCommand( 
-      new WaitCommand(0.5)
-    ).addCommand(
-      new RotateToAngle(270, 15)
-    ).addTrajectoryCommand(
-      new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
-      new Pose2d(7.5, 0.3, Rotation2d.fromDegrees(270)),
-      true
-    ).addCommand(
-      new RotateToAngle(140, 15)
-    ).addTrajectoryCommand(
-      new Pose2d(7.5, 0.3, Rotation2d.fromDegrees(140)),
-      new Pose2d(5.5, 1.6, Rotation2d.fromDegrees(140))
-    ).addCommand(
-      new RotateToAngle(50, 10)
-    ).addCommand(
-      new WaitCommand(0.5)
-    ).build();
+      //SHOOT
+      .addCommand(
+        new WaitCommand(0.5)
+      ).addCommand(
+        new RotateToAngle(270, 15)
+      ).addTrajectoryCommand(
+        new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
+        new Pose2d(7.5, 0.3, Rotation2d.fromDegrees(270)),
+        true
+      ).addCommand(
+        new RotateToAngle(140, 15)
+      ).addTrajectoryCommand(
+        new Pose2d(7.5, 0.3, Rotation2d.fromDegrees(140)),
+        new Pose2d(5.5, 1.6, Rotation2d.fromDegrees(140))
+      ).addCommand(
+        new RotateToAngle(50, 10)
+      ).addCommand(
+        new WaitCommand(0.5)
+      ).build();
   }
 
   private static AutonomousRoutine getThreeBallFar() {
     return new AutoRoutineBuilder()
-    .setStartingPose(
-      new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(45))
-    ).addCommand(
-      new WaitCommand(0.5)
-    ) //SHOOT
-    .addCommand(
-      new RotateToAngle(-170, 10)
-    ).addTrajectoryCommand(
-      new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(-170)), 
-      new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(-170))
-    ).addTrajectoryCommand(
-      new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(-170)), 
-      new Pose2d(1.65, 1.30, Rotation2d.fromDegrees(-170))
-    ).addCommand(
-      new RotateToAngle(30, 10)
-    ).addTrajectoryCommand(
-      new Pose2d(1.65, 1.30, Rotation2d.fromDegrees(30)), 
-      new Pose2d(5.1, 1.4, Rotation2d.fromDegrees(30))
-    ).addCommand(
-      new WaitCommand(0.5)
-    ) //SHOOT
-    .build();
+      .setStartingPose(
+        new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(45))
+      ).addCommand(
+        new WaitCommand(0.5)
+      ) //SHOOT
+      .addCommand(
+        new RotateToAngle(-170, 10)
+      ).addTrajectoryCommand(
+        new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(-170)),
+        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(-170))
+      ).addTrajectoryCommand(
+        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(-170)),
+        new Pose2d(1.65, 1.30, Rotation2d.fromDegrees(-170))
+      ).addCommand(
+        new RotateToAngle(30, 10)
+      ).addTrajectoryCommand(
+        new Pose2d(1.65, 1.30, Rotation2d.fromDegrees(30)),
+        new Pose2d(5.1, 1.4, Rotation2d.fromDegrees(30))
+      ).addCommand(
+        new WaitCommand(0.5)
+      ) //SHOOT
+      .build();
   }
 
   private static AutonomousRoutine getFourBallAuto() {
     return new AutoRoutineBuilder(2.5, 5)
-    .addTrajectoryCommand(
-      new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)), 
-      new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
-      true
-    ).addCommand(
-      new RotateToAngle(90)
-    ).addCommand(
-      new WaitCommand(0.5)
-    ) //SHOOT
-    .addCommand( 
-      new RotateToAngle(140, 15)
-    ).addTrajectoryCommand(
-      new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(140)),
-      new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
-    ).addTrajectoryCommand(
-      new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140)),
-      new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(170))
-    //).addCommand(new RotateToAngle(110, 15)
-    ).addTrajectoryCommand(
-      new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(110)), 
-      new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
-    ).addCommand(
-      new WaitCommand(0.5)
-    ) //SHOOT
-    .build();
+      .addTrajectoryCommand(
+        new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
+        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
+        true
+      ).addCommand(
+        new RotateToAngle(90)
+      ).addCommand(
+        new WaitCommand(0.5)
+      ) //SHOOT
+      .addCommand(
+        new RotateToAngle(140, 15)
+      ).addTrajectoryCommand(
+        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(140)),
+        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
+      ).addTrajectoryCommand(
+        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140)),
+        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(170))
+        //).addCommand(new RotateToAngle(110, 15)
+      ).addTrajectoryCommand(
+        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(110)),
+        new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
+      ).addCommand(
+        new WaitCommand(0.5)
+      ) //SHOOT
+      .build();
   }
 
   private static AutonomousRoutine getFiveBallAuto() {
     return new AutoRoutineBuilder(3.5, 7)
-    .setStartingPose(
-      new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(90))
-    )
-    //SHOOT
-    .addCommand(
-      new WaitCommand(0.5)
-    ).addCommand(
-      new RotateToAngle(270, 20)
-    ).addTrajectoryCommand(
-      new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270)), 
-      new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(270))
-    ).addCommand(
-      new RotateToAngle(140, 15)
-    ).addTrajectoryCommand(
-      new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(140)),
-      new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
-    )
-    //SHOOT
-    .addCommand(
-      new RotateToAngle(40, 10)
-    ).addCommand(
-      new WaitCommand(1)
-    ).addCommand(
-      new RotateToAngle(-143, 10)
-    ).addTrajectoryCommand(
-      new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(-143)),
-      new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143))
-    ).addCommand( 
-      new RotateToAngle(-143)
-    ).addCommand(
-      new WaitCommand(1) // WAIT FOR HUMAN PLAYER TO FEED IN
-    ).addTrajectoryCommand(
-      new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143)), 
-      new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
-    ).addCommand(
-      new WaitCommand(0.5)
-    ) //SHOOT
-    .build();
+      .setStartingPose(
+        new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(90))
+      )
+      //SHOOT
+      .addCommand(
+        new WaitCommand(0.5)
+      ).addCommand(
+        new RotateToAngle(270, 20)
+      ).addTrajectoryCommand(
+        new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270)),
+        new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(270))
+      ).addCommand(
+        new RotateToAngle(140, 15)
+      ).addTrajectoryCommand(
+        new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(140)),
+        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
+      )
+      //SHOOT
+      .addCommand(
+        new RotateToAngle(40, 10)
+      ).addCommand(
+        new WaitCommand(1)
+      ).addCommand(
+        new RotateToAngle(-143, 10)
+      ).addTrajectoryCommand(
+        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(-143)),
+        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143))
+      ).addCommand(
+        new RotateToAngle(-143)
+      ).addCommand(
+        new WaitCommand(1) // WAIT FOR HUMAN PLAYER TO FEED IN
+      ).addTrajectoryCommand(
+        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143)),
+        new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
+      ).addCommand(
+        new WaitCommand(0.5)
+      ) //SHOOT
+      .build();
   }
 }

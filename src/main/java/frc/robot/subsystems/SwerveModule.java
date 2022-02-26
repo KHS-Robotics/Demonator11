@@ -6,22 +6,20 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.MathUtil;
-import frc.robot.Constants;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.DigitalInput;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 /**
  * Swerve Module
@@ -44,14 +42,15 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * Constructs a Swerve Module.
-   * @param name the name/position of the module
+   *
+   * @param name              the name/position of the module
    * @param driveMotorChannel CAN ID for the drive motor
    * @param pivotMotorChannel CAN ID for the pivot motor
-   * @param pivotP P value of Pivot PID
-   * @param pivotI I value of Pivot PID
-   * @param pivotD D value of Pivot PID
-   * @param digitalInputPort port number for the digital input, used to calibrate pivots
-   * @param reversed true if drive motor is reversed
+   * @param pivotP            P value of Pivot PID
+   * @param pivotI            I value of Pivot PID
+   * @param pivotD            D value of Pivot PID
+   * @param digitalInputPort  port number for the digital input, used to calibrate pivots
+   * @param reversed          true if drive motor is reversed
    */
   public SwerveModule(String name, int driveMotorChannel, int pivotMotorChannel, double pivotP, double pivotI, double pivotD, double driveP, double driveI, double driveD, double driveFF, int digitalInputPort, boolean reversed) {
     isInverted = reversed;
@@ -99,13 +98,14 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * Constructs a Swerve Module.
-   * @param name the name/position of the module
+   *
+   * @param name              the name/position of the module
    * @param driveMotorChannel CAN ID for the drive motor
    * @param pivotMotorChannel CAN ID for the pivot motor
-   * @param pivotP P value of Pivot PID
-   * @param pivotI I value of Pivot PID
-   * @param pivotD D value of Pivot PID
-   * @param digitalInputPort port number for the digital input, used to calibrate pivots
+   * @param pivotP            P value of Pivot PID
+   * @param pivotI            I value of Pivot PID
+   * @param pivotD            D value of Pivot PID
+   * @param digitalInputPort  port number for the digital input, used to calibrate pivots
    */
   public SwerveModule(String name, int driveMotorChannel, int pivotMotorChannel, double pivotP, double pivotI, double pivotD, double driveP, double driveI, double driveD, double driveFF, int digitalInputPort) {
     this(name, driveMotorChannel, pivotMotorChannel, pivotP, pivotI, pivotD, driveP, driveI, driveD, driveFF, digitalInputPort, false);
@@ -117,6 +117,7 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * Returns the current state of the module.
+   *
    * @return The current state of the module.
    */
   public SwerveModuleState getState() {
@@ -125,6 +126,7 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * Sets the PID values for the pivot module.
+   *
    * @param p the p value for the pivot module
    * @param i the i value for the pivot module
    * @param d the d value for the pivot module
@@ -135,27 +137,30 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * Sets the desired state for the module.
-   * @param state desired state with the speed and angle
+   *
+   * @param state           desired state with the speed and angle
    * @param useShortestPath whether or not to use the shortest path
    */
   public void setDesiredState(SwerveModuleState state, boolean useShortestPath) {
     pivotMotor.set(MathUtil.clamp(pivotPID.calculate(getAngle(), useShortestPath ? calculateShortestPath(state.angle.getDegrees()) : state.angle.getDegrees()), -1, 1));
-    drivePID.setReference(state.speedMetersPerSecond*(isInverted ? -1 : 1)*(isFlipped && useShortestPath ? -1 : 1), ControlType.kVelocity); 
+    drivePID.setReference(state.speedMetersPerSecond * (isInverted ? -1 : 1) * (isFlipped && useShortestPath ? -1 : 1), ControlType.kVelocity);
   }
 
   /**
    * Sets the desired state for the module.
+   *
    * @param state desired state with the speed and angle
    */
   public void setDesiredState(SwerveModuleState state) {
-    
+
     setDesiredState(state, true);
   }
 
   /**
    * Sets the desired state for the module.
-   * @param speed the desired speed in meters/second
-   * @param angle the desired angle in degrees from [-180, 180]
+   *
+   * @param speed           the desired speed in meters/second
+   * @param angle           the desired angle in degrees from [-180, 180]
    * @param useShortestPath whether or not to use the shortest path
    */
   public void setDesiredState(double speed, double angle, boolean useShortestPath) {
@@ -164,6 +169,7 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * Sets the desired state for the module.
+   *
    * @param speed the desired speed in meters/second
    * @param angle the desired angle in degrees from [-180, 180]
    */
@@ -173,19 +179,19 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * Gets the angle of the pivot module.
+   *
    * @return the angle of the pivot module ranging from [-180,180]
    */
   public double getAngle() {
     var angle = pivotEncoder.getPosition();
-    if(angle > 0) {
+    if (angle > 0) {
       angle %= 360;
-      if(angle > 180) {
+      if (angle > 180) {
         angle -= 360;
       }
-    }
-    else if(angle < 0) {
+    } else if (angle < 0) {
       angle %= -360;
-      if(angle < -180) {
+      if (angle < -180) {
         angle += 360;
       }
     }
@@ -203,10 +209,11 @@ public class SwerveModule extends SubsystemBase {
 
   /**
    * For homing the modules
+   *
    * @return true if module is homed
    */
   public boolean resetEncoder() {
-    if(setDetection.get()) { // sensor inverted
+    if (setDetection.get()) { // sensor inverted
       pivotMotor.set(-0.04);
       return false;
     } else {
@@ -220,6 +227,7 @@ public class SwerveModule extends SubsystemBase {
    * Calculates the shortest path the pivot module should take, it
    * might be the given <code>targetAngle</code>. Flips the drive motor
    * if there is a shorter path.
+   *
    * @param targetAngle the desired angle of the module
    * @return the shortest path to the target angle, flips the
    * drive motor if there is a shorter path
@@ -227,18 +235,17 @@ public class SwerveModule extends SubsystemBase {
   private double calculateShortestPath(double targetAngle) {
     var currentAngle = this.getAngle();
     var dAngle = Math.abs(targetAngle - currentAngle);
-    
+
     isFlipped = dAngle > 90 && dAngle < 270;
-    
-    if(isFlipped) {
-      if(targetAngle > 0 || targetAngle == 0 && currentAngle < 0) {
+
+    if (isFlipped) {
+      if (targetAngle > 0 || targetAngle == 0 && currentAngle < 0) {
         targetAngle -= 180;
-      }
-      else if(targetAngle < 0 || targetAngle == 0 && currentAngle > 0) {
+      } else if (targetAngle < 0 || targetAngle == 0 && currentAngle > 0) {
         targetAngle += 180;
       }
     }
-    
+
     return targetAngle;
   }
 }

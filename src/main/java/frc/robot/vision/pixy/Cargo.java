@@ -19,7 +19,7 @@ public class Cargo extends Block {
       block.getAge()
     );
   }
-  
+
   public boolean isRed() {
     return this.getSignature() == 1;
   }

@@ -4,12 +4,11 @@
 
 package frc.robot.commands.climber;
 
-/** Add your docs here. */
 public enum Level {
-  BelowMidHeight, 
-  MidHeight, 
-  ClearBar, 
+  BelowMidHeight,
+  MidHeight,
+  ClearBar,
   UnderBar,
-  Reach, 
+  Reach,
   Zero
 }

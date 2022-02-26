@@ -12,7 +12,9 @@ import frc.robot.RobotMap;
 public class Indexer extends SubsystemBase {
   private CANSparkMax floor, side, feeder;
 
-  /** Creates a new Indexer. */
+  /**
+   * Creates a new Indexer.
+   */
   public Indexer() {
     floor = new CANSparkMax(RobotMap.INDEXER_FLOOR, CANSparkMaxLowLevel.MotorType.kBrushless);
     side = new CANSparkMax(RobotMap.INDEXER_SIDE, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -24,7 +26,7 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setFloor (double speed) {
+  public void setFloor(double speed) {
     floor.setVoltage(speed * 12);
   }
 
@@ -32,7 +34,7 @@ public class Indexer extends SubsystemBase {
     setFloor(0);
   }
 
-  public void setSide (double speed) {
+  public void setSide(double speed) {
     side.setVoltage(speed * 12);
   }
 

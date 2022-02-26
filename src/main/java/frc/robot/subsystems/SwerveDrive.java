@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
@@ -38,40 +38,40 @@ public class SwerveDrive extends SubsystemBase {
   public boolean isCalibrated = false;
 
   public static final SwerveModule frontLeft = new SwerveModule(
-    "FL", 
+    "FL",
     RobotMap.FRONT_LEFT_DRIVE,
-    RobotMap.FRONT_LEFT_PIVOT, 
-    Constants.FRONT_LEFT_P, 
-    Constants.FRONT_LEFT_I, 
-    Constants.FRONT_LEFT_D, 
-    Constants.FRONT_LEFT_DRIVE_P, 
-    Constants.FRONT_LEFT_DRIVE_I, 
+    RobotMap.FRONT_LEFT_PIVOT,
+    Constants.FRONT_LEFT_P,
+    Constants.FRONT_LEFT_I,
+    Constants.FRONT_LEFT_D,
+    Constants.FRONT_LEFT_DRIVE_P,
+    Constants.FRONT_LEFT_DRIVE_I,
     Constants.FRONT_LEFT_DRIVE_D,
     Constants.FRONT_LEFT_DRIVE_FF,
     RobotMap.FRONT_LEFT_DIGITAL_INPUT
   );
   public static final SwerveModule frontRight = new SwerveModule(
-    "FR", 
+    "FR",
     RobotMap.FRONT_RIGHT_DRIVE,
-    RobotMap.FRONT_RIGHT_PIVOT, 
-    Constants.FRONT_RIGHT_P, 
-    Constants.FRONT_RIGHT_I, 
-    Constants.FRONT_RIGHT_D, 
+    RobotMap.FRONT_RIGHT_PIVOT,
+    Constants.FRONT_RIGHT_P,
+    Constants.FRONT_RIGHT_I,
+    Constants.FRONT_RIGHT_D,
     Constants.FRONT_RIGHT_DRIVE_P,
-    Constants.FRONT_RIGHT_DRIVE_I, 
+    Constants.FRONT_RIGHT_DRIVE_I,
     Constants.FRONT_RIGHT_DRIVE_D,
     Constants.FRONT_RIGHT_DRIVE_FF,
     RobotMap.FRONT_RIGHT_DIGITAL_INPUT
   );
   public static final SwerveModule rearLeft = new SwerveModule(
-    "RL", 
+    "RL",
     RobotMap.REAR_LEFT_DRIVE,
-    RobotMap.REAR_LEFT_PIVOT, 
-    Constants.REAR_LEFT_P, 
-    Constants.REAR_LEFT_I, 
-    Constants.REAR_LEFT_D, 
+    RobotMap.REAR_LEFT_PIVOT,
+    Constants.REAR_LEFT_P,
+    Constants.REAR_LEFT_I,
+    Constants.REAR_LEFT_D,
     Constants.REAR_LEFT_DRIVE_P,
-    Constants.REAR_LEFT_DRIVE_I, 
+    Constants.REAR_LEFT_DRIVE_I,
     Constants.REAR_LEFT_DRIVE_D,
     Constants.REAR_LEFT_DRIVE_FF,
     RobotMap.REAR_LEFT_DIGITAL_INPUT
@@ -79,19 +79,19 @@ public class SwerveDrive extends SubsystemBase {
   public static final SwerveModule rearRight = new SwerveModule(
     "RR",
     RobotMap.REAR_RIGHT_DRIVE,
-    RobotMap.REAR_RIGHT_PIVOT, 
-    Constants.REAR_RIGHT_P, 
-    Constants.REAR_RIGHT_I, 
-    Constants.REAR_RIGHT_D, 
-    Constants.REAR_RIGHT_DRIVE_P, 
-    Constants.REAR_RIGHT_DRIVE_I, 
+    RobotMap.REAR_RIGHT_PIVOT,
+    Constants.REAR_RIGHT_P,
+    Constants.REAR_RIGHT_I,
+    Constants.REAR_RIGHT_D,
+    Constants.REAR_RIGHT_DRIVE_P,
+    Constants.REAR_RIGHT_DRIVE_I,
     Constants.REAR_RIGHT_DRIVE_D,
-    Constants.REAR_RIGHT_DRIVE_FF, 
+    Constants.REAR_RIGHT_DRIVE_FF,
     RobotMap.REAR_RIGHT_DIGITAL_INPUT
   );
 
   public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation,
-      frontRightLocation, rearLeftLocation, rearRightLocation);
+    frontRightLocation, rearLeftLocation, rearRightLocation);
 
   private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, this.getAngle());
 
@@ -115,7 +115,7 @@ public class SwerveDrive extends SubsystemBase {
     tab.addBoolean("Calibrated", () -> this.isCalibrated);
 
     var matchTab = Shuffleboard.getTab("Match");
-    matchTab.addBoolean("Calibrated", () -> this.isCalibrated); 
+    matchTab.addBoolean("Calibrated", () -> this.isCalibrated);
   }
 
   /**
@@ -125,7 +125,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public Rotation2d getAngle() {
     // Negating the angle because WPILib gyros are CW positive.
-    return Rotation2d.fromDegrees( (-RobotContainer.navx.getAngle() + offset) % 360);
+    return Rotation2d.fromDegrees((-RobotContainer.navx.getAngle() + offset) % 360);
   }
 
   public double getYaw() {
@@ -150,7 +150,7 @@ public class SwerveDrive extends SubsystemBase {
    *                      field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    if(Math.abs(rot) < 0.005 && Math.abs(xSpeed) < 0.015 && Math.abs(ySpeed) < 0.015) {
+    if (Math.abs(rot) < 0.005 && Math.abs(xSpeed) < 0.015 && Math.abs(ySpeed) < 0.015) {
       frontLeft.setDesiredState(new SwerveModuleState(0.0, Rotation2d.fromDegrees(frontLeft.getAngle())));
       frontRight.setDesiredState(new SwerveModuleState(0.0, Rotation2d.fromDegrees(frontRight.getAngle())));
       rearLeft.setDesiredState(new SwerveModuleState(0.0, Rotation2d.fromDegrees(rearLeft.getAngle())));
@@ -158,7 +158,7 @@ public class SwerveDrive extends SubsystemBase {
     } else {
       var swerveModuleStates = kinematics
         .toSwerveModuleStates(fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, getAngle())
-            : new ChassisSpeeds(xSpeed, ySpeed, rot));
+          : new ChassisSpeeds(xSpeed, ySpeed, rot));
 
       frontLeft.setDesiredState(swerveModuleStates[0]);
       frontRight.setDesiredState(swerveModuleStates[1]);
@@ -198,7 +198,7 @@ public class SwerveDrive extends SubsystemBase {
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
-  
+
   /**
    * Updates the field relative position of the robot.
    */
@@ -207,11 +207,11 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public SwerveModuleState[] getSwerveModuleStates() {
-    return new SwerveModuleState[] { 
-      frontLeft.getState(), 
-      frontRight.getState(), 
-      rearLeft.getState(), 
-      rearRight.getState() 
+    return new SwerveModuleState[]{
+      frontLeft.getState(),
+      frontRight.getState(),
+      rearLeft.getState(),
+      rearRight.getState()
     };
   }
 
@@ -227,21 +227,21 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public void resetNavx() {
-    resetNavx(new Pose2d(0,0,Rotation2d.fromDegrees(0)));
+    resetNavx(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
   }
 
   public void resetNavx(Pose2d currentPose) {
     targetPid.reset();
     offset = currentPose.getRotation().getDegrees();
     RobotContainer.navx.reset();
-    odometry.resetPosition(currentPose, currentPose.getRotation()); 
+    odometry.resetPosition(currentPose, currentPose.getRotation());
   }
 
   public void resetPid() {
     targetPid.reset();
   }
 
-  public boolean resetEncoders() { 
+  public boolean resetEncoders() {
     boolean fl = frontLeft.resetEncoder();
     boolean fr = frontRight.resetEncoder();
     boolean rl = rearLeft.resetEncoder();
@@ -250,15 +250,14 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   private static double normalizeAngle(double angle) {
-    if(angle > 0) {
+    if (angle > 0) {
       angle %= 360;
-      if(angle > 180) {
+      if (angle > 180) {
         angle -= 360;
       }
-    }
-    else if(angle < 0) {
+    } else if (angle < 0) {
       angle %= -360;
-      if(angle < -180) {
+      if (angle < -180) {
         angle += 360;
       }
     }

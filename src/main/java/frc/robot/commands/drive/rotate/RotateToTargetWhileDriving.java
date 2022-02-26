@@ -8,10 +8,10 @@
 package frc.robot.commands.drive.rotate;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.vision.Limelight;
-import frc.robot.vision.Limelight.LightMode;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.vision.Limelight;
+import frc.robot.vision.Limelight.LightMode;
 
 public class RotateToTargetWhileDriving extends CommandBase {
   private double angle;
@@ -34,7 +34,7 @@ public class RotateToTargetWhileDriving extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Limelight.isTarget()) {
+    if (Limelight.isTarget()) {
       angle = RobotContainer.swerveDrive.getYaw() - Limelight.getTx() - 1;
     } else {
       angle = 0;
@@ -43,7 +43,7 @@ public class RotateToTargetWhileDriving extends CommandBase {
     var xSpeed = RobotContainer.swerveDrive.sensControl(-RobotContainer.xboxController.getLeftY()) * SwerveDrive.kMaxSpeed;
 
     var ySpeed = RobotContainer.swerveDrive.sensControl(-RobotContainer.xboxController.getLeftX()) * SwerveDrive.kMaxSpeed;
-    
+
     isFieldOriented = (!RobotContainer.xboxController.getLeftBumper());
 
     RobotContainer.swerveDrive.holdAngleWhileDriving(xSpeed, ySpeed, angle, isFieldOriented);

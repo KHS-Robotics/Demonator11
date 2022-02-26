@@ -12,7 +12,10 @@ public class WaitForNavx extends CommandBase {
   Timer timer = new Timer();
   Angle angle;
   boolean atSetpoint;
-  /** Creates a new WaitForNavx. */
+
+  /**
+   * Creates a new WaitForNavx.
+   */
   public WaitForNavx(Angle angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angle = angle;
@@ -26,15 +29,15 @@ public class WaitForNavx extends CommandBase {
   @Override
   public void execute() {
     double pitch = 0;
-    
+
     switch (angle) {
-      case Rest: 
+      case Rest:
         pitch = 0;
         break;
-      case Tilt: 
+      case Tilt:
         pitch = 0;
         break;
-      case Straight: 
+      case Straight:
         pitch = 0;
         break;
     }
@@ -42,8 +45,7 @@ public class WaitForNavx extends CommandBase {
     atSetpoint = Math.abs(RobotContainer.navx.getPitch() - pitch) < 10;
     if (!atSetpoint) {
       timer.reset();
-    }
-    else {
+    } else {
       atSetpoint = timer.hasElapsed(0.5);
     }
   }
