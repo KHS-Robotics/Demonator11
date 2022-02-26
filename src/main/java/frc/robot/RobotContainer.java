@@ -114,6 +114,14 @@ public class RobotContainer {
     Button shoot = new Button(switchbox::shoot);
     shoot.whenHeld(new ManualShoot(1500));
 
+    Button manualIndex = new Button(xboxController::getRightBumper);
+    manualIndex.whenPressed(() -> indexer.index());
+    manualIndex.whenReleased(() -> indexer.stop());
+
+    Button testClimb = new Button( () -> xboxController.getRightTriggerAxis() > 0.5);
+    testClimb.whenPressed(() -> climber.run(0.1));
+    testClimb.whenPressed(() -> climber.run(0));
+
     Button climb = new Button(() -> false);
     climb.whenPressed(
       new SequentialCommandGroup(

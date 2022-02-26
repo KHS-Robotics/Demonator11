@@ -27,8 +27,8 @@ public class Climber extends SubsystemBase {
     elevatorFollower1 = new CANSparkMax(RobotMap.ELEVATOR_FOLLOWER1, CANSparkMaxLowLevel.MotorType.kBrushless);
     elevatorFollower2 = new CANSparkMax(RobotMap.ELEVATOR_FOLLOWER2, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    elevatorFollower1.follow(elevatorLeader);
-    elevatorFollower2.follow(elevatorLeader);
+    elevatorFollower1.follow(elevatorLeader, true);
+    elevatorFollower2.follow(elevatorLeader, true);
 
     pivotMotor = new CANSparkMax(RobotMap.PIVOT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -59,6 +59,10 @@ public class Climber extends SubsystemBase {
     return Math.abs(pivotSetpoint - pivotEnc.getPosition()) < 0.5;
   }
 
+  public void run(double speed) {
+    elevatorLeader.setVoltage(12 * speed);
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

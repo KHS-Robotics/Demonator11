@@ -46,7 +46,7 @@ public class Limelight {
   }
 
   /**
-   * Horizontal offset from crosshair to target (-27 degrees to 27 degrees).
+   * Horizontal offset from crosshair to target (-29.8 degrees to 29.8 degrees).
    *
    * @return tx as reported by the Limelight.
    */
@@ -55,7 +55,7 @@ public class Limelight {
   }
 
   /**
-   * Vertical offset from crosshair to target (-20.5 degrees to 20.5 degrees).
+   * Vertical offset from crosshair to target (-24.85 degrees to 24.85 degrees).
    *
    * @return ty as reported by the Limelight.
    */

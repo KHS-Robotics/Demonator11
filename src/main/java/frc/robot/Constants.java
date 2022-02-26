@@ -18,8 +18,8 @@ public class Constants {
 
   public static final double ROBOT_HEIGHT = 0.6;
   public static final double TARGET_HEIGHT = 2.64;
-  public static final double LIMELIGHT_HEIGHT = 0;
-  public static final double LIMELIGHT_ANGLE = 0;
+  public static final double LIMELIGHT_HEIGHT = 0.8128;
+  public static final double LIMELIGHT_ANGLE = 40;
 
   public static final double FRONT_LEFT_P = 0.015;
   public static final double FRONT_LEFT_I = 0.0;
