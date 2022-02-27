@@ -23,7 +23,7 @@ public class PixyCam extends SubsystemBase {
     tab.addNumber("BlockCount", () -> blockCount);
     tab.addBoolean("Red", this::hasRedInFrame);
     tab.addBoolean("Blue", this::hasBlueInFrame);
-    tab.addString("NextColor", () -> nextCargo().getColorAsString());
+    tab.addString("NextColor", () -> this.nextCargo().getColor().toString());
   }
 
   @Override
@@ -85,7 +85,7 @@ public class PixyCam extends SubsystemBase {
 
   public Cargo nextCargo() {
     if (cargos.length == 0) {
-      return new Cargo(-1, 0, 0, 0, 0, 0, 0, 0);
+      return new Cargo(Cargo.Color.NONE.sig, 0, 0, 0, 0, 0, 0, 0);
     } else if (cargos.length == 1) {
       return cargos[0];
     } else {

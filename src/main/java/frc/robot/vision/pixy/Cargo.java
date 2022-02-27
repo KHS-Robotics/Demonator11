@@ -39,4 +39,25 @@ public class Cargo extends Block {
       return "Blue";
     }
   }
+
+  public Color getColor() {
+    if (this.getSignature() == 1)
+      return Color.RED;
+    if (this.getSignature() == 2)
+      return Color.BLUE;
+    return Color.NONE;
+  }
+
+
+  public enum Color {
+    RED(1),
+    BLUE(2),
+    NONE(-1);
+
+    public final int sig;
+
+    Color(int sig) {
+      this.sig = sig;
+    }
+  }
 }
