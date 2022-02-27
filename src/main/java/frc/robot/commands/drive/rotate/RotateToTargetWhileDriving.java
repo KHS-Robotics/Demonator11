@@ -34,11 +34,12 @@ public class RotateToTargetWhileDriving extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotContainer.navx.getDisplacementX() + RobotContainer.swerveDrive.startingPose.getX() > 8.2) {
-      defaultAngle = 180;
-    } else {
-      defaultAngle = 0;
-    }
+    // if(RobotContainer.navx.getDisplacementX() + RobotContainer.swerveDrive.startingPose.getX() > 8.2) {
+    //   defaultAngle = 180;
+    // } else {
+    //   defaultAngle = 0;
+    // }
+    defaultAngle = 0;
     
     if (Limelight.isTarget()) {
       angle = RobotContainer.swerveDrive.getYaw() - Limelight.getTx();
@@ -58,7 +59,7 @@ public class RotateToTargetWhileDriving extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Limelight.setLedMode(LightMode.eOff);
+    //Limelight.setLedMode(LightMode.eOff);
   }
 
   // Returns true when the command should end.

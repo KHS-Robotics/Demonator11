@@ -26,6 +26,10 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public void reverse() {
+    setFloor(-0.5);
+  }
+
   public void setFloor(double speed) {
     floor.setVoltage(speed * 12);
   }

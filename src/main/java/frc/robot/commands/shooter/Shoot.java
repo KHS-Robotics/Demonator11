@@ -25,13 +25,12 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
     speed = 8;
+    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle));
-
     if (dist > 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
     } else {
@@ -42,7 +41,7 @@ public class Shoot extends CommandBase {
     double error = result - eq(speed, angle, dist);
 
     for (int i = 0; i < 40; i++) {
-      if (Math.abs(error) > 0.2) {
+      if (Math.abs(error) > 0.01) {
         if (error > 0) {
           speed += speed / 2;
         } else {
@@ -60,15 +59,16 @@ public class Shoot extends CommandBase {
 
     RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
 
-    if (Math.abs(error) < 0.5) {
+    if (Math.abs(error) < 0.1) {
       RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
     }
 
-    if (RobotContainer.shooter.atSetpoint() && Math.abs(error) < 0.2) {
+    if (RobotContainer.shooter.atSetpoint() && Math.abs(error) < 0.01) {
       RobotContainer.indexer.feed();
       RobotContainer.indexer.index();
     } else {
       RobotContainer.indexer.stop();
+      RobotContainer.indexer.stopFeeder();
     }
   }
 
@@ -78,6 +78,7 @@ public class Shoot extends CommandBase {
     RobotContainer.shooter.stop();
     RobotContainer.shooter.setHood(0.5);
     RobotContainer.indexer.stop();
+    RobotContainer.indexer.stopFeeder();
   }
 
   // Returns true when the command should end.

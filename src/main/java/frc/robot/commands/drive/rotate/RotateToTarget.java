@@ -33,16 +33,16 @@ public class RotateToTarget extends CommandBase {
 
   @Override
   public void execute() {
-    if(RobotContainer.navx.getDisplacementX() + RobotContainer.swerveDrive.startingPose.getX() > 8.2) {
-      defaultAngle = 180;
-    } else {
-      defaultAngle = 0;
-    }
+    // if(RobotContainer.navx.getDisplacementX() + RobotContainer.swerveDrive.startingPose.getX() > 8.2) {
+    //   defaultAngle = 180;
+    // } else {
+    //   defaultAngle = 0;
+    // }
 
     if (Limelight.isTarget()) {
       angle = RobotContainer.swerveDrive.getYaw() - Limelight.getTx();
     } else {
-      angle = defaultAngle;
+      angle = 0;
     }
 
     RobotContainer.swerveDrive.rotateToAngleInPlace(angle);

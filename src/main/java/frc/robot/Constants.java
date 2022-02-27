@@ -16,9 +16,9 @@ package frc.robot;
 public class Constants {
   public static final double SENS = 0.5;
 
-  public static final double ROBOT_HEIGHT = 0.6;
+  public static final double ROBOT_HEIGHT = 0.4;
   public static final double TARGET_HEIGHT = 2.64;
-  public static final double LIMELIGHT_HEIGHT = 0.8128;
+  public static final double LIMELIGHT_HEIGHT = 0.84;
   public static final double LIMELIGHT_ANGLE = 40;
 
   public static final double FRONT_LEFT_P = 0.015;

@@ -44,8 +44,10 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     if (RobotContainer.xboxController.getXButtonPressed()) {
+      System.out.println("ON");
       Limelight.setLedMode(LightMode.eOn);
     } else if (RobotContainer.xboxController.getYButtonPressed()) {
+      System.out.println("Off");
       Limelight.setLedMode(LightMode.eOff);
     }
   }
@@ -72,7 +74,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Limelight.setLedMode(LightMode.eOff);
+    Limelight.setLedMode(LightMode.eOn);
     RobotContainer.swerveDrive.setOffset(0);
 
     if (autonCommand != null) {

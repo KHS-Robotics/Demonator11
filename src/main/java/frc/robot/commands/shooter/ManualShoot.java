@@ -6,6 +6,8 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.vision.Limelight;
+import frc.robot.vision.Limelight.LightMode;
 
 public class ManualShoot extends CommandBase {
   /**
@@ -22,6 +24,7 @@ public class ManualShoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Limelight.setLedMode(LightMode.eOn);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

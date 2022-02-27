@@ -29,8 +29,8 @@ public class RobotMap {
 
   public static final int FRONT_LEFT_DIGITAL_INPUT = 2;
   public static final int FRONT_RIGHT_DIGITAL_INPUT = 1;
-  public static final int REAR_LEFT_DIGITAL_INPUT = 3;
-  public static final int REAR_RIGHT_DIGITAL_INPUT = 0;
+  public static final int REAR_LEFT_DIGITAL_INPUT = 0;
+  public static final int REAR_RIGHT_DIGITAL_INPUT = 3;
 
   public static final int INTAKE_DRIVE = 3;
   public static final int INTAKE_POSITION = 2;
@@ -41,8 +41,8 @@ public class RobotMap {
   public static final int SHOOTER_LEADER = 7;
   public static final int SHOOTER_FOLLOWER = 6;
 
-  public static final int HOOD_SERVO_1 = 0;
-  public static final int HOOD_SERVO_2 = 1;
+  public static final int HOOD_SERVO_1 = 8;
+  public static final int HOOD_SERVO_2 = 9;
 
   public static final int ELEVATOR_LEADER = 15;
   public static final int ELEVATOR_FOLLOWER1 = 16;

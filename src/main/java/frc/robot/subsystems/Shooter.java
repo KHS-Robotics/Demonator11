@@ -20,6 +20,7 @@ public class Shooter extends SubsystemBase {
   private Servo hoodServo1, hoodServo2;
 
   private double shooterPidSetpoint;
+  private double offset;
 
   /**
    * Creates a new Shooter.
@@ -59,12 +60,12 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooter(double speed) {
-    shooterPidSetpoint = speed;
+    shooterPidSetpoint = speed * 1.05;
     shooterPid.setReference(shooterPidSetpoint, CANSparkMax.ControlType.kVelocity);
   }
 
   public boolean atSetpoint() {
-    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 50;
+    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 30;
   }
 
   public void stop() {

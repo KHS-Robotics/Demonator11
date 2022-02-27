@@ -28,8 +28,9 @@ import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
-import frc.robot.commands.shooter.ManualShoot;
+import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.*;
+import frc.robot.vision.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -51,7 +52,7 @@ public class RobotContainer {
   public static final Indexer indexer = new Indexer();
   public static final Climber climber = new Climber();
 
-  public static final PowerDistribution pdp = new PowerDistribution();
+  //public static final PowerDistribution pdp = new PowerDistribution();
 
   public static final XboxController xboxController = new XboxController(RobotMap.XBOX_PORT);
   public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
@@ -66,7 +67,7 @@ public class RobotContainer {
     tab.addNumber("X", xboxController::getLeftX);
     tab.addNumber("Y", xboxController::getLeftY);
     id = tab.add("AUTO ID", 0).getEntry();
-
+    tab.addNumber("dist", () -> (Constants.TARGET_HEIGHT - Constants.LIMELIGHT_HEIGHT) / Math.tan(Math.toRadians(Limelight.getTy() + Constants.LIMELIGHT_ANGLE)));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -108,11 +109,11 @@ public class RobotContainer {
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button outtakeBall = new Button(switchbox::outtake);
-    outtakeBall.whileHeld(() -> intake.reverse(), intake);
+    outtakeBall.whileHeld(() -> {intake.reverse(); indexer.reverse();}, intake);
     outtakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button shoot = new Button(switchbox::shoot);
-    shoot.whenHeld(new ManualShoot(1500));
+    shoot.whenHeld(new Shoot());
 
     Button manualIndex = new Button(() -> false);
     manualIndex.whenPressed(() -> indexer.index());
