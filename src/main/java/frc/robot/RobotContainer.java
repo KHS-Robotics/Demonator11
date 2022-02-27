@@ -30,7 +30,6 @@ import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.shooter.ManualShoot;
 import frc.robot.subsystems.*;
-import frc.robot.vision.pixy.PixyCam;
 
 /**
  * This class is where the bulk of the robot should be declared. Since

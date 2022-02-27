@@ -32,6 +32,9 @@ public class Cargo extends Block {
     if (this.getSignature() == 1) {
       return "Red";
     }
+    else if (this.getSignature() == -1) {
+      return "None";
+    }
     else {
       return "Blue";
     }

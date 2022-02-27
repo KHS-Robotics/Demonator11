@@ -1,14 +1,16 @@
-package frc.robot.vision.pixy;
+package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.vision.pixy.Cargo;
 import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
 
-public class PixyCam {
+public class PixyCam extends SubsystemBase {
   private final Pixy2 pixy;
   private int blockCount;
   private Cargo[] cargos = {};
@@ -22,6 +24,11 @@ public class PixyCam {
     tab.addBoolean("Red", this::hasRedInFrame);
     tab.addBoolean("Blue", this::hasBlueInFrame);
     tab.addString("NextColor", () -> nextCargo().getColorAsString());
+  }
+
+  @Override
+  public void periodic() {
+    updateCargoInFrame();
   }
 
   public void setLamp(boolean on) {
@@ -78,7 +85,7 @@ public class PixyCam {
 
   public Cargo nextCargo() {
     if (cargos.length == 0) {
-      return null;
+      return new Cargo(-1, 0, 0, 0, 0, 0, 0, 0);
     } else if (cargos.length == 1) {
       return cargos[0];
     } else {
