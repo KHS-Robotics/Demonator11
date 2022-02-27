@@ -27,4 +27,13 @@ public class Cargo extends Block {
   public boolean isBlue() {
     return this.getSignature() == 2;
   }
+
+  public String getColorAsString() {
+    if (this.getSignature() == 1) {
+      return "Red";
+    }
+    else {
+      return "Blue";
+    }
+  }
 }

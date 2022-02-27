@@ -21,6 +21,7 @@ public class PixyCam {
     tab.addNumber("BlockCount", () -> blockCount);
     tab.addBoolean("Red", this::hasRedInFrame);
     tab.addBoolean("Blue", this::hasBlueInFrame);
+    tab.addString("NextColor", () -> nextCargo().getColorAsString());
   }
 
   public void setLamp(boolean on) {
@@ -61,16 +62,30 @@ public class PixyCam {
     return (hasBlueInFrame() && hasRedInFrame());
   }
 
-  public int nextCargo() {
+  public int nextCargoSignature() {
     if (cargos.length == 0) {
       return 0;
     } else if (cargos.length == 1) {
       return cargos[0].getSignature();
     } else {
-      if (cargos[1].getX() > cargos[0].getX()) {
+      if (cargos[1].getY() > cargos[0].getY()) {
         return cargos[1].getSignature();
       } else {
         return cargos[0].getSignature();
+      }
+    }
+  }
+
+  public Cargo nextCargo() {
+    if (cargos.length == 0) {
+      return null;
+    } else if (cargos.length == 1) {
+      return cargos[0];
+    } else {
+      if (cargos[1].getY() > cargos[0].getY()) {
+        return cargos[1];
+      } else {
+        return cargos[0];
       }
     }
   }
