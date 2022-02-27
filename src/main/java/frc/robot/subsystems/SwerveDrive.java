@@ -29,6 +29,7 @@ public class SwerveDrive extends SubsystemBase {
   public static double kMaxSpeed = 3.5; // 3.5 meters per second
   public static double kMaxAngularSpeed = Math.PI; // pi radians per second
   public static double offset;
+  public Pose2d startingPose;
   private PIDController targetPid;
   private final Translation2d frontLeftLocation = new Translation2d(0.29845, 0.29845);
   private final Translation2d frontRightLocation = new Translation2d(0.29845, -0.29845);
@@ -234,6 +235,7 @@ public class SwerveDrive extends SubsystemBase {
     targetPid.reset();
     offset = currentPose.getRotation().getDegrees();
     RobotContainer.navx.reset();
+    startingPose = currentPose;
     odometry.resetPosition(currentPose, currentPose.getRotation());
   }
 
