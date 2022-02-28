@@ -85,14 +85,14 @@ public class Shooter extends SubsystemBase {
   }
 
   public void incrementMultiplier() {
-    if (this.speedMultiplier < 1.3) {
-      this.speedMultiplier += 0.05;
+    if (speedMultiplier < 1.3) {
+      speedMultiplier += 0.05;
     }
   }
 
   public void decrementMultiplier() {
-    if (this.speedMultiplier > 0.8) {
-      this.speedMultiplier -= 0.05;
+    if (speedMultiplier > 0.8) {
+      speedMultiplier -= 0.05;
     }
   }
 }
