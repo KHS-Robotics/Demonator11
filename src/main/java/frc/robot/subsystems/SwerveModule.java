@@ -24,6 +24,7 @@ import frc.robot.Constants;
 /**
  * Swerve Module
  */
+@SuppressWarnings("GrazieInspection")
 public class SwerveModule extends SubsystemBase {
   public final String name;
 

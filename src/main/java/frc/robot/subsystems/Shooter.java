@@ -20,7 +20,7 @@ public class Shooter extends SubsystemBase {
   private Servo hoodServo1, hoodServo2;
 
   private double shooterPidSetpoint;
-  private double offset;
+  private double speedMultiplier;
 
   /**
    * Creates a new Shooter.
@@ -45,6 +45,8 @@ public class Shooter extends SubsystemBase {
 
     hoodServo1.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     hoodServo2.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
+
+    speedMultiplier = 1.0;
   }
 
   public void setHoodAngle(double angle) {
@@ -60,7 +62,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooter(double speed) {
-    shooterPidSetpoint = speed * 1.05;
+    shooterPidSetpoint = speed * speedMultiplier;
     shooterPid.setReference(shooterPidSetpoint, CANSparkMax.ControlType.kVelocity);
   }
 
@@ -80,5 +82,17 @@ public class Shooter extends SubsystemBase {
     double setpoint = (length - 0.1651) / 0.10627;
 
     return setpoint;
+  }
+
+  public void incrementMultiplier() {
+    if (this.speedMultiplier < 1.3) {
+      this.speedMultiplier += 0.05;
+    }
+  }
+
+  public void decrementMultiplier() {
+    if (this.speedMultiplier > 0.8) {
+      this.speedMultiplier -= 0.05;
+    }
   }
 }

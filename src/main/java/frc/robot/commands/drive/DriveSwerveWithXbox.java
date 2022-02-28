@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.SwerveDrive;
 
+@SuppressWarnings("GrazieInspection")
 public class DriveSwerveWithXbox extends CommandBase {
   private boolean fieldRelative = false;
 

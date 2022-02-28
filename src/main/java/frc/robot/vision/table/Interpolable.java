@@ -9,6 +9,7 @@ package frc.robot.vision.table;
  * @author team 254
  * @see InterpolatingTreeMap
  */
+@SuppressWarnings("GrazieInspection")
 public interface Interpolable<T> {
   /**
    * Interpolates between this value and an other value according to a given
