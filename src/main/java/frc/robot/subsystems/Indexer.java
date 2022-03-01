@@ -27,7 +27,7 @@ public class Indexer extends SubsystemBase {
   }
 
   public void reverse() {
-    setFloor(-0.5);
+    setFloor(-0.85);
   }
 
   public void setFloor(double speed) {
@@ -55,12 +55,12 @@ public class Indexer extends SubsystemBase {
   }
 
   public void index() {
-    setFloor(0.5);
+    setFloor(0.9);
     //setSide(0.5);
   }
 
   public void feed() {
-    setFeeder(0.5);
+    setFeeder(0.9);
   }
 
   public void stop() {
