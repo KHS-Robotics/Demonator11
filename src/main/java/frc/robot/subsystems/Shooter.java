@@ -46,7 +46,7 @@ public class Shooter extends SubsystemBase {
     hoodServo1.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     hoodServo2.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
 
-    speedMultiplier = 1.0;
+    speedMultiplier = 1.05;
   }
 
   public void setHoodAngle(double angle) {
@@ -86,13 +86,17 @@ public class Shooter extends SubsystemBase {
 
   public void incrementMultiplier() {
     if (speedMultiplier < 1.3) {
-      speedMultiplier += 0.05;
+      speedMultiplier += 0.02;
     }
   }
 
   public void decrementMultiplier() {
     if (speedMultiplier > 0.8) {
-      speedMultiplier -= 0.05;
+      speedMultiplier -= 0.02;
     }
+  }
+
+  public void resetMultipler() {
+    speedMultiplier = 1.05;
   }
 }

@@ -33,7 +33,7 @@ public class RampShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle));
+    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
 
     if (dist >= 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
@@ -45,7 +45,7 @@ public class RampShooter extends CommandBase {
     double error = result - eq(speed, angle, dist);
 
     for (int i = 0; i < 40; i++) {
-      if (Math.abs(error) > 0.2) {
+      if (Math.abs(error) > 0.1) {
         if (error > 0) {
           speed += speed / 2;
         } else {
@@ -63,7 +63,7 @@ public class RampShooter extends CommandBase {
 
     RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
 
-    if (Math.abs(error) < 0.5) {
+    if (Math.abs(error) < 0.1) {
       RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
     }
   }

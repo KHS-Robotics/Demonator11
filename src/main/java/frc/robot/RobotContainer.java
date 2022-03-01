@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SerialPort.Port;
@@ -29,6 +28,7 @@ import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.ShootAuto;
 import frc.robot.subsystems.*;
 import frc.robot.vision.Limelight;
 
@@ -51,8 +51,6 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   public static final Indexer indexer = new Indexer();
   public static final Climber climber = new Climber();
-
-  //public static final PowerDistribution pdp = new PowerDistribution();
 
   public static final XboxController xboxController = new XboxController(RobotMap.XBOX_PORT);
   public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
@@ -160,15 +158,18 @@ public class RobotContainer {
         new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
         new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
         true
-      ).addCommand(new RotateToAngle(90)
-        //SHOOT
+      ).addCommand(
+        new RotateToAngle(90)
+      ).addCommand(
+        new ShootAuto()
       ).build();
   }
 
   private static AutonomousRoutine getThreeBallClose() {
     return new AutoRoutineBuilder()
-      .addCommand(new WaitCommand(0.5)
-      ) //SHOOT
+      .addCommand(
+        new ShootAuto()
+      )
       .addTrajectoryCommand(
         new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
         new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(180)),
@@ -180,16 +181,16 @@ public class RobotContainer {
         new Pose2d(7.3, 0.3, Rotation2d.fromDegrees(318.27))
       ).addCommand(
         new RotateToAngle(90)
-      ).addCommand(new WaitCommand(0.5)
-      ) //SHOOT
+      ).addCommand(
+        new ShootAuto()
+      )
       .build();
   }
 
   private static AutonomousRoutine getThreeBallMid() {
     return new AutoRoutineBuilder(1.5, 2)
-      //SHOOT
       .addCommand(
-        new WaitCommand(0.5)
+        new ShootAuto()
       ).addCommand(
         new RotateToAngle(270, 15)
       ).addTrajectoryCommand(
@@ -204,7 +205,7 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(50, 10)
       ).addCommand(
-        new WaitCommand(0.5)
+        new ShootAuto()
       ).build();
   }
 
@@ -213,9 +214,8 @@ public class RobotContainer {
       .setStartingPose(
         new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(45))
       ).addCommand(
-        new WaitCommand(0.5)
-      ) //SHOOT
-      .addCommand(
+        new ShootAuto()
+      ).addCommand(
         new RotateToAngle(-170, 10)
       ).addTrajectoryCommand(
         new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(-170)),
@@ -229,9 +229,8 @@ public class RobotContainer {
         new Pose2d(1.65, 1.30, Rotation2d.fromDegrees(30)),
         new Pose2d(5.1, 1.4, Rotation2d.fromDegrees(30))
       ).addCommand(
-        new WaitCommand(0.5)
-      ) //SHOOT
-      .build();
+        new ShootAuto()
+      ).build();
   }
 
   private static AutonomousRoutine getFourBallAuto() {
@@ -243,9 +242,8 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(90)
       ).addCommand(
-        new WaitCommand(0.5)
-      ) //SHOOT
-      .addCommand(
+        new ShootAuto()
+      ).addCommand(
         new RotateToAngle(140, 15)
       ).addTrajectoryCommand(
         new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(140)),
@@ -253,24 +251,22 @@ public class RobotContainer {
       ).addTrajectoryCommand(
         new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140)),
         new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(170))
-        //).addCommand(new RotateToAngle(110, 15)
+      ).addCommand(
+        new RotateToAngle(110, 15)
       ).addTrajectoryCommand(
         new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(110)),
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
-        new WaitCommand(0.5)
-      ) //SHOOT
-      .build();
+        new ShootAuto()
+      ).build();
   }
 
   private static AutonomousRoutine getFiveBallAuto() {
     return new AutoRoutineBuilder(3.5, 7)
       .setStartingPose(
         new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(90))
-      )
-      //SHOOT
-      .addCommand(
-        new WaitCommand(0.5)
+      ).addCommand(
+        new ShootAuto()
       ).addCommand(
         new RotateToAngle(270, 20)
       ).addTrajectoryCommand(
@@ -281,12 +277,10 @@ public class RobotContainer {
       ).addTrajectoryCommand(
         new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(140)),
         new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
-      )
-      //SHOOT
-      .addCommand(
-        new RotateToAngle(40, 10)
       ).addCommand(
-        new WaitCommand(1)
+        new ShootAuto()
+      ).addCommand(
+        new RotateToAngle(40, 10)
       ).addCommand(
         new RotateToAngle(-143, 10)
       ).addTrajectoryCommand(
@@ -295,13 +289,12 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(-143)
       ).addCommand(
-        new WaitCommand(1) // WAIT FOR HUMAN PLAYER TO FEED IN
+        new WaitCommand(0.5) // WAIT FOR HUMAN PLAYER TO FEED IN
       ).addTrajectoryCommand(
         new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143)),
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
-        new WaitCommand(0.5)
-      ) //SHOOT
-      .build();
+        new ShootAuto()
+      ).build();
   }
 }

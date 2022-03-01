@@ -41,7 +41,7 @@ public class Shoot extends CommandBase {
     double error = result - eq(speed, angle, dist);
 
     for (int i = 0; i < 40; i++) {
-      if (Math.abs(error) > 0.01) {
+      if (Math.abs(error) > 0.1) {
         if (error > 0) {
           speed += speed / 2;
         } else {
@@ -63,7 +63,7 @@ public class Shoot extends CommandBase {
       RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
     }
 
-    if (RobotContainer.shooter.atSetpoint() && Math.abs(error) < 0.01) {
+    if (RobotContainer.shooter.atSetpoint() && Math.abs(error) < 0.1) {
       RobotContainer.indexer.feed();
       RobotContainer.indexer.index();
     } else {
