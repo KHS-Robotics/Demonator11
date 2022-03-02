@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -37,6 +38,11 @@ public class Climber extends SubsystemBase {
 
     elevatorPID = elevatorLeader.getPIDController();
     pivotPID = pivotMotor.getPIDController();
+
+    elevatorLeader.setIdleMode(IdleMode.kBrake);
+    elevatorFollower1.setIdleMode(IdleMode.kBrake);
+    elevatorFollower2.setIdleMode(IdleMode.kBrake);
+    pivotMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public void elevate(double height) {
