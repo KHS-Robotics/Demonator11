@@ -48,4 +48,10 @@ public class Pivot extends CommandBase {
   @Override
   public void end(boolean interrupted) {
   }
+
+  public enum Angle {
+    Rest,
+    Tilt,
+    Straight
+  }
 }

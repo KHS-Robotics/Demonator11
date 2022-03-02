@@ -7,7 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -20,12 +22,14 @@ import frc.robot.vision.Limelight.LightMode;
 
 public class Robot extends TimedRobot {
   RobotContainer robotContainer;
+  public static Alliance color;
 
   Command autonCommand;
 
   @Override
   public void robotInit() {
     robotContainer = new RobotContainer(); 
+    color = DriverStation.getAlliance();
     Limelight.setLedMode(LightMode.eOn);
   }
 

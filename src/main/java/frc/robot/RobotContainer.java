@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.AutoRoutineBuilder.AutonomousRoutine;
 import frc.robot.commands.CenterSwerveModules;
 import frc.robot.commands.climber.*;
+import frc.robot.commands.climber.Elevate.Level;
+import frc.robot.commands.climber.Pivot.Angle;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;

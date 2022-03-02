@@ -60,4 +60,14 @@ public class Elevate extends CommandBase {
   public boolean isFinished() {
     return RobotContainer.climber.elevatorAtSetpoint();
   }
+  
+  public enum Level {
+    BelowMidHeight,
+    MidHeight,
+    ClearBar,
+    UnderBar,
+    Reach,
+    Zero
+  }
+  
 }
