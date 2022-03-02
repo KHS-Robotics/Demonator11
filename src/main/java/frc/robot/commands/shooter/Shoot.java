@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.vision.Limelight;
+import frc.robot.vision.Limelight.LightMode;
 
 public class Shoot extends CommandBase {
   double dist, angle, speed;
@@ -25,6 +26,7 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
     speed = 8;
+    Limelight.setLedMode(LightMode.eOn);
     dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
   }
 

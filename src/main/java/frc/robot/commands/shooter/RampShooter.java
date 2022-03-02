@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.vision.Limelight;
+import frc.robot.vision.Limelight.LightMode;
 
 public class RampShooter extends CommandBase {
   double dist, angle, speed;
@@ -28,12 +29,12 @@ public class RampShooter extends CommandBase {
   @Override
   public void initialize() {
     speed = 8;
+    Limelight.setLedMode(LightMode.eOn);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
 
     if (dist >= 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
@@ -57,14 +58,19 @@ public class RampShooter extends CommandBase {
       }
     }
 
-    double vX = Math.cos(angle) * speed;
-    double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
-    double time = dist / (speed * Math.cos(angle));
+    if(Limelight.isTarget()) {
+      double vX = Math.cos(angle) * speed;
+      double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
+      double time = dist / (speed * Math.cos(angle));
 
-    RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
+      RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
+      
 
-    if (Math.abs(error) < 0.1) {
-      RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
+      if (Math.abs(error) < 0.1) {
+        RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
+      }
+    } else {
+      RobotContainer.shooter.setShooter(msToRPM(8.5));
     }
   }
 

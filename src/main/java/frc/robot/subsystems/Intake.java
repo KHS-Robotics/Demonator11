@@ -52,12 +52,12 @@ public class Intake extends SubsystemBase {
     driveMotor.setVoltage(12 * -speed);
   }
 
-  public void setPosition(double angle) {
-    positionPid.setReference(angle, CANSparkMax.ControlType.kPosition);
+  public void setPosition(double pos) {
+    positionPid.setReference(pos, CANSparkMax.ControlType.kPosition);
   }
 
   public void intakeUp() {
-    setPosition(40);
+    setPosition(0);
     positionMotor.setIdleMode(IdleMode.kBrake);
   }
 

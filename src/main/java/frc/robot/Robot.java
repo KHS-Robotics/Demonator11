@@ -25,7 +25,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer(); 
+    Limelight.setLedMode(LightMode.eOn);
   }
 
   @Override
@@ -35,35 +36,25 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    Limelight.setLedMode(LightMode.eOff);
-
     SwerveDrive.kMaxSpeed = 3.5;
     SwerveDrive.kMaxAngularSpeed = Math.PI;
   }
 
   @Override
-  public void disabledPeriodic() {
-    if (RobotContainer.xboxController.getXButtonPressed()) {
-      System.out.println("ON");
-      Limelight.setLedMode(LightMode.eOn);
-    } else if (RobotContainer.xboxController.getYButtonPressed()) {
-      System.out.println("Off");
-      Limelight.setLedMode(LightMode.eOff);
-    }
-  }
+  public void disabledPeriodic() {}
 
   @Override
   public void autonomousInit() {
+    Limelight.setLedMode(LightMode.eOn);
     if (autonCommand != null) {
       autonCommand.cancel();
       CommandScheduler.getInstance().run();
     }
-    Limelight.setLedMode(LightMode.eOn);
     AutonomousRoutine selectedAuton = RobotContainer.getCommand((int) RobotContainer.id.getDouble(0));
 
     RobotContainer.swerveDrive.resetNavx(selectedAuton.getStartingPose());
 
-    autonCommand = (new CenterSwerveModules(false).andThen(new InstantCommand(() -> RobotContainer.intake.intake())).andThen(selectedAuton.getAsCommand()));
+    autonCommand = new CenterSwerveModules(false).andThen(new InstantCommand(() -> RobotContainer.intake.intake())).andThen(selectedAuton.getAsCommand());
     autonCommand.schedule();
   }
 
@@ -74,12 +65,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Limelight.setLedMode(LightMode.eOn);
-    RobotContainer.swerveDrive.setOffset(0);
-
     if (autonCommand != null) {
       autonCommand.cancel();
     }
+
+    RobotContainer.intake.stop();
   }
 
   @Override

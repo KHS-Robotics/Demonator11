@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -31,6 +32,7 @@ import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
 import frc.robot.subsystems.*;
 import frc.robot.vision.Limelight;
+import frc.robot.vision.Limelight.LightMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -66,6 +68,8 @@ public class RobotContainer {
     tab.addNumber("Y", xboxController::getLeftY);
     id = tab.add("AUTO ID", 0).getEntry();
     tab.addNumber("dist", () -> (Constants.TARGET_HEIGHT - Constants.LIMELIGHT_HEIGHT) / Math.tan(Math.toRadians(Limelight.getTy() + Constants.LIMELIGHT_ANGLE)));
+    tab.addBoolean("Limelight See's Target", Limelight::isTarget);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -116,6 +120,27 @@ public class RobotContainer {
     Button manualIndex = new Button(() -> false);
     manualIndex.whenPressed(() -> indexer.index());
     manualIndex.whenReleased(() -> indexer.stop());
+
+    Button dropIntake = new Button(switchbox::intakeDown);
+    dropIntake.whenPressed(new InstantCommand( () -> intake.intakeDown() ));
+
+    Button raiseIntake = new Button(switchbox::intakeDown);
+    raiseIntake.whenPressed(new InstantCommand( () -> intake.intakeUp() ));
+
+    Button raiseRPM = new Button( () -> false );
+    raiseRPM.whenPressed(() -> shooter.incrementMultiplier() );
+
+    Button lowerRPM = new Button( () -> false );
+    lowerRPM.whenPressed(() -> shooter.decrementMultiplier() );
+
+    Button resetRPM = new Button( () -> false );
+    resetRPM.whenPressed(new InstantCommand(() -> shooter.resetMultipler()));
+
+    Button enableLimelight = new Button( () -> false );
+    enableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOn) );
+
+    Button disableLimelight = new Button( () -> false );
+    disableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOff));
 
     Button climb = new Button(() -> false);
     climb.whenPressed(
