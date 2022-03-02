@@ -39,7 +39,7 @@ public class LEDStrip extends SubsystemBase {
   public void setLEDMode(Mode mode) {
     this.mode = mode;
 
-    if(mode == Mode.kStobe) {
+    if(mode == Mode.kStrobe) {
       strobeIndex = 0;
     }
   }
@@ -77,14 +77,16 @@ public class LEDStrip extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (mode == Mode.kStobe) {
+    if (mode == Mode.kStrobe) {
       for (int i = 0; i < length; i++) {
-        if(Math.abs(i - strobeIndex) < 20 ) {
+        if(Math.abs(i - strobeIndex)  < 20 ) {
           buffer.setRGB(i, 0, 0, 0);
         } else {
           buffer.setRGB(i, color.r, color.g, color.b);
         }
       }
+      strobeIndex ++;
+      strobeIndex %= length;
 
       strip.setData(buffer);
     }
@@ -99,7 +101,7 @@ public class LEDStrip extends SubsystemBase {
 
   public enum Mode {
     kSolid,
-    kStobe
+    kStrobe
   }
 
   public class Color {

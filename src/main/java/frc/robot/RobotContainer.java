@@ -58,6 +58,7 @@ public class RobotContainer {
 
   public static final XboxController xboxController = new XboxController(RobotMap.XBOX_PORT);
   public static final SwitchBox switchbox = new SwitchBox(RobotMap.SWITCHBOX_PORT);
+  public static final OperatorStick joystick = new OperatorStick(RobotMap.JOYSTICK_PORT);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -129,19 +130,19 @@ public class RobotContainer {
     Button raiseIntake = new Button(switchbox::intakeDown);
     raiseIntake.whenPressed(new InstantCommand( () -> intake.intakeUp() ));
 
-    Button raiseRPM = new Button( () -> false );
+    Button raiseRPM = new Button( joystick::incrementRPM );
     raiseRPM.whenPressed(() -> shooter.incrementMultiplier() );
 
-    Button lowerRPM = new Button( () -> false );
+    Button lowerRPM = new Button( joystick::decrementRPM );
     lowerRPM.whenPressed(() -> shooter.decrementMultiplier() );
 
-    Button resetRPM = new Button( () -> false );
+    Button resetRPM = new Button( joystick::resetRPM );
     resetRPM.whenPressed(new InstantCommand(() -> shooter.resetMultipler()));
 
-    Button enableLimelight = new Button( () -> false );
+    Button enableLimelight = new Button( joystick::disableLimelight );
     enableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOn) );
 
-    Button disableLimelight = new Button( () -> false );
+    Button disableLimelight = new Button( joystick::enableLimelight );
     disableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOff));
 
     Button climb = new Button(() -> false);
@@ -157,6 +158,9 @@ public class RobotContainer {
         new Elevate(Level.Reach)
       )
     );
+
+    Button testClimb = new Button( joystick::allowClimb );
+    testClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
   }
 
   public static AutonomousRoutine getCommand(int id) {

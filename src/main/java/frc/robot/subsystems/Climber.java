@@ -59,6 +59,14 @@ public class Climber extends SubsystemBase {
     return Math.abs(pivotSetpoint - pivotEnc.getPosition()) < 0.5;
   }
 
+  public void setElevatorSpeed(double speed) {
+    elevatorLeader.setVoltage(12 * speed);
+  }
+
+  public void setPivotSpeed(double speed) {
+    pivotMotor.setVoltage(12 * speed);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

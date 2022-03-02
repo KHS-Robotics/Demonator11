@@ -16,6 +16,7 @@ package frc.robot;
 public class RobotMap {
   public static final int XBOX_PORT = 0;
   public static final int SWITCHBOX_PORT = 1;
+  public static final int JOYSTICK_PORT = 2;
 
   public static final int FRONT_LEFT_PIVOT = 11;
   public static final int FRONT_RIGHT_PIVOT = 12;
