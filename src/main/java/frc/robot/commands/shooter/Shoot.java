@@ -28,17 +28,19 @@ public class Shoot extends CommandBase {
     speed = 8;
     Limelight.setLedMode(LightMode.eOn);
     dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+  
     if (dist > 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
     } else {
       angle = Math.atan(((Math.tan(-1.21) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
     }
+    
+    RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
+  }
 
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
     double result = (targetHeight - robotHeight);
     double error = result - eq(speed, angle, dist);
 
@@ -58,8 +60,6 @@ public class Shoot extends CommandBase {
     double vX = Math.cos(angle) * speed;
     double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
     double time = dist / (speed * Math.cos(angle));
-
-    RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
 
     if (Math.abs(error) < 0.1) {
       RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));

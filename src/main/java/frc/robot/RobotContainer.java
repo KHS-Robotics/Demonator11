@@ -29,6 +29,7 @@ import frc.robot.commands.climber.Pivot.Angle;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
+import frc.robot.commands.drive.rotate.RotateToTarget;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
@@ -192,14 +193,14 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(90)
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).build();
   }
 
   private static AutonomousRoutine getThreeBallClose() {
     return new AutoRoutineBuilder()
       .addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       )
       .addTrajectoryCommand(
         new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
@@ -213,7 +214,7 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(90)
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       )
       .build();
   }
@@ -221,7 +222,7 @@ public class RobotContainer {
   private static AutonomousRoutine getThreeBallMid() {
     return new AutoRoutineBuilder(1.5, 2)
       .addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(270, 15)
       ).addTrajectoryCommand(
@@ -236,7 +237,7 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(50, 10)
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).build();
   }
 
@@ -245,7 +246,7 @@ public class RobotContainer {
       .setStartingPose(
         new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(45))
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(-170, 10)
       ).addTrajectoryCommand(
@@ -260,7 +261,7 @@ public class RobotContainer {
         new Pose2d(1.65, 1.30, Rotation2d.fromDegrees(30)),
         new Pose2d(5.1, 1.4, Rotation2d.fromDegrees(30))
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).build();
   }
 
@@ -273,7 +274,7 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(90)
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(140, 15)
       ).addTrajectoryCommand(
@@ -288,7 +289,7 @@ public class RobotContainer {
         new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(110)),
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).build();
   }
 
@@ -297,7 +298,7 @@ public class RobotContainer {
       .setStartingPose(
         new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(90))
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(270, 20)
       ).addTrajectoryCommand(
@@ -309,7 +310,7 @@ public class RobotContainer {
         new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(140)),
         new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(40, 10)
       ).addCommand(
@@ -325,7 +326,7 @@ public class RobotContainer {
         new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143)),
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
-        new ShootAuto()
+        new ShootAuto().alongWith(new RotateToTarget())
       ).build();
   }
 }

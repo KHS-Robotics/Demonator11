@@ -13,7 +13,7 @@ import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
 
 public class RotateToTarget extends CommandBase {
-  double angle, defaultAngle;
+  double angle;
 
   /**
    * Creates a new RotateToAngle.
@@ -29,20 +29,14 @@ public class RotateToTarget extends CommandBase {
 
     RobotContainer.swerveDrive.resetPid();
     RobotContainer.swerveDrive.stop();
+
+    angle = RobotContainer.swerveDrive.getYaw();
   }
 
   @Override
   public void execute() {
-    // if(RobotContainer.navx.getDisplacementX() + RobotContainer.swerveDrive.startingPose.getX() > 8.2) {
-    //   defaultAngle = 180;
-    // } else {
-    //   defaultAngle = 0;
-    // }
-
     if (Limelight.isTarget()) {
       angle = RobotContainer.swerveDrive.getYaw() - Limelight.getTx();
-    } else {
-      angle = 0;
     }
 
     RobotContainer.swerveDrive.rotateToAngleInPlace(angle);

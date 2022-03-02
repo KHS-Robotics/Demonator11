@@ -8,7 +8,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
@@ -35,6 +38,10 @@ public class Shooter extends SubsystemBase {
     shooterPid = leader.getPIDController();
     shooterPid.setOutputRange(0, 1);
 
+    leaderEnc.setVelocityConversionFactor(1);
+    leader.setIdleMode(IdleMode.kCoast);
+    follower.setIdleMode(IdleMode.kCoast);
+    
     shooterPid.setP(Constants.SHOOTER_P);
     shooterPid.setI(Constants.SHOOTER_I);
     shooterPid.setD(Constants.SHOOTER_D);
@@ -47,6 +54,9 @@ public class Shooter extends SubsystemBase {
     hoodServo2.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
 
     speedMultiplier = 1.05;
+
+    var tab = Shuffleboard.getTab("Match");
+    tab.addNumber("Speed Multiplier", () -> speedMultiplier);
   }
 
   public void setHoodAngle(double angle) {
