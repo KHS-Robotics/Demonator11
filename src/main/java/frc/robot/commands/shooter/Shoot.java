@@ -27,7 +27,7 @@ public class Shoot extends CommandBase {
   public void initialize() {
     speed = 8;
     Limelight.setLedMode(LightMode.eOn);
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
+    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
   
     if (dist > 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);

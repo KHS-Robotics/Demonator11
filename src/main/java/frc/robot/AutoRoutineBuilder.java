@@ -40,7 +40,7 @@ public class AutoRoutineBuilder {
   /*** The robot's trajectory config for {@link TrajectoryGenerator#generateTrajectory}*/
   public TrajectoryConfig RobotTrajectoryConfig;
   /*** The X-Coordinate PID Controller for the {@link CustomSwerveControllerCommand}*/
-  public static final PIDController SwerveXPIDController = new PIDController(1.0, 0.001, 0.2);
+  public static final PIDController SwerveXPIDController = new PIDController(1.5, 0.001, 0.2);
   /*** The Y-Coordinate PID Controller for the {@link CustomSwerveControllerCommand}*/
   public static final PIDController SwerveYPIDController = new PIDController(1.0, 0.001, 0.2);
   /*** The Theta (rotation) PID Controller for the {@link CustomSwerveControllerCommand}*/

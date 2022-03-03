@@ -45,7 +45,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    color = DriverStation.getAlliance();
+  }
 
   @Override
   public void autonomousInit() {
@@ -58,7 +60,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer.swerveDrive.resetNavx(selectedAuton.getStartingPose());
 
-    autonCommand = new CenterSwerveModules(false).andThen(new InstantCommand(() -> RobotContainer.intake.intake())).andThen(selectedAuton.getAsCommand());
+    autonCommand = new CenterSwerveModules(false).alongWith(new InstantCommand(() -> RobotContainer.shooter.setHood(0.5)).andThen(new InstantCommand(() -> RobotContainer.intake.intake()))).andThen(selectedAuton.getAsCommand());
     autonCommand.schedule();
   }
 

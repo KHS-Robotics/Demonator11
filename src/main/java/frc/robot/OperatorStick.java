@@ -21,7 +21,7 @@ public class OperatorStick extends Joystick {
   }
   
   public boolean decrementRPM() {
-    return this.getRawButton(13);
+    return this.getRawButton(15);
   }
 
   public boolean incrementRPM() {
@@ -29,7 +29,7 @@ public class OperatorStick extends Joystick {
   }
 
   public boolean resetRPM() {
-    return this.getRawButton(12);
+    return this.getRawButton(14);
   }
 
   public boolean enableLimelight() {
@@ -37,7 +37,7 @@ public class OperatorStick extends Joystick {
   }
 
   public boolean disableLimelight() {
-    return this.getRawButton(3);
+    return this.getRawButton(2);
   }
 
   public boolean allowClimb() {

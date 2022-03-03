@@ -111,11 +111,11 @@ public class RobotContainer {
     });
 
     Button intakeBall = new Button(switchbox::intake);
-    intakeBall.whileHeld(() -> intake.intake(), intake);
+    intakeBall.whenPressed(() -> intake.intake(), intake);
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button outtakeBall = new Button(switchbox::outtake);
-    outtakeBall.whileHeld(() -> {intake.reverse(); indexer.reverse();}, intake);
+    outtakeBall.whenPressed(() -> {intake.reverse(); indexer.reverse();}, intake);
     outtakeBall.whenReleased(() -> {intake.stop(); indexer.stop(); }, intake);
 
     Button shoot = new Button(switchbox::shoot);
@@ -141,10 +141,10 @@ public class RobotContainer {
     resetRPM.whenPressed(new InstantCommand(() -> shooter.resetMultipler()));
 
     Button enableLimelight = new Button( joystick::disableLimelight );
-    enableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOn) );
+    enableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOff) );
 
     Button disableLimelight = new Button( joystick::enableLimelight );
-    disableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOff));
+    disableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOn));
 
     Button climb = new Button(() -> false);
     climb.whenPressed(
@@ -162,6 +162,9 @@ public class RobotContainer {
 
     Button testClimb = new Button( joystick::allowClimb );
     testClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
+
+    // Button intakeUp = new Button(switchbox::shooterOverride);
+    // intakeUp.whileHeld( new InstantCommand (() -> intake.run(joystick.getElevatorSpeed())));
   }
 
   public static AutonomousRoutine getCommand(int id) {
