@@ -35,31 +35,31 @@ public class RampShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
-
-    if (dist >= 2.7) {
-      angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
-    } else {
-      angle = Math.atan(((Math.tan(-1.21) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
-    }
-
-    double result = (targetHeight - robotHeight);
-    double error = result - eq(speed, angle, dist);
-
-    for (int i = 0; i < 40; i++) {
-      if (Math.abs(error) > 0.1) {
-        if (error > 0) {
-          speed += speed / 2;
-        } else {
-          speed -= speed / 2;
-        }
-        error = result - eq(speed, angle, dist);
-      } else {
-        break;
-      }
-    }
-
     if(Limelight.isTarget()) {
+      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
+
+      if (dist >= 2.7) {
+        angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
+      } else {
+        angle = Math.atan(((Math.tan(-1.21) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
+      }
+
+      double result = (targetHeight - robotHeight);
+      double error = result - eq(speed, angle, dist);
+
+      for (int i = 0; i < 40; i++) {
+        if (Math.abs(error) > 0.1) {
+          if (error > 0) {
+            speed += speed / 2;
+          } else {
+            speed -= speed / 2;
+          }
+          error = result - eq(speed, angle, dist);
+        } else {
+          break;
+        }
+      }
+
       double vX = Math.cos(angle) * speed;
       double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
       double time = dist / (speed * Math.cos(angle));
