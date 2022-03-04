@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,11 +23,11 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   public Intake() {
-    driveMotor = new CANSparkMax(RobotMap.INTAKE_DRIVE, CANSparkMaxLowLevel.MotorType.kBrushless);
-    positionMotor = new CANSparkMax(RobotMap.INTAKE_POSITION, CANSparkMaxLowLevel.MotorType.kBrushless);
+    driveMotor = new CANSparkMax(RobotMap.INTAKE_DRIVE, MotorType.kBrushless);
+    positionMotor = new CANSparkMax(RobotMap.INTAKE_POSITION, MotorType.kBrushless);
 
-    driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    positionMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    driveMotor.setIdleMode(IdleMode.kBrake);
+    positionMotor.setIdleMode(IdleMode.kBrake);
 
     driveEnc = driveMotor.getEncoder();
     positionEnc = positionMotor.getEncoder();

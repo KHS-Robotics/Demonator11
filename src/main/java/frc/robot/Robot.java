@@ -47,6 +47,13 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     color = DriverStation.getAlliance();
+
+    if(RobotContainer.joystick.disableLimelight()) {
+      Limelight.setLedMode(LightMode.eOff);
+    } else if (RobotContainer.joystick.enableLimelight()) {
+      Limelight.setLedMode(LightMode.eOn);
+    }
+    
   }
 
   @Override
