@@ -317,16 +317,16 @@ public class RobotContainer {
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
-        new RotateToAngle(-143, 10)
+        new RotateToAngle(-140, 10)
       ).addTrajectoryCommand(
-        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(-143)),
-        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143))
+        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(-140)),
+        new Pose2d(1.65, 1.5, Rotation2d.fromDegrees(-140))
       ).addCommand(
-        new RotateToAngle(-143)
+        new RotateToAngle(-140)
       ).addCommand(
         new WaitCommand(0.5) // WAIT FOR HUMAN PLAYER TO FEED IN
       ).addTrajectoryCommand(
-        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(-143)),
+        new Pose2d(1.65, 1.5, Rotation2d.fromDegrees(-140)),
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
