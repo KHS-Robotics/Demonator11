@@ -42,20 +42,10 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     double result = (targetHeight - robotHeight);
+   
+    speed = ridders(3.5, 13.5, angle, dist, result, 20);
+    
     double error = result - eq(speed, angle, dist);
-
-    for (int i = 0; i < 50; i++) {
-      if (Math.abs(error) > 0.1) {
-        if (error > 0) {
-          speed += speed / 2;
-        } else {
-          speed -= speed / 2;
-        }
-        error = result - eq(speed, angle, dist);
-      } else {
-        break;
-      }
-    }
 
     double vX = Math.cos(angle) * speed;
     double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
@@ -88,6 +78,43 @@ public class Shoot extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+  public static double ridders(double x0, double x2, double angle, double dist, double result, int iterations) {
+		double x1 = (x0 + x2) / 2;
+
+		double y0 = eq(x0, angle, dist) - result;
+		double y1 = eq(x1, angle, dist) - result;
+		double y2 = eq(x2, angle, dist) - result;
+		
+		double x3 = x1 + (x1 - x0) * Math.signum(y0)*y1/Math.sqrt((y1*y1)-(y0*y2));
+		double y3 = eq(x3, angle, dist) - result;
+		
+		if(iterations > 0 && Math.abs(y3) > 0.01) {
+			double nx0;
+			
+			if(y1*y3 < 0) {
+				nx0 = x1;
+			} else {
+				if(Math.signum(x3) == Math.signum(x2)) {
+					nx0 = x0;
+				} else {
+					nx0 = x2;
+				}
+			}
+
+			if(x3 < nx0) {
+				return ridders(x3, nx0, angle, dist, result, iterations - 1);
+			} else {
+				return ridders(nx0, x3, angle, dist, result, iterations - 1);
+			}
+		} else {
+			System.out.println("iterations: " + (51 - iterations) );
+			System.out.print("Error: ");
+			System.out.printf("%.9f", y3);
+			System.out.println();
+			return x3;
+		}
+	}
 
   public static double msToRPM(double metersPerSec) {
     //rad/s to rpm = rad/s * 30 / PI
