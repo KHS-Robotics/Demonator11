@@ -28,7 +28,7 @@ public class RampShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    speed = 8;
+    speed = 8.5;
     Limelight.setLedMode(LightMode.eOn);
   }
 
@@ -47,7 +47,7 @@ public class RampShooter extends CommandBase {
       double result = (targetHeight - robotHeight);
       double error = result - eq(speed, angle, dist);
 
-      for (int i = 0; i < 40; i++) {
+      for (int i = 0; i < 50; i++) {
         if (Math.abs(error) > 0.1) {
           if (error > 0) {
             speed += speed / 2;
