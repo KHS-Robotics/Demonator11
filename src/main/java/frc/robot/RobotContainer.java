@@ -313,9 +313,9 @@ public class RobotContainer {
         new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(140)),
         new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
       ).addCommand(
-        new ShootAuto().alongWith(new RotateToTarget())
+          new RotateToAngle(40, 10)
       ).addCommand(
-        new RotateToAngle(40, 10)
+        new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(-143, 10)
       ).addTrajectoryCommand(
