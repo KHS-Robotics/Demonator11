@@ -308,12 +308,12 @@ public class RobotContainer {
         new RotateToAngle(270, 20)
       ).addTrajectoryCommand(
         new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270)),
-        new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(270))
+        new Pose2d(8.05, 0.4, Rotation2d.fromDegrees(270))
       ).addCommand(
-        new RotateToAngle(140, 15)
+        new RotateToAngle(160, 15)
       ).addTrajectoryCommand(
-        new Pose2d(7.65, 0.4, Rotation2d.fromDegrees(140)),
-        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
+        new Pose2d(8.05, 0.4, Rotation2d.fromDegrees(160)),
+        new Pose2d(4.5, 1.25, Rotation2d.fromDegrees(160))
       ).addCommand(
           new RotateToAngle(40, 10)
       ).addCommand(
@@ -321,14 +321,14 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(-140, 10)
       ).addTrajectoryCommand(
-        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(-140)),
-        new Pose2d(1.65, 1.5, Rotation2d.fromDegrees(-140))
+        new Pose2d(4.5, 1.25, Rotation2d.fromDegrees(-140)),
+        new Pose2d(1.65, 0.65, Rotation2d.fromDegrees(-140))
       ).addCommand(
-        new RotateToAngle(-140)
+        new RotateToAngle(-160)
       ).addCommand(
         new WaitCommand(0.5) // WAIT FOR HUMAN PLAYER TO FEED IN
       ).addTrajectoryCommand(
-        new Pose2d(1.65, 1.5, Rotation2d.fromDegrees(-140)),
+        new Pose2d(1.65, 0.65, Rotation2d.fromDegrees(-160)),
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())

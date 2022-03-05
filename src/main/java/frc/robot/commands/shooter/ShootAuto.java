@@ -17,7 +17,15 @@ public class ShootAuto extends Shoot {
   @Override
   public void execute() {
     dist = 1;
-    super.execute();
+    RobotContainer.shooter.setShooter(800);
+    if (RobotContainer.shooter.atSetpoint()) {
+      RobotContainer.indexer.feed();
+      RobotContainer.indexer.index();
+    } else {
+      RobotContainer.indexer.stop();
+      RobotContainer.indexer.stopFeeder();
+    }
+
     if(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
       timer.reset();
     }
@@ -32,7 +40,7 @@ public class ShootAuto extends Shoot {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.setHood(0.5);
+    RobotContainer.shooter.setHood(0.75);
     RobotContainer.indexer.stop();
   }
 

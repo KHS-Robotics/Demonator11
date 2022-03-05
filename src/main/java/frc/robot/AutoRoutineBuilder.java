@@ -40,14 +40,15 @@ public class AutoRoutineBuilder {
   /*** The robot's trajectory config for {@link TrajectoryGenerator#generateTrajectory}*/
   public TrajectoryConfig RobotTrajectoryConfig;
   /*** The X-Coordinate PID Controller for the {@link CustomSwerveControllerCommand}*/
-  public static final PIDController SwerveXPIDController = new PIDController(1.5, 0.001, 0.2);
+  public static final PIDController SwerveXPIDController = new PIDController(0.8, 0.001, 0.8);
   /*** The Y-Coordinate PID Controller for the {@link CustomSwerveControllerCommand}*/
-  public static final PIDController SwerveYPIDController = new PIDController(1.0, 0.001, 0.2);
+  public static final PIDController SwerveYPIDController = new PIDController(0.8, 0.001, 0.8);
   /*** The Theta (rotation) PID Controller for the {@link CustomSwerveControllerCommand}*/
-  public static final ProfiledPIDController SwerveThetaPIDController = new ProfiledPIDController(3.5, 0.002, 0.10, new TrapezoidProfile.Constraints(Math.PI, Math.PI));
+  public static final ProfiledPIDController SwerveThetaPIDController = new ProfiledPIDController(3.5, 0.001, 0.0, new TrapezoidProfile.Constraints(Math.PI, Math.PI));
 
   private Pose2d startingPose;
   private ArrayList<Command> commands;
+
 
   /**
    * Creates a new <code>AutoRoutineBuilder</code>.

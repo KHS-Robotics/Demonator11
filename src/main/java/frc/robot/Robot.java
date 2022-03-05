@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.AutoRoutineBuilder.AutonomousRoutine;
 import frc.robot.commands.CenterSwerveModules;
+import frc.robot.commands.intake.SetIntake;
+import frc.robot.commands.intake.SetIntake.IntakeState;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
@@ -58,9 +60,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    RobotContainer.shooter.setHood(0.75);
     RobotContainer.intake.resetPos();
 
-    Limelight.setLedMode(LightMode.eOn);
+    Limelight.setLedMode(LightMode.eOff);
     if (autonCommand != null) {
       autonCommand.cancel();
       CommandScheduler.getInstance().run();
@@ -69,7 +72,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer.swerveDrive.resetNavx(selectedAuton.getStartingPose());
 
-    autonCommand = new CenterSwerveModules(false).alongWith(new InstantCommand(() -> RobotContainer.shooter.setHood(0.5)).andThen(new InstantCommand(() -> RobotContainer.intake.intake()))).andThen(selectedAuton.getAsCommand());
+    autonCommand = new CenterSwerveModules(false).alongWith(new InstantCommand(() -> RobotContainer.shooter.setHood(0.75)).andThen(new InstantCommand(() -> RobotContainer.intake.intake()))).andThen(selectedAuton.getAsCommand());
     autonCommand.schedule();
   }
 
