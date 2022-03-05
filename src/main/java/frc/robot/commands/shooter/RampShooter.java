@@ -106,10 +106,6 @@ public class RampShooter extends CommandBase {
 				return ridders(nx0, x3, angle, dist, result, iterations - 1);
 			}
 		} else {
-			System.out.println("iterations: " + (51 - iterations) );
-			System.out.print("Error: ");
-			System.out.printf("%.9f", y3);
-			System.out.println();
 			return x3;
 		}
 	}
