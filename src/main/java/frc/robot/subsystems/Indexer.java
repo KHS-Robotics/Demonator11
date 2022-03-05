@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -19,6 +21,9 @@ public class Indexer extends SubsystemBase {
     floor = new CANSparkMax(RobotMap.INDEXER_FLOOR, CANSparkMaxLowLevel.MotorType.kBrushless);
     //side = new CANSparkMax(RobotMap.INDEXER_SIDE, CANSparkMaxLowLevel.MotorType.kBrushless);
     feeder = new CANSparkMax(RobotMap.INDEXER_FEEDER, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+    floor.setIdleMode(IdleMode.kCoast);
+    feeder.setIdleMode(IdleMode.kBrake);
   }
 
   @Override

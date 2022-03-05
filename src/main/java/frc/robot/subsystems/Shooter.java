@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -41,6 +42,13 @@ public class Shooter extends SubsystemBase {
     leaderEnc.setVelocityConversionFactor(1);
     leader.setIdleMode(IdleMode.kCoast);
     follower.setIdleMode(IdleMode.kCoast);
+
+    leader.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
+    leader.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 10);
+    leader.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
+    follower.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
+    follower.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
+    follower.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
     
     shooterPid.setP(Constants.SHOOTER_P);
     shooterPid.setI(Constants.SHOOTER_I);
