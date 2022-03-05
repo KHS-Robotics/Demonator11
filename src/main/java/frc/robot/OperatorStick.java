@@ -21,15 +21,15 @@ public class OperatorStick extends Joystick {
   }
   
   public boolean decrementRPM() {
-    return this.getRawButton(15);
+    return this.getRawButton(3);
   }
 
   public boolean incrementRPM() {
-    return this.getRawButton(16);
+    return this.getRawButton(4);
   }
 
   public boolean resetRPM() {
-    return this.getRawButton(14);
+    return this.getRawButton(12);
   }
 
   public boolean enableLimelight() {

@@ -110,8 +110,8 @@ public class RobotContainer {
       SwerveDrive.kMaxSpeed = 3.5;
     });
 
-    Button intakeBall = new Button(switchbox::intake);
-    intakeBall.whenPressed(() -> intake.intake(), intake);
+    Button intakeBall = new Button(() -> ( (switchbox.intake() || xboxController.getRightTriggerAxis() > 0.5) && !switchbox.outtake() ));
+    intakeBall.whenPressed(() -> intake.intake());
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button outtakeBall = new Button(switchbox::outtake);
