@@ -31,6 +31,8 @@ import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTarget;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
+import frc.robot.commands.intake.SetIntake;
+import frc.robot.commands.intake.SetIntake.IntakeState;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
 import frc.robot.subsystems.*;
@@ -126,10 +128,10 @@ public class RobotContainer {
     manualIndex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); } ) );
 
     Button dropIntake = new Button(switchbox::intakeDown);
-    dropIntake.whenPressed(new InstantCommand( () -> intake.intakeDown() ));
+    dropIntake.whenHeld( new SetIntake(IntakeState.kDown));
 
-    Button raiseIntake = new Button(switchbox::intakeDown);
-    raiseIntake.whenPressed(new InstantCommand( () -> intake.intakeUp() ));
+    Button raiseIntake = new Button( () -> !switchbox.intakeDown());
+    raiseIntake.whenHeld( new SetIntake(IntakeState.kUp) );
 
     Button raiseRPM = new Button( joystick::incrementRPM );
     raiseRPM.whenPressed(() -> shooter.incrementMultiplier() );
@@ -163,8 +165,8 @@ public class RobotContainer {
     Button testClimb = new Button( joystick::allowClimb );
     testClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
 
-    // Button intakeUp = new Button(switchbox::shooterOverride);
-    // intakeUp.whileHeld( new InstantCommand (() -> intake.run(joystick.getElevatorSpeed())));
+    Button intakeUp = new Button(switchbox::shooterOverride);
+    intakeUp.whileHeld( new InstantCommand (() -> intake.run(joystick.getElevatorSpeed())));
   }
 
   public static AutonomousRoutine getCommand(int id) {

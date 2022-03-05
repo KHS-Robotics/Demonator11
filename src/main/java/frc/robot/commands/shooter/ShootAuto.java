@@ -16,6 +16,7 @@ public class ShootAuto extends Shoot {
 
   @Override
   public void execute() {
+    dist = 1;
     super.execute();
     if(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
       timer.reset();

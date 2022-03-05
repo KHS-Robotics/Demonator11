@@ -9,6 +9,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -16,6 +18,7 @@ public class Intake extends SubsystemBase {
   private CANSparkMax driveMotor, positionMotor;
   private double speed = 0.3;
   private RelativeEncoder driveEnc, positionEnc;
+  private double setpoint;
 
   private SparkMaxPIDController positionPid;
 
@@ -27,12 +30,21 @@ public class Intake extends SubsystemBase {
     positionMotor = new CANSparkMax(RobotMap.INTAKE_POSITION, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    positionMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    positionMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
     driveEnc = driveMotor.getEncoder();
     positionEnc = positionMotor.getEncoder();
 
     positionPid = positionMotor.getPIDController();
+    positionEnc.setPosition(0);
+    positionPid.setP(0.03);
+    positionPid.setI(0.00001);
+    positionPid.setD(0.03);
+
+    var tab = Shuffleboard.getTab("Intake");
+    tab.addNumber("Setpoint", () -> setpoint);
+    tab.addNumber("Position", positionEnc::getPosition);
+    
   }
 
   @Override
@@ -57,17 +69,12 @@ public class Intake extends SubsystemBase {
   }
 
   public void setPosition(double pos) {
+    setpoint = pos;
     positionPid.setReference(pos, CANSparkMax.ControlType.kPosition);
   }
 
-  public void intakeUp() {
-    setPosition(0);
-    positionMotor.setIdleMode(IdleMode.kBrake);
-  }
-
-  public void intakeDown() {
-    setPosition(0);
-    positionMotor.setIdleMode(IdleMode.kCoast);
+  public void setIdleMode(IdleMode mode) {
+    positionMotor.setIdleMode(mode);
   }
 
   public double getPosition() {
@@ -78,4 +85,19 @@ public class Intake extends SubsystemBase {
     return driveEnc.getVelocity();
   }
 
+  public boolean atSetpoint() {
+    return Math.abs(setpoint - getPosition()) < 0.4;
+  }
+
+  public void stopPosMotor() {
+    positionMotor.set(0);
+  }
+
+  public void resetPos() {
+    positionEnc.setPosition(0);
+  }
+
+  public void setP(double p) {
+    positionPid.setP(p);
+  }
 }
