@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SerialPort.Port;
@@ -50,6 +51,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static NetworkTableEntry id;
   public static final AHRS navx = new AHRS(Port.kUSB);
+
+  public static final PowerDistribution pdp = new PowerDistribution();
 
   public static final PixyCam pixy = new PixyCam();
 
@@ -162,12 +165,19 @@ public class RobotContainer {
       )
     );
 
-    Button testClimb = new Button( joystick::allowClimb );
-    testClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
+    Button manualClimb = new Button( switchbox::climbOverride );
+    manualClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
 
-    Button intakeUp = new Button(switchbox::shooterOverride);
-    intakeUp.whileHeld( new InstantCommand (() -> intake.run(joystick.getElevatorSpeed())));
-  }
+    Button climbButton = new Button(switchbox::climb);
+    climbButton.whenPressed(new Elevate(Level.Zero));
+
+    Button prepClimb = new Button(joystick::climb);
+    prepClimb.whenPressed(new Elevate(Level.Reach));
+    //maxExtenstion.whenPressed(new PrepElevator().andThen(new InstantCommand(() -> climber.setElevatorSpeed(-0.5)).andThen(new WaitCommand(0.1)).andThen(new InstantCommand(() -> climber.setElevatorSpeed(0))) ));
+    
+    Button pivotTest = new Button(() -> joystick.getRawButton(7));
+    pivotTest.whenPressed(new Pivot(Angle.Tilt));
+ }
 
   public static AutonomousRoutine getCommand(int id) {
 

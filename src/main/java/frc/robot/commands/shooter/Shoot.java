@@ -27,6 +27,11 @@ public class Shoot extends CommandBase {
   public void initialize() {
     speed = 8.5;
     Limelight.setLedMode(LightMode.eOn);
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
     dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
   
     if (dist > 2.7) {
@@ -36,26 +41,18 @@ public class Shoot extends CommandBase {
     }
     
     RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
-  }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
     double result = (targetHeight - robotHeight);
    
     speed = ridders(3.5, 13.5, angle, dist, result, 20);
-    
-    double error = result - eq(speed, angle, dist);
 
     double vX = Math.cos(angle) * speed;
     double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
     double time = dist / (speed * Math.cos(angle));
 
-    if (Math.abs(error) < 0.1) {
-      RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
-    }
+    RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
 
-    if (RobotContainer.shooter.atSetpoint() && Math.abs(error) < 0.1) {
+    if (RobotContainer.shooter.atSetpoint()) {
       RobotContainer.indexer.feed();
       RobotContainer.indexer.index();
     } else {

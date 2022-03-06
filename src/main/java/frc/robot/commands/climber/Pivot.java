@@ -9,6 +9,7 @@ import frc.robot.RobotContainer;
 
 public class Pivot extends CommandBase {
   Angle angle;
+  double setpoint = 0;
 
   public Pivot(Angle angle) {
     this.angle = angle;
@@ -20,24 +21,22 @@ public class Pivot extends CommandBase {
    */
   @Override
   public void initialize() {
-    double setpoint = 0;
     switch (angle) {
       case Rest:
         setpoint = 0;
         break;
       case Tilt:
-        setpoint = 0;
+        setpoint = -48.5;
         break;
       case Straight:
-        setpoint = 0;
+        setpoint = -20;
         break;
     }
-
-    RobotContainer.climber.pivot(setpoint);
   }
 
   @Override
   public void execute() {
+    RobotContainer.climber.setAngle(setpoint);
   }
 
   @Override

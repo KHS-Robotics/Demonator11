@@ -48,8 +48,6 @@ public class RampShooter extends CommandBase {
 
       speed = ridders(3.5, 13.5, angle, dist, result, 20);
 
-      double error = result - eq(speed, angle, dist);
-
       double vX = Math.cos(angle) * speed;
       double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
       double time = dist / (speed * Math.cos(angle));
@@ -57,9 +55,8 @@ public class RampShooter extends CommandBase {
       RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
       
 
-      if (Math.abs(error) < 0.1) {
-        RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
-      }
+      RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
+      
       
     } else {
       RobotContainer.shooter.setShooter(msToRPM(8.5));

@@ -36,11 +36,10 @@ public class SetIntake extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.intake.stopPosMotor();
-
     switch (state) {
       case kDown:
         RobotContainer.intake.setIdleMode(IdleMode.kCoast);
+        RobotContainer.intake.stopPosMotor();
         break;
       case kUp:
         RobotContainer.intake.setIdleMode(IdleMode.kBrake);

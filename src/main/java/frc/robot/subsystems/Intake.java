@@ -12,6 +12,7 @@ import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase {
@@ -36,10 +37,12 @@ public class Intake extends SubsystemBase {
     positionEnc = positionMotor.getEncoder();
 
     positionPid = positionMotor.getPIDController();
+
     positionEnc.setPosition(0);
-    positionPid.setP(0.03);
-    positionPid.setI(0.00001);
-    positionPid.setD(0.03);
+
+    positionPid.setP(Constants.INTAKE_P);
+    positionPid.setI(Constants.INTAKE_I);
+    positionPid.setD(Constants.INTAKE_D);
 
     var tab = Shuffleboard.getTab("Intake");
     tab.addNumber("Setpoint", () -> setpoint);

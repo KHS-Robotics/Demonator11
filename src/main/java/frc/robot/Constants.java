@@ -68,4 +68,8 @@ public class Constants {
   public static final double SHOOTER_I = 0.000001;
   public static final double SHOOTER_D = 0.005;
   public static final double SHOOTER_FF = 0.00017024;
+
+  public static final double INTAKE_P = 0.03;
+  public static final double INTAKE_I = 0.00001;
+  public static final double INTAKE_D = 0.03;
 }

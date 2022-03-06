@@ -40,7 +40,7 @@ public class OperatorStick extends Joystick {
     return this.getRawButton(2);
   }
 
-  public boolean allowClimb() {
-    return this.getRawAxis(3) > 0.1;
+  public boolean climb() {
+    return this.getRawButton(8);
   }
 }
