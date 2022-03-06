@@ -64,11 +64,12 @@ public class Shooter extends SubsystemBase {
     speedMultiplier = 1.05;
 
     var tab = Shuffleboard.getTab("Match");
-    tab.addNumber("Speed Multiplier", () -> speedMultiplier);
+    tab.addNumber("Shooter Multiplier", () -> speedMultiplier);
 
     tab = Shuffleboard.getTab("Shooter");
     tab.addNumber("Speed", leaderEnc::getVelocity);
     tab.addNumber("Error", () -> shooterPidSetpoint - leaderEnc.getVelocity() );
+    tab.addNumber("Shooter Multiplier", () -> speedMultiplier);
   }
 
   public void setHoodAngle(double angle) {
@@ -89,7 +90,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean atSetpoint() {
-    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 10;
+    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 30;
   }
 
   public void stop() {

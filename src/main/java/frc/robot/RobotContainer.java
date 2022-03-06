@@ -127,7 +127,7 @@ public class RobotContainer {
     shoot.whenHeld(new Shoot());
 
     Button manualIndex = new Button(() -> switchbox.rampShooter());
-    manualIndex.whenPressed(new InstantCommand(() -> {indexer.index(); indexer.feed(); }) );
+    manualIndex.whenPressed(new InstantCommand(() -> {indexer.index(); indexer.feed();  }) );
     manualIndex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); } ) );
 
     Button dropIntake = new Button(switchbox::intakeDown);
@@ -177,6 +177,10 @@ public class RobotContainer {
     
     Button pivotTest = new Button(() -> joystick.getRawButton(7));
     pivotTest.whenPressed(new Pivot(Angle.Tilt));
+
+    Button rampShooter = new Button(() -> switchbox.getRawAxis(0) > 0.01);
+    rampShooter.whenPressed(() -> { RobotContainer.shooter.setShooter(1600); });
+    rampShooter.whenReleased(() -> { RobotContainer.shooter.setShooter(0); });
  }
 
   public static AutonomousRoutine getCommand(int id) {
