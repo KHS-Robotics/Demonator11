@@ -16,15 +16,7 @@ public class ShootAuto extends Shoot {
 
   @Override
   public void execute() {
-    dist = 1;
-    RobotContainer.shooter.setShooter(800);
-    if (RobotContainer.shooter.atSetpoint()) {
-      RobotContainer.indexer.feed();
-      RobotContainer.indexer.index();
-    } else {
-      RobotContainer.indexer.stop();
-      RobotContainer.indexer.stopFeeder();
-    }
+    super.execute();
 
     if(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
       timer.reset();

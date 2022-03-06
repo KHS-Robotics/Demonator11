@@ -60,10 +60,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotContainer.shooter.setHood(0.75);
     RobotContainer.intake.resetPos();
 
-    Limelight.setLedMode(LightMode.eOff);
+    Limelight.setLedMode(LightMode.eOn);
     if (autonCommand != null) {
       autonCommand.cancel();
       CommandScheduler.getInstance().run();

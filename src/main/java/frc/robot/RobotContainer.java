@@ -206,8 +206,9 @@ public class RobotContainer {
     return new AutoRoutineBuilder()
       .addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
-      )
-      .addTrajectoryCommand(
+      ).addCommand( 
+        new InstantCommand( () -> { RobotContainer.shooter.setShooter(1582); RobotContainer.shooter.setHoodAngle(0.477675016322586); } )
+      ).addTrajectoryCommand(
         new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
         new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(180)),
         true
@@ -229,7 +230,7 @@ public class RobotContainer {
       .addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
-        new RotateToAngle(270, 15)
+        new RotateToAngle(270, 15).alongWith(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1557); RobotContainer.shooter.setHoodAngle(0.4655415803885494); } ))
       ).addTrajectoryCommand(
         new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
         new Pose2d(7.5, 0.3, Rotation2d.fromDegrees(270)),
@@ -253,7 +254,7 @@ public class RobotContainer {
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
-        new RotateToAngle(-170, 10)
+        new RotateToAngle(-170, 10).alongWith(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1612); RobotContainer.shooter.setHoodAngle(0.4909171668794452); } ))
       ).addTrajectoryCommand(
         new Pose2d(6.6, 2.56, Rotation2d.fromDegrees(-170)),
         new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(-170))
@@ -272,7 +273,9 @@ public class RobotContainer {
 
   private static AutonomousRoutine getFourBallAuto() {
     return new AutoRoutineBuilder(2.5, 5)
-      .addTrajectoryCommand(
+      .addCommand(
+        new InstantCommand( () -> { RobotContainer.shooter.setShooter(1536); RobotContainer.shooter.setHoodAngle(0.4548584207412605); } )
+      ).addTrajectoryCommand(
         new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
         new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
         true
@@ -281,7 +284,7 @@ public class RobotContainer {
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
-        new RotateToAngle(140, 15)
+        new RotateToAngle(140, 15).alongWith( new InstantCommand( () -> { RobotContainer.shooter.setShooter(1477); RobotContainer.shooter.setHoodAngle(0.4210067567992968); } ) )
       ).addTrajectoryCommand(
         new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(140)),
         new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
@@ -305,7 +308,7 @@ public class RobotContainer {
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
-        new RotateToAngle(270, 20)
+        new RotateToAngle(270, 20).alongWith(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1686); RobotContainer.shooter.setHoodAngle(0.519687052923882); } ) )
       ).addTrajectoryCommand(
         new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270)),
         new Pose2d(8.05, 0.4, Rotation2d.fromDegrees(270))
@@ -319,7 +322,7 @@ public class RobotContainer {
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())
       ).addCommand(
-        new RotateToAngle(-140, 10)
+        new RotateToAngle(-140, 10).alongWith( new InstantCommand( () -> { RobotContainer.shooter.setShooter(1476); RobotContainer.shooter.setHoodAngle(0.42085501733269615); } ) )
       ).addTrajectoryCommand(
         new Pose2d(4.5, 1.25, Rotation2d.fromDegrees(-140)),
         new Pose2d(1.65, 0.65, Rotation2d.fromDegrees(-140))
