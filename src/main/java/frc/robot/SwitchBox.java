@@ -47,4 +47,12 @@ public class SwitchBox extends Joystick {
   public boolean launchPadShot() {
     return this.getRawButton(10);
   }
+
+  public boolean manualIndex() {
+    return this.getRawAxis(0) > 0.75;
+  }
+
+  public boolean manualOutdex() {
+    return this.getRawAxis(0) < -0.75;
+  }
 }

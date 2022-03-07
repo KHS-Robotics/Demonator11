@@ -126,9 +126,13 @@ public class RobotContainer {
     Button shoot = new Button(switchbox::shoot);
     shoot.whenHeld(new Shoot());
 
-    Button manualIndex = new Button(() -> switchbox.rampShooter());
-    manualIndex.whenPressed(new InstantCommand(() -> {indexer.index(); indexer.feed();  }) );
-    manualIndex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); } ) );
+    Button manualIndex = new Button(switchbox::manualIndex);
+    manualIndex.whenPressed(new InstantCommand(() -> {indexer.index(); indexer.feed();  }, indexer) );
+    manualIndex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
+
+    Button manualOutdex = new Button(switchbox::manualIndex);
+    manualOutdex.whenPressed(new InstantCommand(() -> {indexer.reverse(); indexer.setFeeder(-0.9);  }, indexer) );
+    manualOutdex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
 
     Button dropIntake = new Button(switchbox::intakeDown);
     dropIntake.whenHeld( new SetIntake(IntakeState.kDown));
@@ -178,7 +182,7 @@ public class RobotContainer {
     Button pivotTest = new Button(() -> joystick.getRawButton(7));
     pivotTest.whenPressed(new Pivot(Angle.Tilt));
 
-    Button rampShooter = new Button(() -> switchbox.getRawAxis(0) > 0.01);
+    Button rampShooter = new Button(switchbox::rampShooter);
     rampShooter.whenPressed(() -> { RobotContainer.shooter.setShooter(1600); });
     rampShooter.whenReleased(() -> { RobotContainer.shooter.setShooter(0); });
  }
