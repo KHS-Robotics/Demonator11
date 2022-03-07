@@ -21,6 +21,8 @@ public class Pivot extends CommandBase {
    */
   @Override
   public void initialize() {
+    RobotContainer.climber.resetPivot();
+
     switch (angle) {
       case Rest:
         setpoint = 0;

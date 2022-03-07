@@ -23,9 +23,9 @@ public class Climber extends SubsystemBase {
   private CANSparkMax elevatorLeader, elevatorFollower1, elevatorFollower2, pivotMotor;
   private RelativeEncoder elevatorEnc, pivotEnc;
   private SparkMaxPIDController elevatorPID;
-  private PIDController anglePID;
+  private PIDController pivotPID;
 
-  private double pivotSetpoint, elevatorSetpoint;
+  private double elevatorSetpoint;
 
   /**
    * Creates a new Climber.
@@ -44,8 +44,8 @@ public class Climber extends SubsystemBase {
     pivotEnc = pivotMotor.getEncoder();
 
     elevatorPID = elevatorLeader.getPIDController();
-    anglePID = new PIDController(0.075, 0, 0);
-    anglePID.setTolerance(2);
+    pivotPID = new PIDController(0.075, 0, 0);
+    pivotPID.setTolerance(2);
 
     elevatorLeader.setIdleMode(IdleMode.kBrake);
     elevatorFollower1.setIdleMode(IdleMode.kBrake);
@@ -76,11 +76,11 @@ public class Climber extends SubsystemBase {
     tab.addNumber("Pivot Position", pivotEnc::getPosition);
     tab.addNumber("El current", () -> RobotContainer.pdp.getCurrent(RobotMap.ELEVATOR_LEADER));
     tab.addNumber("Pivot Current", () -> RobotContainer.pdp.getCurrent(RobotMap.PIVOT_MOTOR));
-    tab.addNumber("Error", anglePID::getPositionError);
+    tab.addNumber("Error", pivotPID::getPositionError);
   }
 
   public void setAngle(double angle) {
-    pivotMotor.set( MathUtil.clamp( anglePID.calculate(RobotContainer.navx.getRoll(), angle), -1, 1));
+    setPivotSpeed( MathUtil.clamp( pivotPID.calculate(RobotContainer.navx.getRoll(), angle), -1, 1));
   }
 
   public void elevate(double height) {
@@ -94,12 +94,16 @@ public class Climber extends SubsystemBase {
   }
 
   public boolean pivotAtSetpoint() {
-    return Math.abs(pivotSetpoint - pivotEnc.getPosition()) < 0.5;
+    return pivotPID.atSetpoint();
+  }
+
+  public void resetPivot() {
+    pivotPID.reset();
   }
 
   public void stopPosMotor() {
     pivotMotor.set(0);
-    anglePID.reset();
+    pivotPID.reset();
   }
 
   public void setElevatorSpeed(double speed) {
