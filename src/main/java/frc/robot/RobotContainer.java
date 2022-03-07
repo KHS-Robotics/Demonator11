@@ -130,7 +130,7 @@ public class RobotContainer {
     manualIndex.whenPressed(new InstantCommand(() -> {indexer.index(); indexer.feed();  }, indexer) );
     manualIndex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
 
-    Button manualOutdex = new Button(switchbox::manualIndex);
+    Button manualOutdex = new Button(switchbox::manualOutdex);
     manualOutdex.whenPressed(new InstantCommand(() -> {indexer.reverse(); indexer.setFeeder(-0.9);  }, indexer) );
     manualOutdex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
 
