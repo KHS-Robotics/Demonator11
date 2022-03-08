@@ -64,9 +64,9 @@ public class Constants {
   public static final double TARGET_I = 0.0035;
   public static final double TARGET_D = 0.0025;
 
-  public static final double SHOOTER_P = 0.00045;
-  public static final double SHOOTER_I = 0.000001;
-  public static final double SHOOTER_D = 0.005;
+  public static final double SHOOTER_P = 0.0008;
+  public static final double SHOOTER_I = 0.0;
+  public static final double SHOOTER_D = 0.01;
   public static final double SHOOTER_FF = 0.00017024;
 
   public static final double INTAKE_P = 0.03;
