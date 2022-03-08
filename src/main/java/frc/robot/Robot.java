@@ -56,6 +56,10 @@ public class Robot extends TimedRobot {
       Limelight.setLedMode(LightMode.eOn);
     }
     
+    if (RobotContainer.switchbox.climb() && RobotContainer.switchbox.shoot()) {
+      RobotContainer.climber.resetPos();
+      RobotContainer.intake.resetPos();
+    }
   }
 
   @Override

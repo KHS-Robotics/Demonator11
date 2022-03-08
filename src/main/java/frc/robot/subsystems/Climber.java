@@ -16,6 +16,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 
@@ -44,7 +45,7 @@ public class Climber extends SubsystemBase {
     pivotEnc = pivotMotor.getEncoder();
 
     elevatorPID = elevatorLeader.getPIDController();
-    pivotPID = new PIDController(0.075, 0, 0);
+    pivotPID = new PIDController(Constants.PIVOT_P, Constants.PIVOT_I, Constants.PIVOT_D);
     pivotPID.setTolerance(2);
 
     elevatorLeader.setIdleMode(IdleMode.kBrake);
@@ -60,12 +61,10 @@ public class Climber extends SubsystemBase {
     elevatorFollower2.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500);
     elevatorFollower2.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
     elevatorFollower2.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
-    
-    elevatorEnc.setPosition(0);
 
-    elevatorPID.setP(0.1);
-    elevatorPID.setI(0.0001);
-    elevatorPID.setD(0);
+    elevatorPID.setP(Constants.ELEVATOR_P);
+    elevatorPID.setI(Constants.ELEVATOR_I);
+    elevatorPID.setD(Constants.ELEVATOR_D);
     elevatorPID.setFF(0);
 
     elevatorPID.setOutputRange(-0.75, 1);
@@ -80,7 +79,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void setAngle(double angle) {
-    setPivotSpeed( MathUtil.clamp( pivotPID.calculate(RobotContainer.navx.getRoll(), angle), -1, 1));
+    setPivotSpeed( MathUtil.clamp( pivotPID.calculate(RobotContainer.navx.getRoll(), angle), -0.75, 1));
   }
 
   public void elevate(double height) {
@@ -112,6 +111,11 @@ public class Climber extends SubsystemBase {
 
   public void setPivotSpeed(double speed) {
     pivotMotor.setVoltage(12 * speed);
+  }
+
+  public void resetPos() {
+    elevatorEnc.setPosition(0);
+    pivotPID.reset();
   }
 
   @Override

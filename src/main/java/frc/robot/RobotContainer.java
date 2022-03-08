@@ -34,6 +34,7 @@ import frc.robot.commands.drive.rotate.RotateToTarget;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.intake.SetIntake;
 import frc.robot.commands.intake.SetIntake.IntakeState;
+import frc.robot.commands.shooter.RampShooter;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
 import frc.robot.subsystems.*;
@@ -176,14 +177,13 @@ public class RobotContainer {
     climbButton.whenPressed(new Elevate(Level.Zero));
 
     Button prepClimb = new Button(joystick::climb);
-    prepClimb.whenPressed(new Elevate(Level.Reach));
-    //maxExtenstion.whenPressed(new PrepElevator().andThen(new InstantCommand(() -> climber.setElevatorSpeed(-0.5)).andThen(new WaitCommand(0.1)).andThen(new InstantCommand(() -> climber.setElevatorSpeed(0))) ));
+    prepClimb.whenPressed(new UnhookElevator().andThen(new Elevate(Level.Reach)) );
     
     Button pivotTest = new Button(() -> joystick.getRawButton(7));
     pivotTest.whenPressed(new Pivot(Angle.Tilt));
 
     Button rampShooter = new Button(switchbox::rampShooter);
-    rampShooter.whenPressed(() -> { RobotContainer.shooter.setShooter(1600); });
+    rampShooter.whenPressed( new RampShooter() );
     rampShooter.whenReleased(() -> { RobotContainer.shooter.setShooter(0); });
  }
 
@@ -213,7 +213,7 @@ public class RobotContainer {
         new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
         new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
         true
-      ).addCommand(
+      ).addCommand(  
         new RotateToAngle(90)
       ).addCommand(
         new ShootAuto().alongWith(new RotateToTarget())

@@ -72,4 +72,12 @@ public class Constants {
   public static final double INTAKE_P = 0.03;
   public static final double INTAKE_I = 0.00001;
   public static final double INTAKE_D = 0.03;
+
+  public static final double PIVOT_P = 0.075;
+  public static final double PIVOT_I = 0;
+  public static final double PIVOT_D = 0;
+
+  public static final double ELEVATOR_P = 0.1;
+  public static final double ELEVATOR_I = 0.0001;
+  public static final double ELEVATOR_D = 0;
 }

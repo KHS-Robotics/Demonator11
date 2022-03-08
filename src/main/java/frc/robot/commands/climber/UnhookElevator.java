@@ -4,10 +4,12 @@
 
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class UnhookElevator extends CommandBase {
+  Timer timer = new Timer();
   /** Creates a new UnhookElevator. */
   public UnhookElevator() {
    addRequirements(RobotContainer.climber);
@@ -17,19 +19,18 @@ public class UnhookElevator extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.climber.setElevatorSpeed(-0.1);
+    timer.start();
   }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    RobotContainer.climber.setElevatorSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.hasElapsed(0.5);
   }
 }

@@ -38,8 +38,6 @@ public class Intake extends SubsystemBase {
 
     positionPid = positionMotor.getPIDController();
 
-    positionEnc.setPosition(0);
-
     positionPid.setP(Constants.INTAKE_P);
     positionPid.setI(Constants.INTAKE_I);
     positionPid.setD(Constants.INTAKE_D);
