@@ -50,11 +50,6 @@ public class DriveSwerveWithXbox extends CommandBase {
 
     fieldRelative = (!RobotContainer.xboxController.getLeftBumper());
     RobotContainer.swerveDrive.drive(xSpeed, ySpeed, rot, fieldRelative);
-
-    /*
-     * if (Math.abs(x) + Math.abs(y) + Math.abs(z) > 0.35) {
-     * Robot.swerveDrive.disablePID(); }
-     */
   }
 
   // Make this return true when this Command no longer needs to run execute()

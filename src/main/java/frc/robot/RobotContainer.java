@@ -34,6 +34,7 @@ import frc.robot.commands.drive.rotate.RotateToTarget;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.intake.SetIntake;
 import frc.robot.commands.intake.SetIntake.IntakeState;
+import frc.robot.commands.shooter.AutoAdjustHood;
 import frc.robot.commands.shooter.RampShooter;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
@@ -72,7 +73,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     swerveDrive.setDefaultCommand(new DriveSwerveWithXbox());
-
+    shooter.setDefaultCommand(new AutoAdjustHood());
+    
     var tab = Shuffleboard.getTab("Match");
     tab.addNumber("X", xboxController::getLeftX);
     tab.addNumber("Y", xboxController::getLeftY);
