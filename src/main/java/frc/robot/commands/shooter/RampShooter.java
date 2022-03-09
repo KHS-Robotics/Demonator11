@@ -110,7 +110,7 @@ public class RampShooter extends CommandBase {
   public static double msToRPM(double metersPerSec) {
     //rad/s to rpm = rad/s * 30 / PI
     double r = 0.0762;
-    return (metersPerSec / (r * 2.0 / 3.0)) * 30.0 / Math.PI;
+    return ((metersPerSec / (r * 2.0 / 3.0)) * 30.0 / Math.PI) * 30.0 / 24.0;
   }
 
   static double eq(double speed, double angle, double xDist) {
