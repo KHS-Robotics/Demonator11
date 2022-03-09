@@ -123,7 +123,7 @@ public class RobotContainer {
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button outtakeBall = new Button(switchbox::outtake);
-    outtakeBall.whenPressed(() -> {intake.reverse(); indexer.reverse();}, intake);
+    outtakeBall.whenPressed(() -> {intake.reverse(); }, intake);
     outtakeBall.whenReleased(() -> {intake.stop(); indexer.stop(); }, intake);
 
     Button shoot = new Button(switchbox::shoot);
@@ -134,7 +134,7 @@ public class RobotContainer {
     manualIndex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
 
     Button manualOutdex = new Button(switchbox::manualOutdex);
-    manualOutdex.whenPressed(new InstantCommand(() -> {indexer.reverse(); indexer.setFeeder(-0.9);  }, indexer) );
+    manualOutdex.whenPressed(new InstantCommand(() -> { indexer.setFeeder(-0.9); }, indexer) );
     manualOutdex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
 
     Button dropIntake = new Button(switchbox::intakeDown);

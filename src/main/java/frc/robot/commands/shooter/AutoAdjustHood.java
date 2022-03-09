@@ -30,7 +30,7 @@ public class AutoAdjustHood extends CommandBase {
   @Override
   public void execute() {
     if(Limelight.isTarget()) {
-      double dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.61;
+      double dist = (targetHeight - limelightHeight) / (Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) * Math.cos(Math.toRadians(Limelight.getTx()))) + 0.61;
       double angle;
 
       if (dist >= 2.7) {

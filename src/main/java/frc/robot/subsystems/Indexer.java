@@ -8,21 +8,24 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Indexer extends SubsystemBase {
-  private CANSparkMax floor, feeder;//, side;
+  private CANSparkMax leftSide, rightSide, feeder;
 
   /**
    * Creates a new Indexer.
    */
   public Indexer() {
-    floor = new CANSparkMax(RobotMap.INDEXER_FLOOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-    //side = new CANSparkMax(RobotMap.INDEXER_SIDE, CANSparkMaxLowLevel.MotorType.kBrushless);
+    leftSide = new CANSparkMax(RobotMap.INDEXER_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
+    rightSide = new CANSparkMax(RobotMap.INDEXER_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
     feeder = new CANSparkMax(RobotMap.INDEXER_FEEDER, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    floor.setIdleMode(IdleMode.kCoast);
+    leftSide.setIdleMode(IdleMode.kCoast);
+    rightSide.setIdleMode(IdleMode.kCoast);
+
     feeder.setIdleMode(IdleMode.kBrake);
   }
 
@@ -31,25 +34,17 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void reverse() {
-    setFloor(-0.4);
+  public void setLeft(double speed) {
+    leftSide.setVoltage(speed * 12); //12:1
   }
 
-  public void setFloor(double speed) {
-    floor.setVoltage(speed * 12);
+  public void setRight(double speed) {
+    //multiplied so that the same speed will run both motors the same
+    speed *= 15/12;
+    speed = MathUtil.clamp(speed, -1, 1);
+
+    rightSide.setVoltage(speed * 12); //15:1
   }
-
-  public void stopFloor() {
-    setFloor(0);
-  }
-
-  // public void setSide(double speed) {
-  //   side.setVoltage(speed * 12);
-  // }
-
-  // public void stopSide() {
-  //   setSide(0);
-  // }
 
   public void setFeeder(double speed) {
     feeder.setVoltage(speed * 12);
@@ -60,8 +55,8 @@ public class Indexer extends SubsystemBase {
   }
 
   public void index() {
-    setFloor(0.4);
-    //setSide(0.5);
+    setLeft(0.4);
+    setRight(-0.4);
   }
 
   public void feed() {
@@ -69,7 +64,7 @@ public class Indexer extends SubsystemBase {
   }
 
   public void stop() {
-    stopFloor();
-    //stopSide();
+    setLeft(0);
+    setRight(0);
   }
 }

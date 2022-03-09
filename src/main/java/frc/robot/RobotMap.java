@@ -36,7 +36,8 @@ public class RobotMap {
   public static final int INTAKE_DRIVE = 3;
   public static final int INTAKE_POSITION = 2;
 
-  public static final int INDEXER_FLOOR = 4;
+  public static final int INDEXER_LEFT = 4;
+  public static final int INDEXER_RIGHT = 8;
   public static final int INDEXER_FEEDER = 5;
 
   public static final int SHOOTER_LEADER = 7;
