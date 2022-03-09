@@ -38,6 +38,7 @@ import frc.robot.commands.shooter.AutoAdjustHood;
 import frc.robot.commands.shooter.RampShooter;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
+import frc.robot.commands.indexer.Index;
 import frc.robot.subsystems.*;
 import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
@@ -74,6 +75,7 @@ public class RobotContainer {
   public RobotContainer() {
     swerveDrive.setDefaultCommand(new DriveSwerveWithXbox());
     shooter.setDefaultCommand(new AutoAdjustHood());
+    indexer.setDefaultCommand(new Index());
     
     var tab = Shuffleboard.getTab("Match");
     tab.addNumber("X", xboxController::getLeftX);
@@ -187,7 +189,11 @@ public class RobotContainer {
     Button rampShooter = new Button(switchbox::rampShooter);
     rampShooter.whenPressed( new RampShooter() );
     rampShooter.whenReleased(() -> { RobotContainer.shooter.setShooter(0); });
- }
+ 
+    Button eject = new Button(switchbox::eject);
+    eject.whenPressed(() -> {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8);}, shooter);
+    eject.whenReleased(() -> {shooter.setShooter(0); indexer.setFeeder(0);});
+  }
 
   public static AutonomousRoutine getCommand(int id) {
 

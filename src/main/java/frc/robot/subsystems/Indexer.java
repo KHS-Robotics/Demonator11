@@ -55,8 +55,8 @@ public class Indexer extends SubsystemBase {
   }
 
   public void index() {
-    setLeft(0.4);
-    setRight(-0.4);
+    setLeft(0.9);
+    setRight(0.9);
   }
 
   public void feed() {

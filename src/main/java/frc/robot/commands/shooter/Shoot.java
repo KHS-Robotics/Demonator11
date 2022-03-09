@@ -52,11 +52,11 @@ public class Shoot extends CommandBase {
 
     RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
 
+    RobotContainer.indexer.index();
+
     if (RobotContainer.shooter.atSetpoint()) {
       RobotContainer.indexer.feed();
-      RobotContainer.indexer.index();
     } else {
-      RobotContainer.indexer.stop();
       RobotContainer.indexer.stopFeeder();
     }
   }
@@ -66,7 +66,6 @@ public class Shoot extends CommandBase {
   public void end(boolean interrupted) {
     RobotContainer.shooter.stop();
     RobotContainer.shooter.setHood(0.5);
-    RobotContainer.indexer.stop();
     RobotContainer.indexer.stopFeeder();
   }
 
