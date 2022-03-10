@@ -70,6 +70,7 @@ public class Shooter extends SubsystemBase {
     tab.addNumber("Speed", leaderEnc::getVelocity);
     tab.addNumber("Error", () -> shooterPidSetpoint - leaderEnc.getVelocity() );
     tab.addNumber("Shooter Multiplier", () -> speedMultiplier);
+    tab.addNumber("Setpoint", () -> shooterPidSetpoint);
   }
 
   public void setHoodAngle(double angle) {

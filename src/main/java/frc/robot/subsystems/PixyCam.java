@@ -18,6 +18,7 @@ public class PixyCam extends SubsystemBase {
   public PixyCam() {
     pixy = Pixy2.createInstance(new SPILink());
     pixy.init();
+    pixy.setLamp((byte) 1, (byte) 0);
 
     var tab = Shuffleboard.getTab("Pixy");
     tab.addNumber("BlockCount", () -> blockCount);

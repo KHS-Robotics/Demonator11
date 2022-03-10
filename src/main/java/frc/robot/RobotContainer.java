@@ -177,10 +177,10 @@ public class RobotContainer {
     Button manualClimb = new Button( switchbox::climbOverride );
     manualClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
 
-    Button climbButton = new Button(switchbox::climb);
+    Button climbButton = new Button(joystick::climb);
     climbButton.whenPressed(new Elevate(Level.Zero));
 
-    Button prepClimb = new Button(joystick::climb);
+    Button prepClimb = new Button(switchbox::climb);
     prepClimb.whenPressed(new UnhookElevator().andThen(new Elevate(Level.Reach)) );
     
     Button pivotTest = new Button(() -> joystick.getRawButton(7));

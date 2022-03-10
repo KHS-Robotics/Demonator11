@@ -4,6 +4,7 @@
 
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -27,13 +28,18 @@ public class Shoot extends CommandBase {
   public void initialize() {
     speed = 8.5;
     Limelight.setLedMode(LightMode.eOn);
+
+    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
-  
+
+    if(Limelight.isTarget()) {
+      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
+    }
+
     if (dist > 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
     } else {

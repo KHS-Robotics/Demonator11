@@ -9,7 +9,7 @@ public class SwitchBox extends Joystick {
   }
 
   public boolean intakeDown() {
-    return this.getRawButton(2);
+    return this.getRawButton(3);
   }
 
   public boolean rampShooter() {
