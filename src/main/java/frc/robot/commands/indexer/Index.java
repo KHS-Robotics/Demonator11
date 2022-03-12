@@ -21,24 +21,28 @@ public class Index extends CommandBase {
   @Override
   public void execute() {
     int numCargo = RobotContainer.pixy.getNumCargo();
-    if (numCargo == 2) {
-      if (RobotContainer.pixy.nextCargoLeft()) {
-        RobotContainer.indexer.setLeft(0.9);
-        RobotContainer.indexer.setRight(-0.9);
-      } else {
-        RobotContainer.indexer.setLeft(-0.9);
-        RobotContainer.indexer.setRight(0.9);
+    if (!RobotContainer.indexer.feederBeamBreak.get()) {
+      RobotContainer.indexer.stop();
+    } else {
+      if (numCargo == 2) {
+        if (RobotContainer.pixy.nextCargoLeft()) {
+          RobotContainer.indexer.setLeft(0.9);
+          RobotContainer.indexer.setRight(-0.9);
+        } else {
+          RobotContainer.indexer.setLeft(-0.9);
+          RobotContainer.indexer.setRight(0.9);
+        }
+      } else if (numCargo == 1) {
+        if (RobotContainer.pixy.nextCargoLeft()) {
+          RobotContainer.indexer.setLeft(0.9);
+          RobotContainer.indexer.setRight(0.9);
+        } else {
+          RobotContainer.indexer.setLeft(-0.9);
+          RobotContainer.indexer.setRight(0.9);
+        }
+      } else if (numCargo == 0) {
+        RobotContainer.indexer.index();
       }
-    } else if (numCargo == 1) {
-      if (RobotContainer.pixy.nextCargoLeft()) {
-        RobotContainer.indexer.setLeft(0.9);
-        RobotContainer.indexer.setRight(0.9);
-      } else {
-        RobotContainer.indexer.setLeft(-0.9);
-        RobotContainer.indexer.setRight(0.9);
-      }
-    } else if (numCargo == 0) {
-      RobotContainer.indexer.index();
     }
   }
 
