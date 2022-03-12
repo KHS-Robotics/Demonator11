@@ -30,6 +30,7 @@ public class ManualShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotContainer.shooter.setHood(0.9);
     RobotContainer.shooter.setShooter(speed);
     if (RobotContainer.shooter.atSetpoint()) {
       RobotContainer.indexer.feed();

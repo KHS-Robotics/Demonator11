@@ -40,6 +40,8 @@ public class Shoot extends CommandBase {
       dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
     }
 
+    dist = 4.0;
+
     if (dist > 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
     } else {

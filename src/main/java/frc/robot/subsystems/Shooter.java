@@ -55,6 +55,8 @@ public class Shooter extends SubsystemBase {
     shooterPid.setD(Constants.SHOOTER_D);
     shooterPid.setFF(Constants.SHOOTER_FF);
 
+    shooterPid.setIZone(500);
+
     hoodServo1 = new Servo(RobotMap.HOOD_SERVO_1);
     hoodServo2 = new Servo(RobotMap.HOOD_SERVO_2);
 

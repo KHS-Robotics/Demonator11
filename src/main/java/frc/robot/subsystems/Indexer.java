@@ -30,7 +30,9 @@ public class Indexer extends SubsystemBase {
 
     feeder.setIdleMode(IdleMode.kBrake);
     
-    leftSide.setInverted(true);
+    rightSide.setInverted(true);
+
+    feederBeamBreak = new DigitalInput(4);
   }
 
   @Override

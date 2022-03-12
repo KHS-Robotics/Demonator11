@@ -35,6 +35,7 @@ import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.intake.SetIntake;
 import frc.robot.commands.intake.SetIntake.IntakeState;
 import frc.robot.commands.shooter.AutoAdjustHood;
+import frc.robot.commands.shooter.ManualShoot;
 import frc.robot.commands.shooter.RampShooter;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
