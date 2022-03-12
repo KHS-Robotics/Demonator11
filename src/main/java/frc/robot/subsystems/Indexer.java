@@ -27,6 +27,8 @@ public class Indexer extends SubsystemBase {
     rightSide.setIdleMode(IdleMode.kCoast);
 
     feeder.setIdleMode(IdleMode.kBrake);
+    
+    leftSide.setInverted(true);
   }
 
   @Override

@@ -4,8 +4,8 @@
 
 package frc.robot.commands.indexer;
 
-import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 
 public class Index extends CommandBase {
   /** Creates a new Index. */
@@ -20,7 +20,20 @@ public class Index extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.indexer.index();
+    int numCargo = RobotContainer.pixy.getNumCargo();
+    if (numCargo == 2) {
+      if (RobotContainer.pixy.nextCargoLeft()) {
+        RobotContainer.indexer.setLeft(0.9);
+        RobotContainer.indexer.setRight(-0.9);
+      } else {
+        RobotContainer.indexer.setLeft(-0.9);
+        RobotContainer.indexer.setRight(0.9);
+      }
+    } else if (numCargo == 1) {
+      RobotContainer.indexer.index();
+    } else if (numCargo == 0) {
+      RobotContainer.indexer.stop();
+    }
   }
 
   // Called once the command ends or is interrupted.

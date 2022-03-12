@@ -108,4 +108,18 @@ public class PixyCam extends SubsystemBase {
   public int getNumCargo() {
     return cargos.length + (isMerged() ? 1 : 0);
   }
+
+  /**
+   * 0 = left, 1 = right
+   * 
+   * @return
+   */
+  public boolean nextCargoLeft() {
+    int frontIndex = 0;
+    if (cargos[1].getY() > cargos[0].getY()) {
+      frontIndex = 1;
+    }
+    
+    return cargos[frontIndex].getX() < pixy.getFrameWidth() / 2;
+  }
 }
