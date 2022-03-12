@@ -30,9 +30,15 @@ public class Index extends CommandBase {
         RobotContainer.indexer.setRight(0.9);
       }
     } else if (numCargo == 1) {
-      RobotContainer.indexer.index();
+      if (RobotContainer.pixy.nextCargoLeft()) {
+        RobotContainer.indexer.setLeft(0.9);
+        RobotContainer.indexer.setRight(0.9);
+      } else {
+        RobotContainer.indexer.setLeft(-0.9);
+        RobotContainer.indexer.setRight(0.9);
+      }
     } else if (numCargo == 0) {
-      RobotContainer.indexer.stop();
+      RobotContainer.indexer.index();
     }
   }
 

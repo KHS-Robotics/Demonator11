@@ -116,7 +116,7 @@ public class PixyCam extends SubsystemBase {
    */
   public boolean nextCargoLeft() {
     int frontIndex = 0;
-    if (cargos[1].getY() > cargos[0].getY()) {
+    if (cargos.length > 1 && cargos[1].getY() > cargos[0].getY()) {
       frontIndex = 1;
     }
     

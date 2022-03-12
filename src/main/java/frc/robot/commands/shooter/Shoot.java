@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
 
@@ -35,7 +36,6 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     if(Limelight.isTarget()) {
       dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
     }

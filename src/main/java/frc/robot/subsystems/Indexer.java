@@ -9,10 +9,12 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Indexer extends SubsystemBase {
+  public DigitalInput feederBeamBreak;
   private CANSparkMax leftSide, rightSide, feeder;
 
   /**
