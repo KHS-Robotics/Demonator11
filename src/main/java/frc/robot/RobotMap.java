@@ -20,7 +20,7 @@ public class RobotMap {
 
   public static final int FRONT_LEFT_PIVOT = 11;
   public static final int FRONT_RIGHT_PIVOT = 12;
-  public static final int REAR_LEFT_PIVOT = 10; // NOT SET, was 7
+  public static final int REAR_LEFT_PIVOT = 10;
   public static final int REAR_RIGHT_PIVOT = 13;
 
   public static final int FRONT_LEFT_DRIVE = 1;

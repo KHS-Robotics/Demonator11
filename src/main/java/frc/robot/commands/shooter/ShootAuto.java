@@ -18,9 +18,9 @@ public class ShootAuto extends Shoot {
   public void execute() {
     super.execute();
 
-    if(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
-      timer.reset();
-    }
+    // if(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
+    //   timer.reset();
+    // }
   }
 
   @Override
@@ -33,12 +33,12 @@ public class ShootAuto extends Shoot {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.shooter.setHood(0.75);
-    RobotContainer.indexer.stop();
+    RobotContainer.indexer.stopFeeder();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(0.5);
+    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(3);
   }
 }

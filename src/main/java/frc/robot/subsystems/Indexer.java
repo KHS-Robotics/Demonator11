@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -26,13 +27,18 @@ public class Indexer extends SubsystemBase {
     feeder = new CANSparkMax(RobotMap.INDEXER_FEEDER, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     leftSide.setIdleMode(IdleMode.kCoast);
+    
     rightSide.setIdleMode(IdleMode.kCoast);
 
     feeder.setIdleMode(IdleMode.kBrake);
     
-    rightSide.setInverted(true);
+    leftSide.setInverted(true);
+    rightSide.setInverted(false);
 
     feederBeamBreak = new DigitalInput(4);
+
+    var tab = Shuffleboard.getTab("Indexer");
+    tab.addBoolean("Beam Break", feederBeamBreak::get);
   }
 
   @Override

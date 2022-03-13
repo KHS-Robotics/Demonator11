@@ -4,11 +4,9 @@
 
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
 
@@ -30,17 +28,15 @@ public class Shoot extends CommandBase {
     speed = 8.5;
     Limelight.setLedMode(LightMode.eOn);
 
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
+    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(Limelight.isTarget()) {
-      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.81;
+      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91;
     }
-
-    dist = 4.0;
 
     if (dist > 2.7) {
       angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);

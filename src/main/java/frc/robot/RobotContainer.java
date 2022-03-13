@@ -35,7 +35,6 @@ import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
 import frc.robot.commands.intake.SetIntake;
 import frc.robot.commands.intake.SetIntake.IntakeState;
 import frc.robot.commands.shooter.AutoAdjustHood;
-import frc.robot.commands.shooter.ManualShoot;
 import frc.robot.commands.shooter.RampShooter;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
@@ -79,10 +78,8 @@ public class RobotContainer {
     indexer.setDefaultCommand(new Index());
     
     var tab = Shuffleboard.getTab("Match");
-    tab.addNumber("X", xboxController::getLeftX);
-    tab.addNumber("Y", xboxController::getLeftY);
     id = tab.add("AUTO ID", 0).getEntry();
-    tab.addNumber("dist", () -> (Constants.TARGET_HEIGHT - Constants.LIMELIGHT_HEIGHT) / Math.tan(Math.toRadians(Limelight.getTy() + Constants.LIMELIGHT_ANGLE)));
+    tab.addNumber("dist", () -> (Constants.TARGET_HEIGHT - Constants.LIMELIGHT_HEIGHT) / Math.tan(Math.toRadians(Limelight.getTy() + Constants.LIMELIGHT_ANGLE)) + 0.91);
     tab.addBoolean("Limelight See's Target", Limelight::isTarget);
 
     // Configure the button bindings
@@ -333,35 +330,35 @@ public class RobotContainer {
       .setStartingPose(
         new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(90))
       ).addCommand(
-        new ShootAuto().alongWith(new RotateToTarget())
+        new ShootAuto().raceWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(270, 20).alongWith(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1686); RobotContainer.shooter.setHoodAngle(0.519687052923882); } ) )
       ).addTrajectoryCommand(
         new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270)),
-        new Pose2d(8.05, 0.4, Rotation2d.fromDegrees(270))
+        new Pose2d(8.05, 0.6, Rotation2d.fromDegrees(270))
       ).addCommand(
         new RotateToAngle(160, 15)
       ).addTrajectoryCommand(
-        new Pose2d(8.05, 0.4, Rotation2d.fromDegrees(160)),
+        new Pose2d(8.05, 0.6, Rotation2d.fromDegrees(160)),
         new Pose2d(4.5, 1.25, Rotation2d.fromDegrees(160))
       ).addCommand(
           new RotateToAngle(40, 10)
       ).addCommand(
-        new ShootAuto().alongWith(new RotateToTarget())
+        new ShootAuto().raceWith(new RotateToTarget())
       ).addCommand(
         new RotateToAngle(-140, 10).alongWith( new InstantCommand( () -> { RobotContainer.shooter.setShooter(1476); RobotContainer.shooter.setHoodAngle(0.42085501733269615); } ) )
       ).addTrajectoryCommand(
         new Pose2d(4.5, 1.25, Rotation2d.fromDegrees(-140)),
-        new Pose2d(1.65, 0.65, Rotation2d.fromDegrees(-140))
+        new Pose2d(0.65, 0.15, Rotation2d.fromDegrees(-140))
       ).addCommand(
         new RotateToAngle(-160)
       ).addCommand(
         new WaitCommand(0.5) // WAIT FOR HUMAN PLAYER TO FEED IN
       ).addTrajectoryCommand(
-        new Pose2d(1.65, 0.65, Rotation2d.fromDegrees(-160)),
+        new Pose2d(0.65, 0.15, Rotation2d.fromDegrees(-160)),
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
-        new ShootAuto().alongWith(new RotateToTarget())
+        new ShootAuto().raceWith(new RotateToTarget())
       ).build();
   }
 }

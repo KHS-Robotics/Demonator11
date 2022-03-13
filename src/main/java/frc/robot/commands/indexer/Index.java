@@ -27,22 +27,26 @@ public class Index extends CommandBase {
       if (numCargo == 2) {
         if (RobotContainer.pixy.nextCargoLeft()) {
           RobotContainer.indexer.setLeft(0.9);
-          RobotContainer.indexer.setRight(-0.9);
+          RobotContainer.indexer.setRight(-0.7);
         } else {
-          RobotContainer.indexer.setLeft(-0.9);
+          RobotContainer.indexer.setLeft(-0.7);
           RobotContainer.indexer.setRight(0.9);
         }
       } else if (numCargo == 1) {
         if (RobotContainer.pixy.nextCargoLeft()) {
           RobotContainer.indexer.setLeft(0.9);
-          RobotContainer.indexer.setRight(0.9);
+          RobotContainer.indexer.setRight(-0.7);
         } else {
-          RobotContainer.indexer.setLeft(-0.9);
+          RobotContainer.indexer.setLeft(-0.7);
           RobotContainer.indexer.setRight(0.9);
         }
       } else if (numCargo == 0) {
         RobotContainer.indexer.index();
       }
+    }
+
+    if (RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
+      RobotContainer.shooter.hasShotAuto = false;
     }
   }
 
