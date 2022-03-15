@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -227,6 +228,20 @@ public class AutoRoutineBuilder {
     return generateSwerveCommand(generateTrajectory(startingPose, interiorWaypoints, endingPose));
   }
 
+  public CustomSwerveControllerCommand createTrajectoryCommandFollowAngle(Pose2d startingPose, Pose2d endingPose, Supplier<Rotation2d> targetAngle) {
+    return new CustomSwerveControllerCommand(
+      generateTrajectory(startingPose, endingPose),
+      RobotContainer.swerveDrive::getPose,
+      RobotContainer.swerveDrive.kinematics,
+      SwerveXPIDController,
+      SwerveYPIDController,
+      SwerveThetaPIDController,
+      targetAngle,
+      RobotContainer.swerveDrive::setModuleStates,
+      RobotContainer.swerveDrive
+    );
+  }
+
   /**
    * Loads a trajectory from a JSON file relative to the <i>deploy</i> folder.
    *
@@ -353,6 +368,13 @@ public class AutoRoutineBuilder {
                                          ProfiledPIDController thetaController, Consumer<SwerveModuleState[]> outputModuleStates,
                                          SwerveDrive swervedrive) {
       super(trajectory, pose, kinematics, xController, yController, thetaController, outputModuleStates, swervedrive);
+    }
+
+    public CustomSwerveControllerCommand(Trajectory trajectory, Supplier<Pose2d> pose,
+                                         SwerveDriveKinematics kinematics, PIDController xController, PIDController yController,
+                                         ProfiledPIDController thetaController, Supplier<Rotation2d> desiredRotation, Consumer<SwerveModuleState[]> outputModuleStates,
+                                         SwerveDrive swervedrive) {
+      super(trajectory, pose, kinematics, xController, yController, thetaController, desiredRotation, outputModuleStates, swervedrive);
     }
 
     @Override

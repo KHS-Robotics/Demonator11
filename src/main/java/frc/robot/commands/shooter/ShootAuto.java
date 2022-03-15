@@ -12,6 +12,7 @@ public class ShootAuto extends Shoot {
 
   public ShootAuto() {
     super();
+    addRequirements(RobotContainer.intake);
   }
 
   @Override
@@ -27,6 +28,8 @@ public class ShootAuto extends Shoot {
   public void initialize() {
     super.initialize();
     timer.start();
+    RobotContainer.intake.stop();
+    RobotContainer.intake.setPosition(0);
   }
 
   // Called once the command ends or is interrupted.
@@ -34,6 +37,9 @@ public class ShootAuto extends Shoot {
   public void end(boolean interrupted) {
     RobotContainer.shooter.setHood(0.75);
     RobotContainer.indexer.stopFeeder();
+    
+    RobotContainer.intake.intake();
+    RobotContainer.intake.setPosition(-14);
   }
 
   // Returns true when the command should end.
