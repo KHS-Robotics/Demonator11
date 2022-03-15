@@ -28,11 +28,13 @@ public class Pivot extends CommandBase {
         setpoint = 0;
         break;
       case Tilt:
-        setpoint = -48.5;
+        setpoint = -41.5;
         break;
       case Straight:
         setpoint = -20;
         break;
+      case Handoff:
+        setpoint = -39.0;
     }
   }
 
@@ -53,6 +55,7 @@ public class Pivot extends CommandBase {
   public enum Angle {
     Rest,
     Tilt,
-    Straight
+    Straight,
+    Handoff
   }
 }

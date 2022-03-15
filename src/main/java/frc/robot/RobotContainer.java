@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
@@ -75,7 +76,7 @@ public class RobotContainer {
   public RobotContainer() {
     swerveDrive.setDefaultCommand(new DriveSwerveWithXbox());
     shooter.setDefaultCommand(new AutoAdjustHood());
-    indexer.setDefaultCommand(new Index());
+    //indexer.setDefaultCommand(new Index());
     
     var tab = Shuffleboard.getTab("Match");
     id = tab.add("AUTO ID", 0).getEntry();
@@ -175,14 +176,14 @@ public class RobotContainer {
     Button manualClimb = new Button( switchbox::climbOverride );
     manualClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
 
-    Button climbButton = new Button(joystick::climb);
-    climbButton.whenPressed(new Elevate(Level.Zero));
+    Button setupClimb = new Button(switchbox::climb);
+    setupClimb.whenPressed(new UnhookElevator().andThen(new Elevate(Level.Reach)));
 
-    Button prepClimb = new Button(switchbox::climb);
-    prepClimb.whenPressed(new UnhookElevator().andThen(new Elevate(Level.Reach)) );
+    Button climbButton = new Button(joystick::climb);
+    climbButton.whenPressed( new Elevate(Level.Zero));
     
-    Button pivotTest = new Button(() -> joystick.getRawButton(7));
-    pivotTest.whenPressed(new Pivot(Angle.Tilt));
+    Button highBar = new Button(() -> joystick.getRawButton(7) );
+    highBar.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.15, 2.5)).andThen(new Elevate(Level.Handoff)) );
 
     Button rampShooter = new Button(switchbox::rampShooter);
     rampShooter.whenPressed( new RampShooter() );
@@ -210,6 +211,8 @@ public class RobotContainer {
         return getFourBallAuto();
       case 5:
         return getFiveBallAuto();
+      case 6:
+        return getLoganFiveBall();
     }
   }
 

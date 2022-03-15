@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
@@ -27,6 +28,7 @@ public class Climber extends SubsystemBase {
   private PIDController pivotPID;
 
   private double elevatorSetpoint;
+  private double pivotSetpoint;
 
   /**
    * Creates a new Climber.
@@ -67,7 +69,13 @@ public class Climber extends SubsystemBase {
     elevatorPID.setD(Constants.ELEVATOR_D);
     elevatorPID.setFF(0);
 
-    elevatorPID.setOutputRange(-0.75, 1);
+    elevatorLeader.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    elevatorLeader.enableSoftLimit(SoftLimitDirection.kForward, true);
+
+    elevatorLeader.setSoftLimit(SoftLimitDirection.kForward, 48);
+    elevatorLeader.setSoftLimit(SoftLimitDirection.kReverse, -5);
+
+    elevatorPID.setOutputRange(-0.6, 0.75);
 
     var tab = Shuffleboard.getTab("Climb");
     tab.addNumber("Pitch!", () -> RobotContainer.navx.getRoll());
@@ -76,10 +84,11 @@ public class Climber extends SubsystemBase {
     tab.addNumber("El current", () -> RobotContainer.pdp.getCurrent(RobotMap.ELEVATOR_LEADER));
     tab.addNumber("Pivot Current", () -> RobotContainer.pdp.getCurrent(RobotMap.PIVOT_MOTOR));
     tab.addNumber("Error", pivotPID::getPositionError);
+    tab.addNumber("Pivot Speed", () -> pivotSetpoint);
   }
 
   public void setAngle(double angle) {
-    setPivotSpeed( MathUtil.clamp( pivotPID.calculate(RobotContainer.navx.getRoll(), angle), -0.75, 1));
+    setPivotSpeed( -MathUtil.clamp( pivotPID.calculate(RobotContainer.navx.getRoll(), angle), -0.5, 0.5));
   }
 
   public void elevate(double height) {
@@ -110,6 +119,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void setPivotSpeed(double speed) {
+    pivotSetpoint = speed;
     pivotMotor.setVoltage(12 * speed);
   }
 
