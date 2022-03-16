@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer.swerveDrive.resetNavx(selectedAuton.getStartingPose());
 
-    autonCommand = new CenterSwerveModules(false).alongWith(new InstantCommand(() -> RobotContainer.shooter.setHood(0.75)).andThen(new InstantCommand(() -> RobotContainer.intake.intake()))).andThen(selectedAuton.getAsCommand());
+    autonCommand = new CenterSwerveModules(false).alongWith(new InstantCommand(() -> RobotContainer.shooter.setHood(0.75)).alongWith(new SetIntake(IntakeState.kDown)).alongWith(new InstantCommand(() -> RobotContainer.intake.intake()))).andThen(selectedAuton.getAsCommand());
     autonCommand.schedule();
   }
 

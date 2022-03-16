@@ -36,13 +36,13 @@ public class Elevate extends CommandBase {
         setpoint = 0;
         break;
       case Reach:
-        setpoint = 48;
+        setpoint = 49;
         break;
       case Zero:
         setpoint = -4;
         break;
       case Handoff:
-        setpoint = 46;
+        setpoint = 47;
         break;
     }
 

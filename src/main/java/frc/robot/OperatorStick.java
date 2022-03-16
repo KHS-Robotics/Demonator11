@@ -41,6 +41,10 @@ public class OperatorStick extends Joystick {
   }
 
   public boolean climb() {
+    return this.getRawButton(10);
+  }
+
+  public boolean handoff() {
     return this.getRawButton(8);
   }
 }

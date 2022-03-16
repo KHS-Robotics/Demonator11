@@ -76,7 +76,7 @@ public class RobotContainer {
   public RobotContainer() {
     swerveDrive.setDefaultCommand(new DriveSwerveWithXbox());
     shooter.setDefaultCommand(new AutoAdjustHood());
-    //indexer.setDefaultCommand(new Index());
+    indexer.setDefaultCommand(new Index());
     
     var tab = Shuffleboard.getTab("Match");
     id = tab.add("AUTO ID", 0).getEntry();
@@ -179,15 +179,14 @@ public class RobotContainer {
     Button setupClimb = new Button(switchbox::climb);
     setupClimb.whenPressed(new UnhookElevator().andThen(new Elevate(Level.Reach)));
 
-    Button climbButton = new Button(joystick::climb);
-    climbButton.whenPressed( new Elevate(Level.Zero));
+    Button climbButton = new Button( joystick::climb );
+    climbButton.whenPressed( new SetPivotVoltage(-0.15, 2).andThen(new Elevate(Level.Zero)) );
     
-    Button highBar = new Button(() -> joystick.getRawButton(7) );
+    Button highBar = new Button( joystick::handoff );
     highBar.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.15, 2.5)).andThen(new Elevate(Level.Handoff)) );
 
     Button rampShooter = new Button(switchbox::rampShooter);
     rampShooter.whenPressed( new RampShooter() );
-    rampShooter.whenReleased(() -> { RobotContainer.shooter.setShooter(0); });
  
     Button eject = new Button(switchbox::eject);
     eject.whenPressed(() -> {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8);}, shooter);
@@ -370,26 +369,26 @@ public class RobotContainer {
     .addCommand(
       new InstantCommand(() -> { shooter.setShooter(1500); })
     ).addTrajectoryCommand(
-      new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(-90)), 
-      new Pose2d(7.85, 0.5, Rotation2d.fromDegrees(-90))
+      new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270)), 
+      new Pose2d(7.85, 0.6, Rotation2d.fromDegrees(270)),
+      true
     ).addTrajectoryCommand(
-      new Pose2d(7.85, 0.5, Rotation2d.fromDegrees(-90)), 
-      new Pose2d(4.5, 1.34, Rotation2d.fromDegrees(35))
+      new Pose2d(7.85, 0.6, Rotation2d.fromDegrees(270)), 
+      new Pose2d(4.65, 1.2, Rotation2d.fromDegrees(35))
     ).addCommand(
       new ShootAuto().deadlineWith(
-        new RotateToTarget(),
-        new AutoRoutineBuilder(1.5, 3)
+        new AutoRoutineBuilder(0.5, 0.25)
         .createTrajectoryCommandFollowAngle(
-          new Pose2d(4.5, 1.34, Rotation2d.fromDegrees(35)), 
+          new Pose2d(4.65, 1.2, Rotation2d.fromDegrees(35)), 
           new Pose2d(5.12, 1.85, Rotation2d.fromDegrees(35)), 
           () -> Rotation2d.fromDegrees(swerveDrive.getYaw() - Limelight.getTx())
         )
       ).andThen(new InstantCommand(() -> { shooter.setShooter(1500); }))
     ).addTrajectoryCommand(
       new Pose2d(5.12, 1.85, Rotation2d.fromDegrees(35)), 
-      new Pose2d(0.65, 0.15, Rotation2d.fromDegrees(-140))
+      new Pose2d(0.65, 0.25, Rotation2d.fromDegrees(-140))
     ).addTrajectoryCommand(
-      new Pose2d(0.65, 0.15, Rotation2d.fromDegrees(-160)),
+      new Pose2d(0.65, 0.25, Rotation2d.fromDegrees(-140)),
       new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
     ).addCommand(
       new ShootAuto().deadlineWith(new RotateToTarget())
