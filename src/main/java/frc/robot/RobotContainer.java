@@ -199,16 +199,16 @@ public class RobotContainer {
         return getTwoBallAuto();
       case 1:
         return getThreeBallClose();
-      case 2:
-        return getThreeBallFar();
-      case 3:
-        return getThreeBallMid();
-      case 4:
-        return getFourBallAuto();
-      case 5:
-        return getFiveBallAuto();
-      case 6:
-        return getAlternateFiveBall();
+      // case 2:
+      //   return getThreeBallFar();
+      // case 3:
+      //   return getThreeBallMid();
+      // case 4:
+      //   return getFourBallAuto();
+      // case 5:
+      //   return getFiveBallAuto();
+      // case 6:
+      //   return getAlternateFiveBall();
     }
   }
 
