@@ -13,7 +13,7 @@ public class OperatorStick extends Joystick {
   }
 
   public double getElevatorSpeed() {
-    return this.getRawAxis(1);
+    return -this.getRawAxis(1);
   }
 
   public double getPivotSpeed() {

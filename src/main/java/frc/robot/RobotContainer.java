@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
@@ -130,14 +129,6 @@ public class RobotContainer {
     Button shoot = new Button(switchbox::shoot);
     shoot.whenHeld(new Shoot());
 
-    Button manualIndex = new Button(switchbox::manualIndex);
-    manualIndex.whenPressed(new InstantCommand(() -> {indexer.index(); indexer.feed();  }, indexer) );
-    manualIndex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
-
-    Button manualOutdex = new Button(switchbox::manualOutdex);
-    manualOutdex.whenPressed(new InstantCommand(() -> { indexer.setFeeder(-0.9); }, indexer) );
-    manualOutdex.whenReleased(new InstantCommand(() -> {indexer.stop(); indexer.stopFeeder(); }, indexer) );
-
     Button dropIntake = new Button(switchbox::intakeDown);
     dropIntake.whenHeld( new SetIntake(IntakeState.kDown));
 
@@ -173,17 +164,23 @@ public class RobotContainer {
       )
     );
 
+    Button indexerOff = new Button(() -> switchbox.getRawAxis(0) > 0.1);
+    indexerOff.whileHeld(new InstantCommand(() -> {indexer.stop();}, indexer));
+
     Button manualClimb = new Button( switchbox::climbOverride );
     manualClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
 
     Button setupClimb = new Button(switchbox::climb);
-    setupClimb.whenPressed(new UnhookElevator().andThen(new Elevate(Level.Reach)));
+    setupClimb.whenPressed((new UnhookElevator()).andThen(new Elevate(Level.Reach)));
 
     Button climbButton = new Button( joystick::climb );
     climbButton.whenPressed( new SetPivotVoltage(-0.15, 2).andThen(new Elevate(Level.Zero)) );
     
-    Button highBar = new Button( joystick::handoff );
-    highBar.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.15, 2.5)).andThen(new Elevate(Level.Handoff)) );
+    Button transfer = new Button( () -> joystick.getRawButton(9) );
+    transfer.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.15, 2.5)) );
+
+    Button handoff = new Button( joystick::handoff );
+    handoff.whenPressed( new Elevate(Level.MidHeight));
 
     Button rampShooter = new Button(switchbox::rampShooter);
     rampShooter.whenPressed( new RampShooter() );
@@ -211,7 +208,7 @@ public class RobotContainer {
       case 5:
         return getFiveBallAuto();
       case 6:
-        return getLoganFiveBall();
+        return getAlternateFiveBall();
     }
   }
 
@@ -236,12 +233,12 @@ public class RobotContainer {
         new InstantCommand( () -> { RobotContainer.shooter.setShooter(1582); RobotContainer.shooter.setHoodAngle(0.477675016322586); } )
       ).addTrajectoryCommand(
         new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
-        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(180)),
+        new Pose2d(5.6, 1.70, Rotation2d.fromDegrees(180)),
         true
       ).addCommand(
         new RotateToAngle(318.27, 10)
       ).addTrajectoryCommand(
-        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(318.27)),
+        new Pose2d(5.6, 1.70, Rotation2d.fromDegrees(318.27)),
         new Pose2d(7.3, 0.3, Rotation2d.fromDegrees(318.27))
       ).addCommand(
         new RotateToAngle(90)
@@ -312,10 +309,10 @@ public class RobotContainer {
       ).addCommand(
         new RotateToAngle(140, 15).alongWith( new InstantCommand( () -> { RobotContainer.shooter.setShooter(1477); RobotContainer.shooter.setHoodAngle(0.4210067567992968); } ) )
       ).addTrajectoryCommand(
-        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(140)),
-        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140))
+        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(40)),
+        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(40))
       ).addTrajectoryCommand(
-        new Pose2d(5.5, 1.7, Rotation2d.fromDegrees(140)),
+        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(140)),
         new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(170))
       ).addCommand(
         new RotateToAngle(110, 15)
@@ -361,6 +358,33 @@ public class RobotContainer {
         new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
       ).addCommand(
         new ShootAuto().deadlineWith(new RotateToTarget())
+      ).build();
+  }
+
+  private static AutonomousRoutine getAlternateFiveBall() {
+    return new AutoRoutineBuilder(3.5, 7)
+      .setStartingPose(
+        new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270))
+      ).addCommand(
+       new InstantCommand( () -> { RobotContainer.shooter.setShooter(1686); RobotContainer.shooter.setHoodAngle(0.519687052923882); } ) 
+      ).addTrajectoryCommand(
+        new Pose2d(7.65, 1.8, Rotation2d.fromDegrees(270)),
+        new Pose2d(8.05, 0.6, Rotation2d.fromDegrees(270))
+      ).addCommand(
+        new RotateToAngle(90, 15).andThen( new ShootAuto().deadlineWith(new RotateToTarget() ) ).andThen( new InstantCommand( () -> { RobotContainer.shooter.setShooter(1686); RobotContainer.shooter.setHoodAngle(0.519687052923882); } ) )
+      ).addTrajectoryCommand(
+        new Pose2d(8.05, 0.6, Rotation2d.fromDegrees(90)), 
+        new Pose2d(0.65, 0.15, Rotation2d.fromDegrees(-140))
+      ).addTrajectoryCommand(
+        new Pose2d(0.65, 0.15, Rotation2d.fromDegrees(-140)),
+        new Pose2d(4.65, 1.2, Rotation2d.fromDegrees(35))
+      ).addCommand(
+        new ShootAuto().deadlineWith(new AutoRoutineBuilder(0.5, 0.25)
+        .createTrajectoryCommandFollowAngle(
+          new Pose2d(4.65, 1.2, Rotation2d.fromDegrees(35)), 
+          new Pose2d(5.12, 1.85, Rotation2d.fromDegrees(35)), 
+          () -> Rotation2d.fromDegrees(swerveDrive.getYaw() - Limelight.getTx())
+        ))
       ).build();
   }
 

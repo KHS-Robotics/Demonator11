@@ -9,10 +9,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class UnhookElevator extends CommandBase {
-  Timer timer = new Timer();
+  Timer timer;
   /** Creates a new UnhookElevator. */
   public UnhookElevator() {
-   addRequirements(RobotContainer.climber);
+    addRequirements(RobotContainer.climber);
+    timer  = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -20,6 +21,7 @@ public class UnhookElevator extends CommandBase {
   public void initialize() {
     RobotContainer.climber.setElevatorSpeed(-0.1);
     timer.start();
+    timer.reset();
   }
 
   // Called once the command ends or is interrupted.
