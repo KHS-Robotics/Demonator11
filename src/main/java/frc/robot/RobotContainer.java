@@ -186,7 +186,7 @@ public class RobotContainer {
     rampShooter.whenPressed( new RampShooter() );
  
     Button eject = new Button(switchbox::eject);
-    eject.whenPressed(() -> {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8);}, shooter);
+    eject.whileHeld(() -> {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}, shooter, indexer);
     eject.whenReleased(() -> {shooter.setShooter(0); indexer.setFeeder(0);});
   }
 
