@@ -150,20 +150,6 @@ public class RobotContainer {
     Button disableLimelight = new Button( joystick::enableLimelight );
     disableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOn));
 
-    Button climb = new Button(() -> false);
-    climb.whenPressed(
-      new SequentialCommandGroup(
-        new Elevate(Level.BelowMidHeight),
-        new Elevate(Level.MidHeight),
-        new Elevate(Level.Zero),
-        new Elevate(Level.ClearBar),
-        new Pivot(Angle.Tilt)
-          .deadlineWith(new Elevate(Level.UnderBar)),
-        new WaitForNavx(Angle.Tilt),
-        new Elevate(Level.Reach)
-      )
-    );
-
     Button indexerOff = new Button(() -> switchbox.getRawAxis(0) > 0.1);
     indexerOff.whileHeld(new InstantCommand(() -> {indexer.stop();}, indexer));
 
@@ -244,8 +230,7 @@ public class RobotContainer {
         new RotateToAngle(90)
       ).addCommand(
         new ShootAuto().deadlineWith(new RotateToTarget())
-      )
-      .build();
+      ).build();
   }
 
   private static AutonomousRoutine getThreeBallMid() {
