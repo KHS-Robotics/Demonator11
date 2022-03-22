@@ -4,7 +4,6 @@
 
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -61,16 +60,30 @@ public class Shoot extends CommandBase {
     double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
     double time = dist / (speed * Math.cos(angle));
 
+    double maxError = ridders(3.5, 13.5, angle, dist + 0.3048, result, 20);
+
+    double vXMax = Math.cos(angle) * maxError;
+    double initDragMax = 0.2 * 1.225 * 0.0145564225 * Math.PI * vXMax * vXMax / 0.27;
+    double timeMax = (dist+0.308) / ( maxError * Math.cos(angle) );
+
+    maxError += (initDragMax * timeMax * timeMax * 0.5);
+
+    double minError = ridders(3.5, 13.5, angle, dist - 0.3048, result, 20);
+
+    double vXMin = Math.cos(angle) * minError;
+    double initDragMin = 0.2 * 1.225 * 0.0145564225 * Math.PI * vXMin * vXMin / 0.27;
+    double timeMin = (dist+0.308) / ( minError * Math.cos(angle) );
+
+    vXMin += (initDragMin * timeMin * timeMin * 0.5);
+
     RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
 
     //RobotContainer.indexer.index();
 
-    if (RobotContainer.shooter.atSetpoint()) {
+    if ( RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError) ) {
       RobotContainer.indexer.feed();
-      //timer.reset();
-    } else {//} if (timer.hasElapsed(0.2)) {
+    } else {
       RobotContainer.indexer.stopFeeder();
-      //timer.reset();
     }
   }
 

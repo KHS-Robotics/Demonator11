@@ -18,6 +18,8 @@ public class ShootAuto extends Shoot {
 
   @Override
   public void execute() {
+    RobotContainer.pixy.updateCargoInFrame();
+
     super.execute();
 
     // if(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {

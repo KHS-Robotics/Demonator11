@@ -13,12 +13,13 @@ import io.github.pseudoresonance.pixy2api.links.SPILink;
 public class PixyCam extends SubsystemBase {
   private final Pixy2 pixy;
   private int blockCount;
-  private Cargo[] cargos = {};
+  private Cargo[] cargos = new Cargo[2];
+  private ArrayList<Block> blocks;
 
   public PixyCam() {
     pixy = Pixy2.createInstance(new SPILink());
     pixy.init();
-    pixy.setLamp((byte) 1, (byte) 0);
+    setLamp(true);
 
     var tab = Shuffleboard.getTab("Pixy");
     tab.addNumber("BlockCount", () -> blockCount);
@@ -30,12 +31,11 @@ public class PixyCam extends SubsystemBase {
 
   @Override
   public void periodic() {
-    updateCargoInFrame();
   }
 
   public void setLamp(boolean on) {
     if (on)
-      pixy.setLamp((byte) 1, (byte) 1);
+      pixy.setLamp((byte) 1, (byte) 0);
     else
       pixy.setLamp((byte) 0, (byte) 0);
   }
@@ -43,10 +43,16 @@ public class PixyCam extends SubsystemBase {
   public void updateCargoInFrame() {
     blockCount = pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1 | Pixy2CCC.CCC_SIG2, 2);
     if (blockCount >= 0) {
-      ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
-      cargos = new Cargo[blocks.size()];
+      blocks.clear();
+
+      blocks = pixy.getCCC().getBlockCache();
+      //cargos = new Cargo[blocks.size()];
       for (int i = 0; i < cargos.length; i++) {
-        cargos[i] = Cargo.fromBlock(blocks.get(i));
+        if(blocks.size() > i ) {
+          cargos[i] = Cargo.fromBlock(blocks.get(i));
+        } else {
+          cargos[i] = Cargo.fromBlock(new Block(-1, 0, 0, 0, 0, 0, 0, 0));
+        }
       }
     }
   }
@@ -77,10 +83,9 @@ public class PixyCam extends SubsystemBase {
     } else if (cargos.length == 1) {
       return cargos[0].getSignature();
     } else {
-      if (cargos[1].getY() > cargos[0].getY()) {
+      if (cargos[1].getY() > cargos[0].getY() && cargos[1].getSignature() > 0) {
         return cargos[1].getSignature();
       } else {
-
         return cargos[0].getSignature();
       }
     }
@@ -92,7 +97,7 @@ public class PixyCam extends SubsystemBase {
     } else if (cargos.length == 1) {
       return cargos[0];
     } else {
-      if (cargos[1].getY() > cargos[0].getY()) {
+      if (cargos[1].getY() > cargos[0].getY() && cargos[1].getSignature() > 0) {
         return cargos[1];
       } else {
         return cargos[0];

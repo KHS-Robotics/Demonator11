@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     SwerveDrive.kMaxSpeed = 3.5;
-    SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI;
+    SwerveDrive.kMaxAngularSpeed = 2 * Math.PI;
   }
 
   @Override

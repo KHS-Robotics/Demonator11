@@ -114,7 +114,7 @@ public class RobotContainer {
       SwerveDrive.kMaxSpeed = 2;
     });
     slowDrive.whenReleased(() -> {
-      SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI;
+      SwerveDrive.kMaxAngularSpeed = 2 * Math.PI;
       SwerveDrive.kMaxSpeed = 3.5;
     });
 
@@ -202,14 +202,14 @@ public class RobotContainer {
         return getTwoBallAuto();
       case 1:
         return getTwoBallUp();
-      // case 1:
-      //   return getThreeBallClose();
+      case 2:
+         return getThreeBallClose();
       // case 2:
       //   return getThreeBallFar();
       // case 3:
       //   return getThreeBallMid();
-      // case 4:
-      //   return getFourBallAuto();
+      case 3:
+        return getFourBallAuto();
       // case 5:
       //   return getFiveBallAuto();
       // case 6:
@@ -219,29 +219,27 @@ public class RobotContainer {
 
   private static AutonomousRoutine getTwoBallAuto() {
     return new AutoRoutineBuilder()
-      .addCommand(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = Math.PI)
-      ).addTrajectoryCommand(
+      .addTrajectoryCommand(
         new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
         new Pose2d(7.65, 0.65, Rotation2d.fromDegrees(270)),
         true
       ).addCommand(  
         new RotateToAngle(90, 15)
       ).addCommand(
-        new ShootAuto().deadlineWith(new RotateToTarget()).andThen(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI))
+        new ShootAuto().deadlineWith(new RotateToTarget())
       ).build();
   }
 
   private static AutonomousRoutine getTwoBallUp() {
     return new AutoRoutineBuilder()
-      .addCommand(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = Math.PI)
-      ).addTrajectoryCommand(
+    .addTrajectoryCommand(
         new Pose2d(6.1, 5.1, Rotation2d.fromDegrees(135)),
         new Pose2d(5.35, 6.00, Rotation2d.fromDegrees(135)),
         true
       ).addCommand(  
         new RotateToAngle(-45, 15)
       ).addCommand(
-        new ShootAuto().deadlineWith(new RotateToTarget()).andThen(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI))
+        new ShootAuto().deadlineWith(new RotateToTarget())
       ).build();
   }
 
@@ -317,30 +315,27 @@ public class RobotContainer {
   private static AutonomousRoutine getFourBallAuto() {
     return new AutoRoutineBuilder(2.5, 5)
       .addCommand(
-        new InstantCommand( () -> { RobotContainer.shooter.setShooter(1536); RobotContainer.shooter.setHoodAngle(0.4548584207412605); } )
+        new InstantCommand( () -> { RobotContainer.shooter.setShooter(1536); RobotContainer.shooter.setHoodAngle(0.45495017309236974); } )
       ).addTrajectoryCommand(
-        new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
-        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
+        new Pose2d(6.64, 2.49, Rotation2d.fromDegrees(225)),
+        new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
         true
       ).addCommand(
-        new RotateToAngle(90)
-      ).addCommand(
-        new ShootAuto().deadlineWith(new RotateToTarget())
-      ).addCommand(
-        new RotateToAngle(140, 15).alongWith( new InstantCommand( () -> { RobotContainer.shooter.setShooter(1477); RobotContainer.shooter.setHoodAngle(0.4210067567992968); } ) )
+        new RotateToAngle(26, 15)
+        .andThen(new ShootAuto()
+          .deadlineWith(new RotateToTarget())
+        ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1577); RobotContainer.shooter.setHoodAngle(0.47533473686797345); } ))
       ).addTrajectoryCommand(
-        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(40)),
-        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(40))
-      ).addTrajectoryCommand(
-        new Pose2d(5.54, 1.90, Rotation2d.fromDegrees(140)),
-        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(170))
+        new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
+        new Pose2d(1.71, 0.95, Rotation2d.fromDegrees(210))
       ).addCommand(
-        new RotateToAngle(110, 15)
+        new WaitCommand(0.5)
       ).addTrajectoryCommand(
-        new Pose2d(1.75, 1.3, Rotation2d.fromDegrees(110)),
-        new Pose2d(6.22, 1.8, Rotation2d.fromDegrees(50))
+        new Pose2d(1.71, 0.95, Rotation2d.fromDegrees(210)),
+        new Pose2d(5.61, 1.16, Rotation2d.fromDegrees(42.18))
       ).addCommand(
-        new ShootAuto().deadlineWith(new RotateToTarget())
+        new ShootAuto()
+          .deadlineWith(new RotateToTarget())
       ).build();
   }
 

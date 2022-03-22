@@ -98,6 +98,10 @@ public class Shooter extends SubsystemBase {
     return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 30;
   }
 
+  public double getVelocity() {
+    return leaderEnc.getVelocity();
+  }
+
   public void stop() {
     leader.set(0);
   }
