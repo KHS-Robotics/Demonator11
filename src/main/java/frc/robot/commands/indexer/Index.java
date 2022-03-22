@@ -15,35 +15,41 @@ public class Index extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    int numCargo = RobotContainer.pixy.getNumCargo();
-    if (!RobotContainer.indexer.feederBeamBreak.get()) {
-      RobotContainer.indexer.stop();
-    } else {
-      if (numCargo == 2) {
-        if (RobotContainer.pixy.nextCargoLeft()) {
-          RobotContainer.indexer.setLeft(0.9);
-          RobotContainer.indexer.setRight(-0.7);
-        } else {
-          RobotContainer.indexer.setLeft(-0.7);
-          RobotContainer.indexer.setRight(0.9);
-        }
-      } else if (numCargo == 1) {
-        if (RobotContainer.pixy.nextCargoLeft()) {
-          RobotContainer.indexer.setLeft(0.9);
-          RobotContainer.indexer.setRight(-0.7);
-        } else {
-          RobotContainer.indexer.setLeft(-0.7);
-          RobotContainer.indexer.setRight(0.9);
-        }
-      } else if (numCargo == 0) {
-        RobotContainer.indexer.index();
-      }
-    }
+
+    // if (!RobotContainer.switchbox.manualIndex()) {
+    // int numCargo = RobotContainer.pixy.getNumCargo();
+    //   if (!RobotContainer.indexer.feederBeamBreak.get()) {
+    //     RobotContainer.indexer.index();
+    //   } else {
+    //     if (numCargo == 2) {
+    //       if (RobotContainer.pixy.nextCargoLeft()) {
+    //         RobotContainer.indexer.setLeft(0.9);
+    //         RobotContainer.indexer.setRight(-0.7);
+    //       } else {
+    //         RobotContainer.indexer.setLeft(-0.7);
+    //         RobotContainer.indexer.setRight(0.9);
+    //       }
+    //     } else if (numCargo == 1) {
+    //       if (RobotContainer.pixy.nextCargoLeft()) {
+    //         RobotContainer.indexer.setLeft(0.9);
+    //         RobotContainer.indexer.setRight(-0.7);
+    //       } else {
+    //         RobotContainer.indexer.setLeft(-0.7);
+    //         RobotContainer.indexer.setRight(0.9);
+    //       }
+    //     } else if (numCargo == 0) {
+    //       RobotContainer.indexer.index();
+    //     }
+    //   }
+    // } else {
+    RobotContainer.indexer.index();
+    //}
 
     if (RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
       RobotContainer.shooter.hasShotAuto = false;
@@ -52,7 +58,8 @@ public class Index extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.AutoRoutineBuilder.AutonomousRoutine;
 import frc.robot.commands.CenterSwerveModules;
 import frc.robot.commands.intake.SetIntake;
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     SwerveDrive.kMaxSpeed = 3.5;
-    SwerveDrive.kMaxAngularSpeed = Math.PI;
+    SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI;
   }
 
   @Override
@@ -75,7 +76,17 @@ public class Robot extends TimedRobot {
 
     RobotContainer.swerveDrive.resetNavx(selectedAuton.getStartingPose());
 
-    autonCommand = new CenterSwerveModules(false).andThen(new InstantCommand(() -> RobotContainer.shooter.setHood(0.75)).alongWith(new SetIntake(IntakeState.kDown)).alongWith(new InstantCommand(() -> RobotContainer.intake.intake())).alongWith(selectedAuton.getAsCommand()));
+    autonCommand = new CenterSwerveModules(false)
+    .andThen(new InstantCommand(() -> RobotContainer.shooter.setHood(0.75))
+    .alongWith(new SetIntake(IntakeState.kDown))
+    .alongWith(new InstantCommand(() -> RobotContainer.intake.intake()))
+    .alongWith(
+      new InstantCommand( () -> RobotContainer.indexer.setFeeder(-0.9))
+      .andThen(new WaitCommand(0.5))
+      .andThen(new InstantCommand( () -> RobotContainer.indexer.stopFeeder()))
+    )
+    .alongWith(selectedAuton.getAsCommand()) );
+    
     autonCommand.schedule();
   }
 

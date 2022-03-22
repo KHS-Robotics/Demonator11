@@ -28,6 +28,7 @@ public class ShootAuto extends Shoot {
   public void initialize() {
     super.initialize();
     timer.start();
+    timer.reset();
     // RobotContainer.intake.stop();
     // RobotContainer.intake.setPosition(0);
   }
@@ -45,6 +46,6 @@ public class ShootAuto extends Shoot {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(3);
+    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(10);
   }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -11,6 +12,8 @@ import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
 
 public class Shoot extends CommandBase {
+  //Timer timer;
+
   double dist, angle, speed;
 
   double targetHeight = Constants.TARGET_HEIGHT;
@@ -19,7 +22,8 @@ public class Shoot extends CommandBase {
   double limelightAngle = Constants.LIMELIGHT_ANGLE;
 
   public Shoot() {
-    addRequirements(RobotContainer.shooter, RobotContainer.indexer);
+    //timer = new Timer();
+    addRequirements(RobotContainer.shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -29,6 +33,9 @@ public class Shoot extends CommandBase {
     Limelight.setLedMode(LightMode.eOn);
 
     dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91;
+
+    // timer.start();
+    // timer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -56,12 +63,14 @@ public class Shoot extends CommandBase {
 
     RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
 
-    RobotContainer.indexer.index();
+    //RobotContainer.indexer.index();
 
     if (RobotContainer.shooter.atSetpoint()) {
       RobotContainer.indexer.feed();
-    } else {
+      //timer.reset();
+    } else {//} if (timer.hasElapsed(0.2)) {
       RobotContainer.indexer.stopFeeder();
+      //timer.reset();
     }
   }
 

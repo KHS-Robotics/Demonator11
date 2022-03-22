@@ -87,7 +87,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean atSetpoint() {
-    return Math.abs(setpoint - getPosition()) < 0.4;
+    return Math.abs(setpoint - getPosition()) < 0.5;
   }
 
   public void stopPosMotor() {

@@ -25,7 +25,7 @@ public class SetIntake extends CommandBase {
 
     switch(state) {
       case kDown:
-        RobotContainer.intake.setPosition(-14);
+        RobotContainer.intake.setPosition(-18);
         break;
       case kUp:
         RobotContainer.intake.setPosition(0);

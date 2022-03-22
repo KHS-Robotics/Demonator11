@@ -31,6 +31,8 @@ public class RotateToTargetWhileDriving extends CommandBase {
     Limelight.setLedMode(LightMode.eOn);
 
     angle = RobotContainer.swerveDrive.getYaw();
+
+    SwerveDrive.kMaxAngularSpeed = Math.PI;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,7 +53,9 @@ public class RotateToTargetWhileDriving extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {  }
+  public void end(boolean interrupted) { 
+    SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI;
+   }
 
   // Returns true when the command should end.
   @Override

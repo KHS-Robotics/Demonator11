@@ -110,16 +110,16 @@ public class RobotContainer {
 
     Button slowDrive = new Button(() -> (xboxController.getLeftTriggerAxis() > 0.3));
     slowDrive.whenPressed(() -> {
-      SwerveDrive.kMaxAngularSpeed = Math.PI / 2;
+      SwerveDrive.kMaxAngularSpeed = Math.PI;
       SwerveDrive.kMaxSpeed = 2;
     });
     slowDrive.whenReleased(() -> {
-      SwerveDrive.kMaxAngularSpeed = Math.PI;
+      SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI;
       SwerveDrive.kMaxSpeed = 3.5;
     });
 
     Button intakeBall = new Button(() -> ( (switchbox.intake() || xboxController.getRightTriggerAxis() > 0.5) && !switchbox.outtake() ));
-    intakeBall.whenPressed(() -> intake.intake());
+    intakeBall.whileHeld(() -> intake.intake());
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button outtakeBall = new Button(switchbox::outtake);
@@ -150,6 +150,9 @@ public class RobotContainer {
     Button disableLimelight = new Button( joystick::enableLimelight );
     disableLimelight.whenPressed( () -> Limelight.setLedMode(LightMode.eOn));
 
+    Button goToZero = new Button(xboxController::getBButton);
+    goToZero.whileHeld(new RotateToAngle(180));
+
     Button climb = new Button(() -> false);
     climb.whenPressed(
       new SequentialCommandGroup(
@@ -164,8 +167,8 @@ public class RobotContainer {
       )
     );
 
-    Button indexerOff = new Button(() -> switchbox.getRawAxis(0) > 0.1);
-    indexerOff.whileHeld(new InstantCommand(() -> {indexer.stop();}, indexer));
+    // Button indexerOff = new Button(() -> switchbox.getRawAxis(0) > 0.1);
+    // indexerOff.whileHeld(new InstantCommand(() -> {indexer.stop();}, indexer));
 
     Button manualClimb = new Button( switchbox::climbOverride );
     manualClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
@@ -198,7 +201,9 @@ public class RobotContainer {
       case 0:
         return getTwoBallAuto();
       case 1:
-        return getThreeBallClose();
+        return getTwoBallUp();
+      // case 1:
+      //   return getThreeBallClose();
       // case 2:
       //   return getThreeBallFar();
       // case 3:
@@ -214,27 +219,43 @@ public class RobotContainer {
 
   private static AutonomousRoutine getTwoBallAuto() {
     return new AutoRoutineBuilder()
-      .addTrajectoryCommand(
+      .addCommand(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = Math.PI)
+      ).addTrajectoryCommand(
         new Pose2d(7.65, 2, Rotation2d.fromDegrees(270)),
-        new Pose2d(7.65, 0.6, Rotation2d.fromDegrees(270)),
+        new Pose2d(7.65, 0.65, Rotation2d.fromDegrees(270)),
         true
       ).addCommand(  
-        new RotateToAngle(90)
+        new RotateToAngle(90, 15)
       ).addCommand(
-        new ShootAuto().deadlineWith(new RotateToTarget())
+        new ShootAuto().deadlineWith(new RotateToTarget()).andThen(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI))
+      ).build();
+  }
+
+  private static AutonomousRoutine getTwoBallUp() {
+    return new AutoRoutineBuilder()
+      .addCommand(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = Math.PI)
+      ).addTrajectoryCommand(
+        new Pose2d(6.1, 5.1, Rotation2d.fromDegrees(135)),
+        new Pose2d(5.35, 6.00, Rotation2d.fromDegrees(135)),
+        true
+      ).addCommand(  
+        new RotateToAngle(-45, 15)
+      ).addCommand(
+        new ShootAuto().deadlineWith(new RotateToTarget()).andThen(new InstantCommand(() -> SwerveDrive.kMaxAngularSpeed = 1.5 * Math.PI))
       ).build();
   }
 
   private static AutonomousRoutine getThreeBallClose() {
     return new AutoRoutineBuilder()
-      .addCommand(
+      .setStartingPose(
+        new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90))
+      ).addCommand(
         new ShootAuto().deadlineWith(new RotateToTarget())
       ).addCommand( 
-        new InstantCommand( () -> { RobotContainer.shooter.setShooter(1582); RobotContainer.shooter.setHoodAngle(0.477675016322586); } )
+        new RotateToAngle(180, 15).alongWith(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1582); RobotContainer.shooter.setHoodAngle(0.477675016322586); } ) )
       ).addTrajectoryCommand(
-        new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(90)),
-        new Pose2d(5.6, 1.70, Rotation2d.fromDegrees(180)),
-        true
+        new Pose2d(7.6, 1.80, Rotation2d.fromDegrees(180)),
+        new Pose2d(5.6, 1.80, Rotation2d.fromDegrees(180))
       ).addCommand(
         new RotateToAngle(318.27, 10)
       ).addTrajectoryCommand(
@@ -244,8 +265,7 @@ public class RobotContainer {
         new RotateToAngle(90)
       ).addCommand(
         new ShootAuto().deadlineWith(new RotateToTarget())
-      )
-      .build();
+      ).build();
   }
 
   private static AutonomousRoutine getThreeBallMid() {
