@@ -49,6 +49,6 @@ public class ShootAuto extends Shoot {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(10);
+    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(3.0);
   }
 }
