@@ -41,6 +41,8 @@ public class WaitForNavx extends CommandBase {
       case Straight:
         pitch = 0;
         break;
+      case Handoff:
+        pitch = 0;
     }
 
     atSetpoint = Math.abs(RobotContainer.navx.getPitch() - pitch) < 10;
