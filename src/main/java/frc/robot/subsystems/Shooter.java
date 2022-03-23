@@ -51,6 +51,9 @@ public class Shooter extends SubsystemBase {
     follower.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
     follower.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
     follower.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
+
+    leader.setSmartCurrentLimit(40);
+    follower.setSmartCurrentLimit(40);
     
     shooterPid.setP(Constants.SHOOTER_P);
     shooterPid.setI(Constants.SHOOTER_I);
@@ -65,7 +68,7 @@ public class Shooter extends SubsystemBase {
     hoodServo1.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     hoodServo2.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
 
-    speedMultiplier = 1.03;
+    speedMultiplier = 1.00;
 
     var tab = Shuffleboard.getTab("Match");
     tab.addNumber("Shooter Multiplier", () -> speedMultiplier);
@@ -95,11 +98,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean atSetpoint() {
-    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 30;
+    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < 20;
   }
 
   public double getVelocity() {
-    return leaderEnc.getVelocity();
+    return leaderEnc.getVelocity() / speedMultiplier;
   }
 
   public void stop() {
@@ -129,6 +132,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public void resetMultipler() {
-    speedMultiplier = 1.05;
+    speedMultiplier = 1.00;
   }
 }

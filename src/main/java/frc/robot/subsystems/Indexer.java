@@ -35,6 +35,10 @@ public class Indexer extends SubsystemBase {
     leftSide.setInverted(true);
     rightSide.setInverted(false);
 
+    leftSide.setSmartCurrentLimit(10);
+    rightSide.setSmartCurrentLimit(10);
+    feeder.setSmartCurrentLimit(10);
+
     feederBeamBreak = new DigitalInput(4);
 
     var tab = Shuffleboard.getTab("Indexer");
@@ -46,16 +50,16 @@ public class Indexer extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setLeft(double speed) {
-    leftSide.setVoltage(speed * 12); //12:1
+  public void setRight(double speed) {
+    rightSide.setVoltage(speed * 12); //15:1
   }
 
-  public void setRight(double speed) {
+  public void setLeft(double speed) {
     //multiplied so that the same speed will run both motors the same
     speed *= 15/12;
     speed = MathUtil.clamp(speed, -1, 1);
 
-    rightSide.setVoltage(speed * 12); //15:1
+    leftSide.setVoltage(speed * 12); //12:1
   }
 
   public void setFeeder(double speed) {
@@ -67,8 +71,8 @@ public class Indexer extends SubsystemBase {
   }
 
   public void index() {
-    setLeft(0.9);
-    setRight(0.9);
+    setLeft(0.8);
+    setRight(0.8);
   }
 
   public void feed() {

@@ -4,6 +4,7 @@
 
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -11,7 +12,7 @@ import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
 
 public class Shoot extends CommandBase {
-  //Timer timer;
+  Timer debounce;
 
   double dist, angle, speed;
 
@@ -21,8 +22,8 @@ public class Shoot extends CommandBase {
   double limelightAngle = Constants.LIMELIGHT_ANGLE;
 
   public Shoot() {
-    //timer = new Timer();
-    addRequirements(RobotContainer.shooter);
+    debounce = new Timer();
+    addRequirements(RobotContainer.shooter, RobotContainer.indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -31,17 +32,18 @@ public class Shoot extends CommandBase {
     speed = 8.5;
     Limelight.setLedMode(LightMode.eOn);
 
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91;
+    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
 
-    // timer.start();
-    // timer.reset();
+    debounce.start();
+    debounce.reset();
+    System.out.println("START");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(Limelight.isTarget()) {
-      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91;
+      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
     }
 
     if (dist > 2.7) {
@@ -60,7 +62,7 @@ public class Shoot extends CommandBase {
     double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
     double time = dist / (speed * Math.cos(angle));
 
-    double maxError = ridders(3.5, 13.5, angle, dist + 0.3048, result, 20);
+    double maxError = ridders(3.5, 13.5, angle, dist + 0.2, result, 20);
 
     double vXMax = Math.cos(angle) * maxError;
     double initDragMax = 0.2 * 1.225 * 0.0145564225 * Math.PI * vXMax * vXMax / 0.27;
@@ -68,21 +70,24 @@ public class Shoot extends CommandBase {
 
     maxError += (initDragMax * timeMax * timeMax * 0.5);
 
-    double minError = ridders(3.5, 13.5, angle, dist - 0.3048, result, 20);
+    double minError = ridders(3.5, 13.5, angle, dist - 0.2, result, 20);
 
     double vXMin = Math.cos(angle) * minError;
     double initDragMin = 0.2 * 1.225 * 0.0145564225 * Math.PI * vXMin * vXMin / 0.27;
     double timeMin = (dist+0.308) / ( minError * Math.cos(angle) );
 
-    vXMin += (initDragMin * timeMin * timeMin * 0.5);
+    minError += (initDragMin * timeMin * timeMin * 0.5);
 
     RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
 
-    //RobotContainer.indexer.index();
+    RobotContainer.indexer.index();
 
-    if ( RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError) ) {
-      RobotContainer.indexer.feed();
+    if ( RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
+      if(debounce.hasElapsed(0.35)) {
+        RobotContainer.indexer.feed();
+      }
     } else {
+      debounce.reset();
       RobotContainer.indexer.stopFeeder();
     }
   }
