@@ -24,31 +24,33 @@ public class Index extends CommandBase {
 
     // if (!RobotContainer.switchbox.manualIndex()) {
     // int numCargo = RobotContainer.pixy.getNumCargo();
-    //   if (!RobotContainer.indexer.feederBeamBreak.get()) {
-    //     RobotContainer.indexer.index();
-    //   } else {
-    //     if (numCargo == 2) {
-    //       if (RobotContainer.pixy.nextCargoLeft()) {
-    //         RobotContainer.indexer.setLeft(0.9);
-    //         RobotContainer.indexer.setRight(-0.7);
-    //       } else {
-    //         RobotContainer.indexer.setLeft(-0.7);
-    //         RobotContainer.indexer.setRight(0.9);
-    //       }
-    //     } else if (numCargo == 1) {
-    //       if (RobotContainer.pixy.nextCargoLeft()) {
-    //         RobotContainer.indexer.setLeft(0.9);
-    //         RobotContainer.indexer.setRight(-0.7);
-    //       } else {
-    //         RobotContainer.indexer.setLeft(-0.7);
-    //         RobotContainer.indexer.setRight(0.9);
-    //       }
-    //     } else if (numCargo == 0) {
-    //       RobotContainer.indexer.index();
-    //     }
-    //   }
+      if (!RobotContainer.indexer.feederBeamBreak.get()) {
+        RobotContainer.indexer.stop();
+      } else {
+        RobotContainer.indexer.index();
+      }
+        // if (numCargo == 2) {
+        //   if (RobotContainer.pixy.nextCargoLeft()) {
+        //     RobotContainer.indexer.setLeft(0.9);
+        //     RobotContainer.indexer.setRight(-0.7);
+        //   } else {
+        //     RobotContainer.indexer.setLeft(-0.7);
+        //     RobotContainer.indexer.setRight(0.9);
+        //   }
+        // } else if (numCargo == 1) {
+        //   if (RobotContainer.pixy.nextCargoLeft()) {
+        //     RobotContainer.indexer.setLeft(0.9);
+        //     RobotContainer.indexer.setRight(-0.7);
+        //   } else {
+        //     RobotContainer.indexer.setLeft(-0.7);
+        //     RobotContainer.indexer.setRight(0.9);
+        //   }
+        // } else if (numCargo == 0) {
+        //   RobotContainer.indexer.index();
+        // }
+      // }
     // } else {
-    RobotContainer.indexer.index();
+    // RobotContainer.indexer.index();
     //}
 
     if (RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
