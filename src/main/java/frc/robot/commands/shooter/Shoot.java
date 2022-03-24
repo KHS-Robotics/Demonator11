@@ -14,7 +14,7 @@ import frc.robot.vision.Limelight.LightMode;
 public class Shoot extends CommandBase {
   Timer debounce;
 
-  double dist, angle, speed, lastVelocity;
+  double dist, angle, speed, lastVelocity, lastAccel, lastJerk;
 
   double targetHeight = Constants.TARGET_HEIGHT;
   double robotHeight = Constants.ROBOT_HEIGHT;
@@ -82,16 +82,24 @@ public class Shoot extends CommandBase {
 
     RobotContainer.indexer.index();
 
-    double velocityChange = (RobotContainer.shooter.getVelocity() - lastVelocity) * 50;
+
+
+    double shooterAccel = (RobotContainer.shooter.getVelocity() - lastVelocity) * 50;
+    double shooterJerk = shooterAccel - lastAccel;
+    double shooterSnap = shooterJerk - lastJerk;
     lastVelocity = RobotContainer.shooter.getVelocity();
+    lastAccel = shooterAccel;
+    lastJerk = shooterJerk;
 
 
-      if (Math.abs(velocityChange) < 50 && RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
-      if(debounce.hasElapsed(0.15)) {
+
+      if (RobotContainer.shooter.getVelocity() > msToRPM(minError)
+          && RobotContainer.shooter.getVelocity() < msToRPM(maxError)
+          && taylorRPM(RobotContainer.shooter.getVelocity(), shooterAccel, shooterJerk, shooterSnap, 0.25) < msToRPM(maxError)
+          && taylorRPM(RobotContainer.shooter.getVelocity(), shooterAccel, shooterJerk, shooterSnap, 0.25) > msToRPM(minError)) {
         RobotContainer.indexer.feed();
-      }
-    } else {
-      debounce.reset();
+        debounce.reset();
+    } else if (debounce.hasElapsed(0.15)) {
       RobotContainer.indexer.stopFeeder();
     }
   }
@@ -156,5 +164,8 @@ public class Shoot extends CommandBase {
     }
 
     return (speed * xDist * Math.sin(angle) / ((speed * Math.cos(turn) * Math.cos(angle)))) - 9.80665 / 2 * xDist * xDist / ((2 * 0 * speed * Math.cos(turn) * Math.cos(angle)) + (speed * Math.cos(turn) * Math.cos(angle) * speed * Math.cos(turn) * Math.cos(angle)));
+  }
+  static double taylorRPM(double vel, double accel, double jerk, double snap, double t) {
+      return RobotContainer.shooter.getVelocity() + accel * t + jerk * Math.pow(t, 2) / 2 + snap * Math.pow(t, 3) / 6;
   }
 }
