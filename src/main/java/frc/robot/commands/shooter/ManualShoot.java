@@ -32,7 +32,7 @@ public class ManualShoot extends CommandBase {
   public void execute() {
     RobotContainer.shooter.setHood(0.5);
     RobotContainer.shooter.setShooter(speed);
-    if (RobotContainer.shooter.atSetpoint()) {
+    if (RobotContainer.shooter.atSetpoint(30)) {
       RobotContainer.indexer.feed();
       RobotContainer.indexer.index();
     }

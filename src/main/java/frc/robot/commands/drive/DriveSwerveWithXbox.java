@@ -48,7 +48,7 @@ public class DriveSwerveWithXbox extends CommandBase {
       rot = RobotContainer.swerveDrive.sensControl(-RobotContainer.xboxController.getRightX()) * SwerveDrive.kMaxAngularSpeed;
     }
 
-    fieldRelative = (!RobotContainer.xboxController.getLeftBumper());
+    fieldRelative = (RobotContainer.xboxController.getRightTriggerAxis() < 0.3);
     RobotContainer.swerveDrive.drive(xSpeed, ySpeed, rot, fieldRelative);
   }
 

@@ -36,7 +36,7 @@ public class RotateToTargetWhileDriving extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {    
-    if (Limelight.isTarget()) {
+    if (Limelight.isTarget() && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - Limelight.getTx())) > 2) {
       angle = RobotContainer.swerveDrive.getYaw() - Limelight.getTx();
     }
 

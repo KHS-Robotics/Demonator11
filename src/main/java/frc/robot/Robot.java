@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
 
     autonCommand = new CenterSwerveModules(false)
     .andThen(new InstantCommand(() -> RobotContainer.shooter.setHood(0.75))
-    .alongWith(new SetIntake(IntakeState.kDown))
+    .alongWith(new SetIntake(IntakeState.kDown).withTimeout(0.5))
     .alongWith(new InstantCommand(() -> RobotContainer.intake.intake()))
     .alongWith(
       new InstantCommand( () -> RobotContainer.indexer.setFeeder(-0.9))

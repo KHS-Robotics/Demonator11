@@ -15,6 +15,7 @@ public class Shoot extends CommandBase {
   Timer debounce;
 
   double dist, angle, speed;
+  int tolerance;
 
   double targetHeight = Constants.TARGET_HEIGHT;
   double robotHeight = Constants.ROBOT_HEIGHT;
@@ -30,13 +31,13 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
     speed = 8.5;
+    tolerance = 30;
     Limelight.setLedMode(LightMode.eOn);
 
     dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
 
     debounce.start();
     debounce.reset();
-    System.out.println("START");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -62,7 +63,7 @@ public class Shoot extends CommandBase {
     double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
     double time = dist / (speed * Math.cos(angle));
 
-    double maxError = ridders(3.5, 13.5, angle, dist + 0.2, result, 20);
+    double maxError = ridders(3.5, 13.5, angle, dist + 0.15, result, 20);
 
     double vXMax = Math.cos(angle) * maxError;
     double initDragMax = 0.2 * 1.225 * 0.0145564225 * Math.PI * vXMax * vXMax / 0.27;
@@ -70,7 +71,7 @@ public class Shoot extends CommandBase {
 
     maxError += (initDragMax * timeMax * timeMax * 0.5);
 
-    double minError = ridders(3.5, 13.5, angle, dist - 0.2, result, 20);
+    double minError = ridders(3.5, 13.5, angle, dist - 0.15, result, 20);
 
     double vXMin = Math.cos(angle) * minError;
     double initDragMin = 0.2 * 1.225 * 0.0145564225 * Math.PI * vXMin * vXMin / 0.27;
@@ -82,7 +83,7 @@ public class Shoot extends CommandBase {
 
     RobotContainer.indexer.index();
 
-    if ( RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
+    if ( RobotContainer.shooter.atSetpoint(tolerance)) {//RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
       if(debounce.hasElapsed(0.35)) {
         RobotContainer.indexer.feed();
       }

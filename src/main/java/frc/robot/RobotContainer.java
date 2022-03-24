@@ -108,7 +108,7 @@ public class RobotContainer {
     Button resetNavxButton = new Button(xboxController::getStartButton);
     resetNavxButton.whenPressed(() -> swerveDrive.resetNavx(), swerveDrive);
 
-    Button slowDrive = new Button(() -> (xboxController.getLeftTriggerAxis() > 0.3));
+    Button slowDrive = new Button(() -> (xboxController.getLeftTriggerAxis() > 0.3 || xboxController.getRightTriggerAxis() > 0.3));
     slowDrive.whenPressed(() -> {
       SwerveDrive.kMaxAngularSpeed = Math.PI;
       SwerveDrive.kMaxSpeed = 2;
@@ -118,7 +118,7 @@ public class RobotContainer {
       SwerveDrive.kMaxSpeed = 3.5;
     });
 
-    Button intakeBall = new Button(() -> ( (switchbox.intake() || xboxController.getRightTriggerAxis() > 0.5) && !switchbox.outtake() ));
+    Button intakeBall = new Button(() -> (switchbox.intake()  && !switchbox.outtake() ));
     intakeBall.whileHeld(() -> intake.intake());
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
