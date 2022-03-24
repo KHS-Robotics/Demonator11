@@ -14,7 +14,7 @@ import frc.robot.vision.Limelight.LightMode;
 public class Shoot extends CommandBase {
   Timer debounce;
 
-  double dist, angle, speed;
+  double dist, angle, speed, lastVelocity;
 
   double targetHeight = Constants.TARGET_HEIGHT;
   double robotHeight = Constants.ROBOT_HEIGHT;
@@ -82,7 +82,11 @@ public class Shoot extends CommandBase {
 
     RobotContainer.indexer.index();
 
-    if ( RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
+    double velocityChange = (RobotContainer.shooter.getVelocity() - lastVelocity) * 50;
+    lastVelocity = RobotContainer.shooter.getVelocity();
+
+
+      if (velocityChange < 50 && RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
       if(debounce.hasElapsed(0.35)) {
         RobotContainer.indexer.feed();
       }
