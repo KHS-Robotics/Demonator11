@@ -93,13 +93,11 @@ public class Shoot extends CommandBase {
 
 
 
-      if (RobotContainer.shooter.getVelocity() > msToRPM(minError)
-          && RobotContainer.shooter.getVelocity() < msToRPM(maxError)
-          && taylorRPM(RobotContainer.shooter.getVelocity(), shooterAccel, shooterJerk, shooterSnap, 0.25) < msToRPM(maxError)
-          && taylorRPM(RobotContainer.shooter.getVelocity(), shooterAccel, shooterJerk, shooterSnap, 0.25) > msToRPM(minError)) {
+      if (taylorRPM(shooterAccel, shooterJerk, shooterSnap, nextPeak(shooterAccel, shooterJerk, shooterSnap)) > msToRPM(minError)
+          && taylorRPM(shooterAccel, shooterJerk, shooterSnap, nextPeak(shooterAccel, shooterJerk, shooterSnap)) < msToRPM(maxError)) {
         RobotContainer.indexer.feed();
         debounce.reset();
-    } else if (debounce.hasElapsed(0.15)) {
+    } else if (debounce.hasElapsed(0.1)) {
       RobotContainer.indexer.stopFeeder();
     }
   }
@@ -165,7 +163,16 @@ public class Shoot extends CommandBase {
 
     return (speed * xDist * Math.sin(angle) / ((speed * Math.cos(turn) * Math.cos(angle)))) - 9.80665 / 2 * xDist * xDist / ((2 * 0 * speed * Math.cos(turn) * Math.cos(angle)) + (speed * Math.cos(turn) * Math.cos(angle) * speed * Math.cos(turn) * Math.cos(angle)));
   }
-  static double taylorRPM(double vel, double accel, double jerk, double snap, double t) {
+  private static double taylorRPM(double accel, double jerk, double snap, double t) {
       return RobotContainer.shooter.getVelocity() + accel * t + jerk * Math.pow(t, 2) / 2 + snap * Math.pow(t, 3) / 6;
+  }
+  private static double nextPeak(double accel, double jerk, double snap) {
+      double c = RobotContainer.shooter.getVelocity();
+      double b = jerk;
+      double a = snap / 2;
+      if(Math.pow(b, 2) - 4 * a * c < 0) {
+        return (-b + Math.pow(b, 2) - 4 * a * c) / (2 * a);
+      }
+      return 0;
   }
 }
