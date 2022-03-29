@@ -97,8 +97,8 @@ public class Shooter extends SubsystemBase {
     shooterPid.setReference(shooterPidSetpoint, CANSparkMax.ControlType.kVelocity);
   }
 
-  public boolean atSetpoint(int tolerance) {
-    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity()) < tolerance;
+  public boolean atSetpoint(double tolerance) {
+    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity())/shooterPidSetpoint < tolerance;
   }
 
   public double getVelocity() {

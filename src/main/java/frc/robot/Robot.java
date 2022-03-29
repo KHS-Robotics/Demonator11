@@ -56,6 +56,10 @@ public class Robot extends TimedRobot {
     } else if (RobotContainer.joystick.enableLimelight()) {
       Limelight.setLedMode(LightMode.eOn);
     }
+
+    if (RobotContainer.joystick.getRawButton(5)) {
+      RobotContainer.pixy.updateCargoInFrame();
+    }
     
     if (RobotContainer.switchbox.climb() && RobotContainer.switchbox.shoot()) {
       RobotContainer.climber.resetPos();

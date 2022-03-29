@@ -19,7 +19,6 @@ public class ShootAuto extends Shoot {
   @Override
   public void execute() {
     RobotContainer.pixy.updateCargoInFrame();
-
     super.execute();
 
     // if(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) {
@@ -30,7 +29,7 @@ public class ShootAuto extends Shoot {
   @Override
   public void initialize() {
     super.initialize();
-    this.tolerance = 40;
+    this.tolerance = 0.017;
     timer.start();
     timer.reset();
     // RobotContainer.intake.stop();
@@ -50,6 +49,6 @@ public class ShootAuto extends Shoot {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(3.5);
+    return !(RobotContainer.pixy.hasBlueInFrame() || RobotContainer.pixy.hasRedInFrame()) && timer.hasElapsed(3);
   }
 }

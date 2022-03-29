@@ -327,11 +327,11 @@ public class RobotContainer {
         ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1577); RobotContainer.shooter.setHoodAngle(0.47533473686797345); } ))
       ).addTrajectoryCommand(
         new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
-        new Pose2d(1.71, 0.95, Rotation2d.fromDegrees(210))
+        new Pose2d(1.75, 0.95-0.05, Rotation2d.fromDegrees(210))
       ).addCommand(
         new WaitCommand(0.5)
       ).addTrajectoryCommand(
-        new Pose2d(1.71, 0.95, Rotation2d.fromDegrees(210)),
+        new Pose2d(1.71, 0.95-0.05, Rotation2d.fromDegrees(210)),
         new Pose2d(5.61, 1.16, Rotation2d.fromDegrees(42.18))
       ).addCommand(
         new ShootAuto()
