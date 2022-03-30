@@ -8,6 +8,7 @@
 package frc.robot.commands.drive.rotate;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.shooter.ShootMoving;
 import frc.robot.subsystems.SwerveDrive;
@@ -15,8 +16,14 @@ import frc.robot.vision.Limelight;
 import frc.robot.vision.Limelight.LightMode;
 
 public class LeadShotsWhileDriving extends CommandBase {
-    private double angle, offsetLimelightAngle;
+    private double angle, offsetLimelightAngle, dist;
     private boolean isFieldOriented;
+    private static double distNew, angleNew, hoodAngle, speed;
+    private static double targetHeight = Constants.TARGET_HEIGHT;
+    private static double robotHeight = Constants.ROBOT_HEIGHT;
+    private static double limelightHeight = Constants.LIMELIGHT_HEIGHT;
+    private static double limelightAngle = Constants.LIMELIGHT_ANGLE;
+    int tolerance;
 
     /**
      * Creates a new RotateToAngle.
@@ -37,7 +44,11 @@ public class LeadShotsWhileDriving extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        offsetLimelightAngle = Limelight.getTx() + ShootMoving.getAngleNew();
+        if(Limelight.isTarget()) {
+            dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
+        }
+        refineShot(dist, 10);
+        offsetLimelightAngle = Limelight.getTx() + angleNew;
         if (Limelight.isTarget() && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle)) > 2) {
             angle = RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle;
         }
@@ -60,6 +71,34 @@ public class LeadShotsWhileDriving extends CommandBase {
     public boolean isFinished() {
         return false;
     }
+
+    public static void refineShot(double dist, int iterations) {
+        for(int i = 0; i < iterations; i++) {
+            if (distNew > 2.7) {
+                hoodAngle = Math.atan(((Math.tan(-0.698131701) * (distNew)) - (2 * (targetHeight - robotHeight))) / -distNew);
+            } else {
+                hoodAngle = Math.atan(((Math.tan(-1.21) * (distNew)) - (2 * (targetHeight - robotHeight))) / -distNew);
+            }
+
+            double result = (targetHeight - robotHeight);
+            speed = ShootMoving.ridders(3.5, 13.5, hoodAngle, distNew, result, 20);
+
+            //estimated travel time based on last iteration
+            double t = distNew * speed * Math.cos(hoodAngle);
+            //angle of the velocity of the bot/ball
+            double a1 = (Math.PI / 2) - Math.atan(RobotContainer.navx.getVelocityX() / RobotContainer.navx.getVelocityY()) + Math.toRadians(Limelight.getTx());
+            //distance travelled by ball from velocity of bot when shot
+            double dist2 = Math.sqrt(Math.pow(RobotContainer.navx.getVelocityX(), 2) + Math.pow(RobotContainer.navx.getVelocityY(), 2)) * t;
+            //finds distance for robot to aim at
+            distNew = Math.sqrt(Math.pow(dist2, 2) + Math.pow(dist, 2) - 2 * dist2 * dist * Math.cos(a1));
+            //finds angle for robot to aim at
+            angleNew = Math.asin(Math.sin(a1) * dist2 / distNew);
+        }
+    }
+
+    public static double getSpeed() { return speed; }
+    public static double getDistNew() { return distNew; }
+    public static double getHoodAngle() { return hoodAngle; }
 
 
 }
