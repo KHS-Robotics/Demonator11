@@ -47,7 +47,7 @@ public class LeadShotsWhileDriving extends CommandBase {
         if(Limelight.isTarget()) {
             dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
         }
-        refineShot(dist, 10);
+        refineShot(dist, 7);
         offsetLimelightAngle = Limelight.getTx() + angleNew;
         if (Limelight.isTarget() && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle)) > 2) {
             angle = RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle;
@@ -81,18 +81,18 @@ public class LeadShotsWhileDriving extends CommandBase {
             }
 
             double result = (targetHeight - robotHeight);
-            speed = ShootMoving.ridders(3.5, 13.5, hoodAngle, distNew, result, 20);
+            speed = ShootMoving.ridders(3.5, 13.5, hoodAngle, distNew, result, 15);
 
             //estimated travel time based on last iteration
-            double t = distNew * speed * Math.cos(hoodAngle);
+            double t = distNew /  (speed * Math.cos(hoodAngle));
             //angle of the velocity of the bot/ball
             double a1 = (Math.PI / 2) - Math.atan(RobotContainer.navx.getVelocityX() / RobotContainer.navx.getVelocityY()) + Math.toRadians(Limelight.getTx());
             //distance travelled by ball from velocity of bot when shot
             double dist2 = Math.sqrt(Math.pow(RobotContainer.navx.getVelocityX(), 2) + Math.pow(RobotContainer.navx.getVelocityY(), 2)) * t;
             //finds distance for robot to aim at
-            distNew = Math.sqrt(Math.pow(dist2, 2) + Math.pow(dist, 2) - 2 * dist2 * dist * Math.cos(a1));
+            distNew = Math.sqrt(Math.pow(dist2, 2) + Math.pow(dist, 2) - 2 * dist2 * dist * Math.cos(a1) * Math.signum(RobotContainer.navx.getVelocityX()));
             //finds angle for robot to aim at
-            angleNew = Math.asin(Math.sin(a1) * dist2 / distNew);
+            angleNew = Math.asin(Math.sin(a1) * dist2 / distNew) * -Math.signum(RobotContainer.navx.getVelocityY());
         }
     }
 
