@@ -45,7 +45,7 @@ public class LeadShotsWhileDriving extends CommandBase {
     @Override
     public void execute() {
         if(Limelight.isTarget()) {
-            dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
+            dist = (targetHeight - limelightHeight) / (Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) * Math.cos(Math.toRadians((Limelight.getTx())))) + 0.91 + 0.15;
         }
         refineShot(dist, 7);
         offsetLimelightAngle = Limelight.getTx() + angleNew;
@@ -86,13 +86,13 @@ public class LeadShotsWhileDriving extends CommandBase {
             //estimated travel time based on last iteration
             double t = distNew /  (speed * Math.cos(hoodAngle));
             //angle of the velocity of the bot/ball
-            double a1 = (Math.PI / 2) - Math.atan(RobotContainer.navx.getVelocityX() / RobotContainer.navx.getVelocityY()) + Math.toRadians(Limelight.getTx());
+            double a1 = Math.atan2(RobotContainer.navx.getVelocityX(), RobotContainer.navx.getVelocityY()) - (Math.toRadians(Limelight.getTx() + Math.PI / 2));
             //distance travelled by ball from velocity of bot when shot
             double dist2 = Math.sqrt(Math.pow(RobotContainer.navx.getVelocityX(), 2) + Math.pow(RobotContainer.navx.getVelocityY(), 2)) * t;
             //finds distance for robot to aim at
-            distNew = Math.sqrt(Math.pow(dist2, 2) + Math.pow(dist, 2) - 2 * dist2 * dist * Math.cos(a1) * Math.signum(RobotContainer.navx.getVelocityX()));
+            distNew = Math.sqrt(Math.pow(dist2, 2) + Math.pow(dist, 2) - 2 * dist2 * dist * Math.cos(a1));
             //finds angle for robot to aim at
-            angleNew = Math.asin(Math.sin(a1) * dist2 / distNew) * -Math.signum(RobotContainer.navx.getVelocityY());
+            angleNew = Math.asin(Math.sin(a1) * dist2 / distNew);
         }
     }
 
