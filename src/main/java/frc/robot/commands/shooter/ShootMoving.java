@@ -29,7 +29,7 @@ public class ShootMoving extends Shoot{
         RobotContainer.indexer.index();
 
         if ( RobotContainer.shooter.atSetpoint(tolerance)) {//RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
-            if(debounce.hasElapsed(0.1)) {
+            if(debounce.hasElapsed(0.065)) {
                 RobotContainer.indexer.feed();
             }
         } else {

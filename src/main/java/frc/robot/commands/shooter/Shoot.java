@@ -15,7 +15,7 @@ public class Shoot extends CommandBase {
   Timer debounce;
 
   double dist, angle, speed;
-  int tolerance;
+  double tolerance;
 
   double targetHeight = Constants.TARGET_HEIGHT;
   double robotHeight = Constants.ROBOT_HEIGHT;
@@ -31,7 +31,7 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
     speed = 8.5;
-    tolerance = 30;
+    tolerance = 0.015;
     Limelight.setLedMode(LightMode.eOn);
 
     dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
@@ -84,7 +84,7 @@ public class Shoot extends CommandBase {
     RobotContainer.indexer.index();
 
     if ( RobotContainer.shooter.atSetpoint(tolerance)) {//RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
-      if(debounce.hasElapsed(0.35)) {
+      if(debounce.hasElapsed(0.65)) {
         RobotContainer.indexer.feed();
       }
     } else {
