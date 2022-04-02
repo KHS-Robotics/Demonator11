@@ -84,12 +84,14 @@ public class Shoot extends CommandBase {
     //RobotContainer.indexer.index();
 
     if ( RobotContainer.shooter.atSetpoint(tolerance)) {//RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
-      if(debounce.hasElapsed(0.05)) {
+      if(debounce.hasElapsed(0.065)) {
         RobotContainer.indexer.feed();
       }
     } else {
       debounce.reset();
-      RobotContainer.indexer.stopFeeder();
+      if(dist > 5) {
+        RobotContainer.indexer.stopFeeder();
+      }
     }
   }
 

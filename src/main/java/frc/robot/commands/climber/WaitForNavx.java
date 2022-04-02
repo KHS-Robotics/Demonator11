@@ -14,6 +14,8 @@ public class WaitForNavx extends CommandBase {
   Angle angle;
   boolean atSetpoint;
 
+  double current = 0, prev = 0, delta;
+
   /**
    * Creates a new WaitForNavx.
    */
@@ -36,7 +38,7 @@ public class WaitForNavx extends CommandBase {
         pitch = 0;
         break;
       case Tilt:
-        pitch = 0;
+        pitch = -50;
         break;
       case Straight:
         pitch = 0;
@@ -45,11 +47,15 @@ public class WaitForNavx extends CommandBase {
         pitch = 0;
     }
 
-    atSetpoint = Math.abs(RobotContainer.navx.getPitch() - pitch) < 10;
+    current = RobotContainer.climber.getPitch();
+    delta = current - prev;
+    prev = current;
+
+    atSetpoint = delta > 0;
     if (!atSetpoint) {
       timer.reset();
     } else {
-      atSetpoint = timer.hasElapsed(0.5);
+      atSetpoint = timer.hasElapsed(0.3);
     }
   }
 
