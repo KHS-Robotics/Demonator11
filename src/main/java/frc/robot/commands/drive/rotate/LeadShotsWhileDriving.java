@@ -86,9 +86,9 @@ public class LeadShotsWhileDriving extends CommandBase {
             //estimated travel time based on last iteration
             double t = distNew /  (speed * Math.cos(hoodAngle));
             //angle of the velocity of the bot/ball
-            double a1 = Math.atan2(RobotContainer.navx.getVelocityX(), RobotContainer.navx.getVelocityY()) - (Math.toRadians(Limelight.getTx() + Math.PI / 2));
+            double a1 = Math.atan2(RobotContainer.swerveDrive.getChassisSpeeds().vyMetersPerSecond, RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond) - (Math.toRadians(Limelight.getTx() + Math.PI / 2));
             //distance travelled by ball from velocity of bot when shot
-            double dist2 = Math.sqrt(Math.pow(RobotContainer.navx.getVelocityX(), 2) + Math.pow(RobotContainer.navx.getVelocityY(), 2)) * t;
+            double dist2 = Math.sqrt(Math.pow(RobotContainer.swerveDrive.getChassisSpeeds().vyMetersPerSecond, 2) + Math.pow(RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond, 2)) * t;
             //finds distance for robot to aim at
             distNew = Math.sqrt(Math.pow(dist2, 2) + Math.pow(dist, 2) - 2 * dist2 * dist * Math.cos(a1));
             //finds angle for robot to aim at
