@@ -24,7 +24,7 @@ public class ShootMoving extends Shoot{
         double initDrag = 0.2 * 1.225 * 0.0145564225 * Math.PI * vX * vX / 0.27;
         double time = LeadShotsWhileDriving.getDistNew() / (speed * Math.cos(angle));
 
-        RobotContainer.shooter.setHoodAngle((Math.PI / 2) - LeadShotsWhileDriving.getHoodAngle());
+        RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
         RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
         RobotContainer.indexer.index();
 

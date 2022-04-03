@@ -47,6 +47,7 @@ public class LeadShotsWhileDriving extends CommandBase {
         if(Limelight.isTarget()) {
             dist = (targetHeight - limelightHeight) / (Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) * Math.cos(Math.toRadians((Limelight.getTx())))) + 0.91 + 0.15;
         }
+        distNew = dist;
         refineShot(dist, 7);
         offsetLimelightAngle = Limelight.getTx() + angleNew;
         if (Limelight.isTarget() && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle)) > 2) {
