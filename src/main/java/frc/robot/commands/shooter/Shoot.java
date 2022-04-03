@@ -89,7 +89,7 @@ public class Shoot extends CommandBase {
       }
     } else {
       debounce.reset();
-      if(dist > 5) {
+      if(dist > 3) {
         RobotContainer.indexer.stopFeeder();
       }
     }

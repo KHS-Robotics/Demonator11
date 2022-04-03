@@ -45,8 +45,8 @@ public class Shooter extends SubsystemBase {
     leader.setIdleMode(IdleMode.kCoast);
     follower.setIdleMode(IdleMode.kCoast);
 
-    leader.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
-    leader.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 10);
+    //leader.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
+    //leader.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 10);
     leader.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
     follower.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
     follower.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);

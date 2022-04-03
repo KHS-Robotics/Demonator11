@@ -315,7 +315,7 @@ public class RobotContainer {
   private static AutonomousRoutine getFourBallAuto() {
     return new AutoRoutineBuilder(2.5, 5)
       .addCommand(
-        new InstantCommand( () -> { RobotContainer.shooter.setShooter(1520); RobotContainer.shooter.setHoodAngle(0.45495017309236974); } )
+        new InstantCommand( () -> { RobotContainer.shooter.setHoodAngle(0.45495017309236974); } )
       ).addTrajectoryCommand(
         new Pose2d(6.64, 2.49, Rotation2d.fromDegrees(225)),
         new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
@@ -324,7 +324,7 @@ public class RobotContainer {
         new RotateToAngle(26, 15)
         .andThen(new ShootAuto()
           .deadlineWith(new RotateToTarget())
-        ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1577); RobotContainer.shooter.setHoodAngle(0.47533473686797345); } ))
+        ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setHoodAngle(0.47533473686797345); } )).andThen(new WaitCommand(0.1))
       ).addTrajectoryCommand(
         new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
         new Pose2d(1.75, 0.95-0.05, Rotation2d.fromDegrees(210))
