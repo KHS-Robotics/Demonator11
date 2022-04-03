@@ -29,6 +29,7 @@ import frc.robot.commands.climber.Elevate.Level;
 import frc.robot.commands.climber.Pivot.Angle;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
+import frc.robot.commands.drive.rotate.LeadShotsWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTarget;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
@@ -38,6 +39,7 @@ import frc.robot.commands.shooter.AutoAdjustHood;
 import frc.robot.commands.shooter.RampShooter;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
+import frc.robot.commands.shooter.ShootMoving;
 import frc.robot.commands.indexer.Index;
 import frc.robot.subsystems.*;
 import frc.robot.vision.Limelight;
@@ -128,6 +130,15 @@ public class RobotContainer {
 
     Button shoot = new Button(switchbox::shoot);
     shoot.whenHeld(new Shoot());
+
+    Button shootMoving = new Button(xboxController::getXButton);
+    shootMoving.whileHeld(new LeadShotsWhileDriving().alongWith(new ShootMoving()));
+    shootMoving.whenPressed(() -> {
+      SwerveDrive.kMaxSpeed = 1.5;
+    });
+    shootMoving.whenReleased(() -> {
+      SwerveDrive.kMaxSpeed = 3.5;
+    });
 
     Button dropIntake = new Button(switchbox::intakeDown);
     dropIntake.whenHeld( new SetIntake(IntakeState.kDown));

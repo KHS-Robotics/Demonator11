@@ -41,6 +41,7 @@ public class ShootAuto extends Shoot {
   public void end(boolean interrupted) {
     RobotContainer.shooter.setHood(0.75);
     RobotContainer.indexer.stopFeeder();
+    RobotContainer.shooter.stop();
     
     // RobotContainer.intake.intake();
     // RobotContainer.intake.setPosition(-14);

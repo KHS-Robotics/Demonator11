@@ -17,7 +17,7 @@ import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax driveMotor, positionMotor;
-  private double speed = 0.3;
+  private double speed = 0.5;
   private RelativeEncoder driveEnc, positionEnc;
   private double setpoint;
 
