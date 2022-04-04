@@ -57,8 +57,6 @@ public class Climber extends SubsystemBase {
     elevatorFollower2.setIdleMode(IdleMode.kBrake);
     pivotMotor.setIdleMode(IdleMode.kBrake);
 
-    elevatorLeader.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
-    elevatorLeader.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 10);
     elevatorFollower1.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500);
     elevatorFollower1.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
     elevatorFollower1.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
@@ -74,7 +72,7 @@ public class Climber extends SubsystemBase {
     elevatorLeader.enableSoftLimit(SoftLimitDirection.kReverse, true);
     elevatorLeader.enableSoftLimit(SoftLimitDirection.kForward, true);
 
-    elevatorLeader.setSoftLimit(SoftLimitDirection.kForward, 49);
+    elevatorLeader.setSoftLimit(SoftLimitDirection.kForward, 59);
     elevatorLeader.setSoftLimit(SoftLimitDirection.kReverse, -5);
 
     elevatorPID.setOutputRange(-0.9, 0.9);
@@ -144,6 +142,15 @@ public class Climber extends SubsystemBase {
   public void resetPos() {
     elevatorEnc.setPosition(0);
     pivotPID.reset();
+  }
+
+  public boolean softLimitsOn() {
+    return elevatorLeader.isSoftLimitEnabled(SoftLimitDirection.kForward) && elevatorLeader.isSoftLimitEnabled(SoftLimitDirection.kReverse);
+  }
+
+  public void setSoftLimits(boolean enable) {
+    elevatorLeader.enableSoftLimit(SoftLimitDirection.kForward, enable);
+    elevatorLeader.enableSoftLimit(SoftLimitDirection.kReverse, enable);
   }
 
   @Override

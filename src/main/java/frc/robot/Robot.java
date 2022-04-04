@@ -58,12 +58,20 @@ public class Robot extends TimedRobot {
     }
 
     if (RobotContainer.joystick.getRawButton(5)) {
-      RobotContainer.pixy.updateCargoInFrame();
+      //RobotContainer.pixy.updateCargoInFrame();
+    }
+
+    if(!RobotContainer.climber.softLimitsOn()) {
+      RobotContainer.climber.setSoftLimits(true);
     }
     
     if (RobotContainer.switchbox.climb() && RobotContainer.switchbox.shoot()) {
       RobotContainer.climber.resetPos();
       RobotContainer.intake.resetPos();
+    }
+
+    if( !RobotContainer.swerveDrive.isCalibrated && RobotContainer.swerveDrive.resetEncoders()) {
+      RobotContainer.swerveDrive.isCalibrated = true;
     }
   }
 
@@ -121,5 +129,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
 
+    if(RobotContainer.climber.softLimitsOn()) {
+      RobotContainer.climber.setSoftLimits(false);
+    }
   }
 }

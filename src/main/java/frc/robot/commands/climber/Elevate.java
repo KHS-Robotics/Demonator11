@@ -31,7 +31,7 @@ public class Elevate extends CommandBase {
         setpoint = 0;
         break;
       case MidHeight:
-        setpoint = 20;
+        setpoint = 27;
         break;
       case ClearBar:
         setpoint = 0;
@@ -40,13 +40,13 @@ public class Elevate extends CommandBase {
         setpoint = 0;
         break;
       case Reach:
-        setpoint = 49;
+        setpoint = 59;
         break;
       case Zero:
         setpoint = -4;
         break;
       case Handoff:
-        setpoint = 47;
+        setpoint = 55;
         break;
     }
 
