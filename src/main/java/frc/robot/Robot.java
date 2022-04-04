@@ -128,9 +128,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-
     if(RobotContainer.climber.softLimitsOn()) {
       RobotContainer.climber.setSoftLimits(false);
     }
+
+    RobotContainer.climber.setElevatorSpeed( Math.abs(RobotContainer.joystick.getElevatorSpeed()) < 0.1 ? 0 : (RobotContainer.joystick.getElevatorSpeed()*0.5) );
+    RobotContainer.climber.setPivotSpeed( Math.abs(RobotContainer.joystick.getPivotSpeed()) < 0.1 ? 0 : (RobotContainer.joystick.getPivotSpeed()*0.5) );
   }
 }

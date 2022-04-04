@@ -87,6 +87,7 @@ public class Climber extends SubsystemBase {
     tab.addNumber("Pivot Current", () -> RobotContainer.pdp.getCurrent(RobotMap.PIVOT_MOTOR));
     tab.addNumber("Error", pivotPID::getPositionError);
     tab.addNumber("Pivot Speed", () -> pivotSetpoint);
+    tab.addBoolean("Soft Limits Enabled", this::softLimitsOn);
   }
 
   public void setAngle(double angle) {
