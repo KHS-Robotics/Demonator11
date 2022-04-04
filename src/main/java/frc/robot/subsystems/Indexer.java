@@ -35,8 +35,8 @@ public class Indexer extends SubsystemBase {
     leftSide.setInverted(true);
     rightSide.setInverted(false);
 
-    leftSide.setSmartCurrentLimit(30);
-    rightSide.setSmartCurrentLimit(30);
+    leftSide.setSmartCurrentLimit(30); //5
+    rightSide.setSmartCurrentLimit(30); //5
     feeder.setSmartCurrentLimit(30);
 
     feederBeamBreak = new DigitalInput(RobotMap.INDEXER_BEAM_BREAK);

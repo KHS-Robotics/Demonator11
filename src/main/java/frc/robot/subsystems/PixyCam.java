@@ -32,6 +32,7 @@ public class PixyCam extends SubsystemBase {
 
   @Override
   public void periodic() {
+    updateCargoInFrame();
   }
 
   public void setLamp(boolean on) {

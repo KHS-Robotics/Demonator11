@@ -123,7 +123,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-
+    RobotContainer.shooter.setHood(0);
   }
 
   @Override

@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
@@ -76,7 +77,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     swerveDrive.setDefaultCommand(new DriveSwerveWithXbox());
-    shooter.setDefaultCommand(new AutoAdjustHood());
+    shooter.setDefaultCommand(new RampShooter());
     indexer.setDefaultCommand(new Index());
     
     var tab = Shuffleboard.getTab("Match");
@@ -191,7 +192,7 @@ public class RobotContainer {
     climbButton.whenPressed( new SetPivotVoltage(-0.15, 2).andThen(new Elevate(Level.Zero)).andThen(new InstantCommand( () -> climber.setElevatorSpeed(0) )));
     
     Button transfer = new Button( () -> joystick.getRawButton(9) );
-    transfer.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new WaitForNavx(Angle.Tilt)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.45, 2.5)) );
+    transfer.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new WaitCommand(0.5)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.45, 2.5)) );
 
     Button handoff = new Button( joystick::handoff );
     handoff.whenPressed( new Elevate(Level.MidHeight));
@@ -202,6 +203,10 @@ public class RobotContainer {
     Button eject = new Button(switchbox::eject);
     eject.whileHeld(() -> {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}, shooter, indexer);
     eject.whenReleased(() -> {shooter.setShooter(0); indexer.setFeeder(0);});
+
+    Button ejectWrongColor = new Button(() -> ( (!switchbox.shoot() && !(pixy.nextCargo().getColorAsAlliance() == Robot.color) && (pixy.nextCargo().getColorAsAlliance() != DriverStation.Alliance.Invalid))) );
+    ejectWrongColor.whileHeld(() -> {if (pixy.nextCargo().getColorAsAlliance() != Robot.color) {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}}, shooter, indexer );
+    ejectWrongColor.whenReleased(new InstantCommand( () -> indexer.stopFeeder() ).andThen( new WaitCommand(0.2) ).andThen(new InstantCommand( () -> shooter.setShooter(0) ) ) );
   }
 
   public static AutonomousRoutine getCommand(int id) {
@@ -324,7 +329,7 @@ public class RobotContainer {
   }
 
   private static AutonomousRoutine getFourBallAuto() {
-    return new AutoRoutineBuilder(2.5, 5)
+    return new AutoRoutineBuilder(2.75, 5)
       .addCommand(
         new InstantCommand( () -> { RobotContainer.shooter.setHoodAngle(0.45495017309236974); } )
       ).addTrajectoryCommand(
@@ -338,11 +343,11 @@ public class RobotContainer {
         ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setHoodAngle(0.47533473686797345); } )).andThen(new WaitCommand(0.1))
       ).addTrajectoryCommand(
         new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
-        new Pose2d(1.75, 0.95-0.05, Rotation2d.fromDegrees(210))
+        new Pose2d(1.75, 0.95+0.1, Rotation2d.fromDegrees(210))
       ).addCommand(
         new WaitCommand(0.5)
       ).addTrajectoryCommand(
-        new Pose2d(1.71, 0.95-0.05, Rotation2d.fromDegrees(210)),
+        new Pose2d(1.71, 0.95+0.1, Rotation2d.fromDegrees(210)),
         new Pose2d(5.61, 1.16, Rotation2d.fromDegrees(42.18))
       ).addCommand(
         new ShootAuto()

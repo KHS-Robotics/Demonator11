@@ -45,6 +45,10 @@ public class Intake extends SubsystemBase {
     var tab = Shuffleboard.getTab("Intake");
     tab.addNumber("Setpoint", () -> setpoint);
     tab.addNumber("Position", positionEnc::getPosition);
+
+    // TODO: TEST
+    driveMotor.setSmartCurrentLimit(5);
+    positionMotor.setSmartCurrentLimit(5);
     
   }
 

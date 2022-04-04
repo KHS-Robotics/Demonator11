@@ -36,7 +36,7 @@ public class RampShooter extends CommandBase {
   @Override
   public void execute() {
     if(Limelight.isTarget()) {
-      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
+      dist = (targetHeight - limelightHeight) / (Math.cos(Math.toRadians(Limelight.getTx())) * Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle))) + 0.91 + 0.15;
 
       if (dist >= 2.7) {
         angle = Math.atan(((Math.tan(-0.698131701) * (dist)) - (2 * (targetHeight - robotHeight))) / -dist);
@@ -54,8 +54,6 @@ public class RampShooter extends CommandBase {
 
       RobotContainer.shooter.setHoodAngle((Math.PI / 2) - angle);
       RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
-    } else {
-      RobotContainer.shooter.setShooter(msToRPM(8.5));
     }
   }
 

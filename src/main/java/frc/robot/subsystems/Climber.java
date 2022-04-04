@@ -72,8 +72,8 @@ public class Climber extends SubsystemBase {
     elevatorLeader.enableSoftLimit(SoftLimitDirection.kReverse, true);
     elevatorLeader.enableSoftLimit(SoftLimitDirection.kForward, true);
 
-    elevatorLeader.setSoftLimit(SoftLimitDirection.kForward, 59);
-    elevatorLeader.setSoftLimit(SoftLimitDirection.kReverse, -5);
+    elevatorLeader.setSoftLimit(SoftLimitDirection.kForward, 62);
+    elevatorLeader.setSoftLimit(SoftLimitDirection.kReverse, -6);
 
     elevatorPID.setOutputRange(-0.9, 0.9);
 
