@@ -28,6 +28,7 @@ public class Climber extends SubsystemBase {
   private PIDController pivotPID;
 
   private double offset = 0;
+  public double pivotTime = 0;
 
   private double elevatorSetpoint;
   private double pivotSetpoint;
@@ -88,6 +89,8 @@ public class Climber extends SubsystemBase {
     tab.addNumber("Error", pivotPID::getPositionError);
     tab.addNumber("Pivot Speed", () -> pivotSetpoint);
     tab.addBoolean("Soft Limits Enabled", this::softLimitsOn);
+
+    pivotTime = 0;
   }
 
   public void setAngle(double angle) {

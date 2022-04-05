@@ -189,7 +189,7 @@ public class RobotContainer {
     setupClimb.whenPressed( new InstantCommand(() -> climber.resetPitch() ).andThen (new UnhookElevator()).andThen(new Elevate(Level.Reach)));
 
     Button climbButton = new Button( joystick::climb );
-    climbButton.whenPressed( new SetPivotVoltage(-0.15, 2).andThen(new Elevate(Level.Zero)).andThen(new InstantCommand( () -> climber.setElevatorSpeed(0) )));
+    climbButton.whenPressed( new SetPivotVoltage(-0.15, climber.pivotTime).andThen(new InstantCommand(() -> climber.pivotTime = 2)).andThen(new Elevate(Level.Zero)).andThen(new InstantCommand( () -> climber.setElevatorSpeed(0) )));
     
     Button transfer = new Button( () -> joystick.getRawButton(9) );
     transfer.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new WaitCommand(0.5)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.45, 2.5)) );
