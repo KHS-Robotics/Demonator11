@@ -98,7 +98,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean atSetpoint(double tolerance) {
+
     return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity())/shooterPidSetpoint < tolerance;
+
   }
 
   public double getVelocity() {
