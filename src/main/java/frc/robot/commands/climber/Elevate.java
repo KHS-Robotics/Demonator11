@@ -63,6 +63,7 @@ public class Elevate extends CommandBase {
   public void end(boolean interrupted) {
     if(level == Level.Reach) {
      RobotContainer.climber.setIdleMode(CANSparkMax.IdleMode.kCoast);
+     RobotContainer.climber.setElevatorSpeed(0);
     }
   }
 
