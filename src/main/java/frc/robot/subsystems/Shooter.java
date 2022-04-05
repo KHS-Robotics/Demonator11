@@ -45,8 +45,8 @@ public class Shooter extends SubsystemBase {
     leader.setIdleMode(IdleMode.kCoast);
     follower.setIdleMode(IdleMode.kCoast);
 
-    leader.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
-    leader.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 10);
+    //leader.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
+    //leader.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 10);
     leader.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
     follower.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 100);
     follower.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
@@ -68,7 +68,7 @@ public class Shooter extends SubsystemBase {
     hoodServo1.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     hoodServo2.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
 
-    speedMultiplier = 1.03;
+    speedMultiplier = 1.07;
 
     var tab = Shuffleboard.getTab("Match");
     tab.addNumber("Shooter Multiplier", () -> speedMultiplier);
@@ -98,7 +98,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean atSetpoint(double tolerance) {
-    return Math.abs((shooterPidSetpoint - leaderEnc.getVelocity())/shooterPidSetpoint) < tolerance;
+
+    return Math.abs(shooterPidSetpoint - leaderEnc.getVelocity())/shooterPidSetpoint < tolerance;
+
   }
 
   public double getVelocity() {
@@ -132,6 +134,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public void resetMultipler() {
-    speedMultiplier = 1.03;
+    speedMultiplier = 1.07;
   }
 }

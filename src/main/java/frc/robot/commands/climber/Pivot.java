@@ -28,7 +28,7 @@ public class Pivot extends CommandBase {
         setpoint = 0;
         break;
       case Tilt:
-        setpoint = -41.5;
+        setpoint = -50;
         break;
       case Straight:
         setpoint = -20;
@@ -50,6 +50,7 @@ public class Pivot extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.climber.setPivotSpeed(0);
   }
 
   public enum Angle {

@@ -35,11 +35,11 @@ public class Indexer extends SubsystemBase {
     leftSide.setInverted(true);
     rightSide.setInverted(false);
 
-    leftSide.setSmartCurrentLimit(30);
-    rightSide.setSmartCurrentLimit(30);
+    leftSide.setSmartCurrentLimit(10); //5
+    rightSide.setSmartCurrentLimit(10); //5
     feeder.setSmartCurrentLimit(30);
 
-    feederBeamBreak = new DigitalInput(4);
+    feederBeamBreak = new DigitalInput(RobotMap.INDEXER_BEAM_BREAK);
 
     var tab = Shuffleboard.getTab("Indexer");
     tab.addBoolean("Beam Break", feederBeamBreak::get);

@@ -24,7 +24,7 @@ public class Shoot extends CommandBase {
 
   public Shoot() {
     debounce = new Timer();
-    addRequirements(RobotContainer.shooter, RobotContainer.indexer);
+    addRequirements(RobotContainer.shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -34,7 +34,7 @@ public class Shoot extends CommandBase {
     tolerance = 0.015;
     Limelight.setLedMode(LightMode.eOn);
 
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
+    dist = (targetHeight - limelightHeight) / (Math.cos(Math.toRadians(Limelight.getTx())) * Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle))) + 0.91 + 0.15;
 
     debounce.start();
     debounce.reset();
@@ -44,7 +44,7 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     if(Limelight.isTarget()) {
-      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
+      dist = (targetHeight - limelightHeight) / (Math.cos(Math.toRadians(Limelight.getTx())) * Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle))) + 0.91 + 0.15;
     }
 
     if (dist > 2.7) {
@@ -81,15 +81,17 @@ public class Shoot extends CommandBase {
 
     RobotContainer.shooter.setShooter(msToRPM(speed + (initDrag * time * time * 0.5)));
 
-    RobotContainer.indexer.index();
+    //RobotContainer.indexer.index();
 
     if ( RobotContainer.shooter.atSetpoint(tolerance)) {//RobotContainer.shooter.getVelocity() > msToRPM(minError) && RobotContainer.shooter.getVelocity() < msToRPM(maxError)) {
-      if(debounce.hasElapsed(0.65)) {
+      if(debounce.hasElapsed(0.085)) {
         RobotContainer.indexer.feed();
       }
     } else {
       debounce.reset();
-      RobotContainer.indexer.stopFeeder();
+      if(dist > 4) {
+        RobotContainer.indexer.stopFeeder();
+      }
     }
   }
 

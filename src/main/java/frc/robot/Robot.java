@@ -56,10 +56,22 @@ public class Robot extends TimedRobot {
     } else if (RobotContainer.joystick.enableLimelight()) {
       Limelight.setLedMode(LightMode.eOn);
     }
+
+    if (RobotContainer.joystick.getRawButton(5)) {
+      //RobotContainer.pixy.updateCargoInFrame();
+    }
+
+    if(!RobotContainer.climber.softLimitsOn()) {
+      RobotContainer.climber.setSoftLimits(true);
+    }
     
     if (RobotContainer.switchbox.climb() && RobotContainer.switchbox.shoot()) {
       RobotContainer.climber.resetPos();
       RobotContainer.intake.resetPos();
+    }
+
+    if( !RobotContainer.swerveDrive.isCalibrated && RobotContainer.swerveDrive.resetEncoders()) {
+      RobotContainer.swerveDrive.isCalibrated = true;
     }
   }
 
@@ -111,11 +123,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-
+    RobotContainer.shooter.setHood(0);
   }
 
   @Override
   public void testPeriodic() {
+    if(RobotContainer.climber.softLimitsOn()) {
+      RobotContainer.climber.setSoftLimits(false);
+    }
 
+    RobotContainer.climber.setElevatorSpeed( Math.abs(RobotContainer.joystick.getElevatorSpeed()) < 0.1 ? 0 : (RobotContainer.joystick.getElevatorSpeed()*0.5) );
+    RobotContainer.climber.setPivotSpeed( Math.abs(RobotContainer.joystick.getPivotSpeed()) < 0.1 ? 0 : (RobotContainer.joystick.getPivotSpeed()*0.5) );
   }
 }

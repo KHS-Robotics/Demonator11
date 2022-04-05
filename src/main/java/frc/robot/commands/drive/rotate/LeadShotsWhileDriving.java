@@ -7,6 +7,9 @@
 
 package frc.robot.commands.drive.rotate;
 
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -30,6 +33,10 @@ public class LeadShotsWhileDriving extends CommandBase {
      */
     public LeadShotsWhileDriving() {
         addRequirements(RobotContainer.swerveDrive);
+
+        var tab = Shuffleboard.getTab("Shooter");
+        tab.addNumber("Angle New", () -> angleNew);
+
     }
 
     // Called when the command is initially scheduled.
@@ -45,12 +52,15 @@ public class LeadShotsWhileDriving extends CommandBase {
     @Override
     public void execute() {
         if(Limelight.isTarget()) {
-            dist = (targetHeight - limelightHeight) / (Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) * Math.cos(Math.toRadians((Limelight.getTx())))) + 0.91 + 0.15;
+
+            dist = (targetHeight - limelightHeight) / (Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) * Math.cos(Math.toRadians((Limelight.getTx())))) + 0.91;
         }
         distNew = dist;
         refineShot(dist, 7);
-        offsetLimelightAngle = Limelight.getTx() + angleNew;
-        if (Limelight.isTarget() && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle)) > 2) {
+        //distNew -= Math.abs(RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond/3);
+        angleNew -= (Math.PI / 20) * RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond;
+        offsetLimelightAngle = Math.toDegrees(angleNew) + Limelight.getTx();
+        if (Limelight.isTarget()) { // && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle)) > 1) {
             angle = RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle;
         }
 

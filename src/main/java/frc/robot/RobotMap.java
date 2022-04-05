@@ -28,10 +28,12 @@ public class RobotMap {
   public static final int REAR_LEFT_DRIVE = 18;
   public static final int REAR_RIGHT_DRIVE = 19;
 
-  public static final int FRONT_LEFT_DIGITAL_INPUT = 2;
-  public static final int FRONT_RIGHT_DIGITAL_INPUT = 0;
-  public static final int REAR_LEFT_DIGITAL_INPUT = 1;
-  public static final int REAR_RIGHT_DIGITAL_INPUT = 3;
+  public static final int FRONT_LEFT_DIGITAL_INPUT = 3;
+  public static final int FRONT_RIGHT_DIGITAL_INPUT = 2;
+  public static final int REAR_LEFT_DIGITAL_INPUT = 4;
+  public static final int REAR_RIGHT_DIGITAL_INPUT = 5;
+  public static final int INDEXER_BEAM_BREAK = 6;
+  public static final int SHOOTER_BEAM_BREAK = 7;
 
   public static final int INTAKE_DRIVE = 3;
   public static final int INTAKE_POSITION = 2;

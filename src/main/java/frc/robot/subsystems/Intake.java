@@ -17,7 +17,7 @@ import frc.robot.RobotMap;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax driveMotor, positionMotor;
-  private double speed = 0.3;
+  private double speed = 0.5;
   private RelativeEncoder driveEnc, positionEnc;
   private double setpoint;
 
@@ -45,6 +45,10 @@ public class Intake extends SubsystemBase {
     var tab = Shuffleboard.getTab("Intake");
     tab.addNumber("Setpoint", () -> setpoint);
     tab.addNumber("Position", positionEnc::getPosition);
+
+    // TODO: TEST
+    driveMotor.setSmartCurrentLimit(40);
+    //positionMotor.setSmartCurrentLimit(5);
     
   }
 

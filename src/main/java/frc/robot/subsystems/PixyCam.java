@@ -14,14 +14,13 @@ public class PixyCam extends SubsystemBase {
   private final Pixy2 pixy;
   private int blockCount;
   private Cargo[] cargos = new Cargo[2];
-  private ArrayList<Block> blocks;
+  // private ArrayList<Block> blocks;
 
   public PixyCam() {
     pixy = Pixy2.createInstance(new SPILink());
     pixy.init();
-    blocks = pixy.getCCC().getBlockCache();
     updateCargoInFrame();
-    setLamp(true);
+    setLamp(false);
 
     var tab = Shuffleboard.getTab("Pixy");
     tab.addNumber("BlockCount", () -> blockCount);
@@ -33,6 +32,7 @@ public class PixyCam extends SubsystemBase {
 
   @Override
   public void periodic() {
+    updateCargoInFrame();
   }
 
   public void setLamp(boolean on) {
@@ -45,9 +45,7 @@ public class PixyCam extends SubsystemBase {
   public void updateCargoInFrame() {
     blockCount = pixy.getCCC().getBlocks(false, Pixy2CCC.CCC_SIG1 | Pixy2CCC.CCC_SIG2, 2);
     if (blockCount >= 0) {
-      blocks.clear();
-
-      blocks = pixy.getCCC().getBlockCache();
+      ArrayList<Block> blocks = pixy.getCCC().getBlockCache();
       //cargos = new Cargo[blocks.size()];
       for (int i = 0; i < cargos.length; i++) {
         if(blocks.size() > i ) {

@@ -1,5 +1,6 @@
 package frc.robot.vision.pixy;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 
 public class Cargo extends Block {
@@ -38,6 +39,14 @@ public class Cargo extends Block {
     else {
       return "Blue";
     }
+  }
+
+  public DriverStation.Alliance getColorAsAlliance() {
+    if (this.getSignature() == 1)
+      return DriverStation.Alliance.Red;
+    if (this.getSignature() == 2)
+      return DriverStation.Alliance.Blue;
+    return DriverStation.Alliance.Invalid;
   }
 
   public Color getColor() {

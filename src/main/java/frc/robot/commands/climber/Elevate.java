@@ -4,6 +4,8 @@
 
 package frc.robot.commands.climber;
 
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -21,13 +23,15 @@ public class Elevate extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    RobotContainer.climber.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    
     double setpoint = 0;
     switch (level) {
       case BelowMidHeight:
         setpoint = 0;
         break;
       case MidHeight:
-        setpoint = 20;
+        setpoint = 27;
         break;
       case ClearBar:
         setpoint = 0;
@@ -36,13 +40,13 @@ public class Elevate extends CommandBase {
         setpoint = 0;
         break;
       case Reach:
-        setpoint = 49;
+        setpoint = 62;
         break;
       case Zero:
-        setpoint = -4;
+        setpoint = -5;
         break;
       case Handoff:
-        setpoint = 47;
+        setpoint = 58;
         break;
     }
 
@@ -57,6 +61,10 @@ public class Elevate extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if(level == Level.Reach) {
+     RobotContainer.climber.setIdleMode(CANSparkMax.IdleMode.kCoast);
+     RobotContainer.climber.setElevatorSpeed(0);
+    }
   }
 
   // Returns true when the command should end.

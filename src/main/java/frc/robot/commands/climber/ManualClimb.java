@@ -6,6 +6,8 @@ package frc.robot.commands.climber;
 
 import java.util.function.DoubleSupplier;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -18,6 +20,11 @@ public class ManualClimb extends CommandBase {
 
     this.elevatorSpeed = elevatorSpeed;
     this.pivotSpeed = pivotSpeed;
+  }
+
+  @Override
+  public void initialize() {
+    RobotContainer.climber.setIdleMode(IdleMode.kBrake);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

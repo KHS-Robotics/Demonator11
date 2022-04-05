@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotState;
@@ -29,6 +30,7 @@ import frc.robot.commands.climber.Elevate.Level;
 import frc.robot.commands.climber.Pivot.Angle;
 import frc.robot.commands.drive.DriveSwerveWithXbox;
 import frc.robot.commands.drive.rotate.HoldAngleWhileDriving;
+import frc.robot.commands.drive.rotate.LeadShotsWhileDriving;
 import frc.robot.commands.drive.rotate.RotateToAngle;
 import frc.robot.commands.drive.rotate.RotateToTarget;
 import frc.robot.commands.drive.rotate.RotateToTargetWhileDriving;
@@ -38,6 +40,7 @@ import frc.robot.commands.shooter.AutoAdjustHood;
 import frc.robot.commands.shooter.RampShooter;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAuto;
+import frc.robot.commands.shooter.ShootMoving;
 import frc.robot.commands.indexer.Index;
 import frc.robot.subsystems.*;
 import frc.robot.vision.Limelight;
@@ -74,7 +77,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     swerveDrive.setDefaultCommand(new DriveSwerveWithXbox());
-    shooter.setDefaultCommand(new AutoAdjustHood());
+    shooter.setDefaultCommand(new RampShooter());
     indexer.setDefaultCommand(new Index());
     
     var tab = Shuffleboard.getTab("Match");
@@ -123,11 +126,20 @@ public class RobotContainer {
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button outtakeBall = new Button(switchbox::outtake);
-    outtakeBall.whenPressed(() -> {intake.reverse(); }, intake);
-    outtakeBall.whenReleased(() -> {intake.stop(); indexer.stop(); }, intake);
+    outtakeBall.whenPressed(() -> {intake.reverse(); indexer.setFeeder(-0.8); indexer.setLeft(-0.8); indexer.setRight(-0.8); }, intake, indexer);
+    outtakeBall.whenReleased(() -> {intake.stop(); indexer.stop(); }, intake, indexer);
 
-    Button shoot = new Button(switchbox::shoot);
-    shoot.whenHeld(new Shoot());
+    Button shoot = new Button(() -> ( switchbox.shoot() || xboxController.getYButton() ) );
+    shoot.whenHeld(new WaitCommand(0.3).andThen(new Shoot()) );
+
+    Button shootMoving = new Button(xboxController::getXButton);
+    shootMoving.whileHeld(new LeadShotsWhileDriving().alongWith(new ShootMoving()));
+    shootMoving.whenPressed(() -> {
+      SwerveDrive.kMaxSpeed = 1.5;
+    });
+    shootMoving.whenReleased(() -> {
+      SwerveDrive.kMaxSpeed = 3.5;
+    });
 
     Button dropIntake = new Button(switchbox::intakeDown);
     dropIntake.whenHeld( new SetIntake(IntakeState.kDown));
@@ -174,13 +186,13 @@ public class RobotContainer {
     manualClimb.whenHeld( new ManualClimb( () -> joystick.getElevatorSpeed(), () -> joystick.getPivotSpeed() ) );
 
     Button setupClimb = new Button(switchbox::climb);
-    setupClimb.whenPressed((new UnhookElevator()).andThen(new Elevate(Level.Reach)));
+    setupClimb.whenPressed( new InstantCommand(() -> climber.resetPitch() ).andThen (new UnhookElevator()).andThen(new Elevate(Level.Reach)));
 
     Button climbButton = new Button( joystick::climb );
-    climbButton.whenPressed( new SetPivotVoltage(-0.15, 2).andThen(new Elevate(Level.Zero)) );
+    climbButton.whenPressed( new SetPivotVoltage(-0.15, climber.pivotTime).andThen(new InstantCommand(() -> climber.pivotTime = 2)).andThen(new Elevate(Level.Zero)).andThen(new InstantCommand( () -> climber.setElevatorSpeed(0) )));
     
     Button transfer = new Button( () -> joystick.getRawButton(9) );
-    transfer.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.15, 2.5)) );
+    transfer.whenPressed( new InstantCommand( () -> climber.setElevatorSpeed(0.2) ).andThen(new WaitCommand(0.25)).andThen(new Elevate(Level.MidHeight)).andThen(new Pivot(Angle.Tilt)).andThen(new Elevate(Level.Reach)).andThen(new WaitCommand(0.5)).andThen(new Pivot(Angle.Handoff)).andThen(new SetPivotVoltage(-0.45, 2.5)) );
 
     Button handoff = new Button( joystick::handoff );
     handoff.whenPressed( new Elevate(Level.MidHeight));
@@ -189,8 +201,12 @@ public class RobotContainer {
     rampShooter.whenPressed( new RampShooter() );
  
     Button eject = new Button(switchbox::eject);
-    eject.whileHeld(() -> {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}, shooter, indexer);
+    eject.whileHeld(() -> {shooter.setHood(0.5); shooter.setShooter(1200); indexer.setFeeder(0.8); indexer.index();}, shooter, indexer);
     eject.whenReleased(() -> {shooter.setShooter(0); indexer.setFeeder(0);});
+
+    Button ejectWrongColor = new Button(() -> ( (!(switchbox.shoot() || xboxController.getXButton() || switchbox.stopAutoEject() || xboxController.getYButton()) && !(pixy.nextCargo().getColorAsAlliance() == Robot.color) && (pixy.nextCargo().getColorAsAlliance() != DriverStation.Alliance.Invalid))) );
+    ejectWrongColor.whileHeld(() -> {if (pixy.nextCargo().getColorAsAlliance() != Robot.color) {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}}, shooter, indexer );
+    ejectWrongColor.whenReleased(new InstantCommand( () -> indexer.stopFeeder() ).andThen( new WaitCommand(0.2) ).andThen(new InstantCommand( () -> shooter.setShooter(0) ) ) );
   }
 
   public static AutonomousRoutine getCommand(int id) {
@@ -313,9 +329,9 @@ public class RobotContainer {
   }
 
   private static AutonomousRoutine getFourBallAuto() {
-    return new AutoRoutineBuilder(2.5, 5)
+    return new AutoRoutineBuilder(2.75, 5)
       .addCommand(
-        new InstantCommand( () -> { RobotContainer.shooter.setShooter(1520); RobotContainer.shooter.setHoodAngle(0.45495017309236974); } )
+        new InstantCommand( () -> { RobotContainer.shooter.setHoodAngle(0.45495017309236974); } )
       ).addTrajectoryCommand(
         new Pose2d(6.64, 2.49, Rotation2d.fromDegrees(225)),
         new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
@@ -324,14 +340,14 @@ public class RobotContainer {
         new RotateToAngle(26, 15)
         .andThen(new ShootAuto()
           .deadlineWith(new RotateToTarget())
-        ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setShooter(1577); RobotContainer.shooter.setHoodAngle(0.47533473686797345); } ))
+        ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setHoodAngle(0.47533473686797345); } )).andThen(new WaitCommand(0.1))
       ).addTrajectoryCommand(
         new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
-        new Pose2d(1.71, 0.95, Rotation2d.fromDegrees(210))
+        new Pose2d(1.35, 0.95+0.55, Rotation2d.fromDegrees(210))
       ).addCommand(
         new WaitCommand(0.5)
       ).addTrajectoryCommand(
-        new Pose2d(1.71, 0.95, Rotation2d.fromDegrees(210)),
+        new Pose2d(1.55, 0.95+0.55, Rotation2d.fromDegrees(210)),
         new Pose2d(5.61, 1.16, Rotation2d.fromDegrees(42.18))
       ).addCommand(
         new ShootAuto()

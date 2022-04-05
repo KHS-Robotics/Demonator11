@@ -37,7 +37,9 @@ public class RotateToTargetWhileDriving extends CommandBase {
   @Override
   public void execute() {    
     //if (Limelight.isTarget() && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - Limelight.getTx())) > 2) {
-      angle = RobotContainer.swerveDrive.getYaw() - Limelight.getTx();
+
+    angle = RobotContainer.swerveDrive.getYaw() - Limelight.getTx();
+
     //}
 
     var xSpeed = RobotContainer.swerveDrive.sensControl(-RobotContainer.xboxController.getLeftY()) * SwerveDrive.kMaxSpeed;

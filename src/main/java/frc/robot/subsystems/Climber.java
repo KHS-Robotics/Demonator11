@@ -27,6 +27,9 @@ public class Climber extends SubsystemBase {
   private SparkMaxPIDController elevatorPID;
   private PIDController pivotPID;
 
+  private double offset = 0;
+  public double pivotTime = 0;
+
   private double elevatorSetpoint;
   private double pivotSetpoint;
 
@@ -55,8 +58,6 @@ public class Climber extends SubsystemBase {
     elevatorFollower2.setIdleMode(IdleMode.kBrake);
     pivotMotor.setIdleMode(IdleMode.kBrake);
 
-    elevatorLeader.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
-    elevatorLeader.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 10);
     elevatorFollower1.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500);
     elevatorFollower1.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
     elevatorFollower1.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
@@ -72,29 +73,42 @@ public class Climber extends SubsystemBase {
     elevatorLeader.enableSoftLimit(SoftLimitDirection.kReverse, true);
     elevatorLeader.enableSoftLimit(SoftLimitDirection.kForward, true);
 
-    elevatorLeader.setSoftLimit(SoftLimitDirection.kForward, 49);
-    elevatorLeader.setSoftLimit(SoftLimitDirection.kReverse, -5);
+    elevatorLeader.setSoftLimit(SoftLimitDirection.kForward, 62);
+    elevatorLeader.setSoftLimit(SoftLimitDirection.kReverse, -6);
 
-    elevatorPID.setOutputRange(-0.6, 0.75);
+    elevatorPID.setOutputRange(-0.9, 0.9);
 
     var tab = Shuffleboard.getTab("Climb");
-    tab.addNumber("Pitch!", () -> RobotContainer.navx.getRoll());
+    tab.addNumber("Pitch!", () -> getPitch());
+    tab.addNumber("offset", () -> offset);
+    tab.addNumber("Roll", RobotContainer.navx::getRoll);
     tab.addNumber("Elevator Position", elevatorEnc::getPosition);
     tab.addNumber("Pivot Position", pivotEnc::getPosition);
     tab.addNumber("El current", () -> RobotContainer.pdp.getCurrent(RobotMap.ELEVATOR_LEADER));
     tab.addNumber("Pivot Current", () -> RobotContainer.pdp.getCurrent(RobotMap.PIVOT_MOTOR));
     tab.addNumber("Error", pivotPID::getPositionError);
     tab.addNumber("Pivot Speed", () -> pivotSetpoint);
+    tab.addBoolean("Soft Limits Enabled", this::softLimitsOn);
+
+    pivotTime = 0;
   }
 
   public void setAngle(double angle) {
-    setPivotSpeed( -MathUtil.clamp( pivotPID.calculate(RobotContainer.navx.getRoll(), angle), -0.5, 0.5));
+    setPivotSpeed( -MathUtil.clamp( pivotPID.calculate(getPitch(), angle), -0.5, 0.5));
   }
 
   public void elevate(double height) {
     elevatorSetpoint = height;
 
     elevatorPID.setReference(height, ControlType.kPosition);
+  }
+
+  public void resetPitch() {
+    offset = -RobotContainer.navx.getRoll();
+  }
+
+  public double getPitch() {
+    return RobotContainer.navx.getRoll() + offset;
   }
 
   public boolean elevatorAtSetpoint() {
@@ -118,6 +132,12 @@ public class Climber extends SubsystemBase {
     elevatorLeader.setVoltage(12 * speed);
   }
 
+  public void setIdleMode(IdleMode mode) {
+    elevatorLeader.setIdleMode(mode);
+    elevatorFollower1.setIdleMode(mode);
+    elevatorFollower2.setIdleMode(mode);
+  }
+
   public void setPivotSpeed(double speed) {
     pivotSetpoint = speed;
     pivotMotor.setVoltage(12 * speed);
@@ -126,6 +146,15 @@ public class Climber extends SubsystemBase {
   public void resetPos() {
     elevatorEnc.setPosition(0);
     pivotPID.reset();
+  }
+
+  public boolean softLimitsOn() {
+    return elevatorLeader.isSoftLimitEnabled(SoftLimitDirection.kForward) && elevatorLeader.isSoftLimitEnabled(SoftLimitDirection.kReverse);
+  }
+
+  public void setSoftLimits(boolean enable) {
+    elevatorLeader.enableSoftLimit(SoftLimitDirection.kForward, enable);
+    elevatorLeader.enableSoftLimit(SoftLimitDirection.kReverse, enable);
   }
 
   @Override
