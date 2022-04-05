@@ -47,8 +47,8 @@ public class Intake extends SubsystemBase {
     tab.addNumber("Position", positionEnc::getPosition);
 
     // TODO: TEST
-    driveMotor.setSmartCurrentLimit(5);
-    positionMotor.setSmartCurrentLimit(5);
+    driveMotor.setSmartCurrentLimit(40);
+    //positionMotor.setSmartCurrentLimit(5);
     
   }
 

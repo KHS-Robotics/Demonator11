@@ -29,7 +29,7 @@ public class ShootAuto extends Shoot {
   @Override
   public void initialize() {
     super.initialize();
-    this.tolerance = 0.017;
+    this.tolerance = 0.015;
     timer.start();
     timer.reset();
     // RobotContainer.intake.stop();

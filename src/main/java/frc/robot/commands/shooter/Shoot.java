@@ -34,7 +34,7 @@ public class Shoot extends CommandBase {
     tolerance = 0.015;
     Limelight.setLedMode(LightMode.eOn);
 
-    dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
+    dist = (targetHeight - limelightHeight) / (Math.cos(Math.toRadians(Limelight.getTx())) * Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle))) + 0.91 + 0.15;
 
     debounce.start();
     debounce.reset();
@@ -44,7 +44,7 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     if(Limelight.isTarget()) {
-      dist = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) + 0.91 + 0.15;
+      dist = (targetHeight - limelightHeight) / (Math.cos(Math.toRadians(Limelight.getTx())) * Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle))) + 0.91 + 0.15;
     }
 
     if (dist > 2.7) {

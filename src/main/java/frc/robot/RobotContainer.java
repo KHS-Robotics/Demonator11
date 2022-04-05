@@ -126,11 +126,11 @@ public class RobotContainer {
     intakeBall.whenReleased(() -> intake.stop(), intake);
 
     Button outtakeBall = new Button(switchbox::outtake);
-    outtakeBall.whenPressed(() -> {intake.reverse(); }, intake);
-    outtakeBall.whenReleased(() -> {intake.stop(); indexer.stop(); }, intake);
+    outtakeBall.whenPressed(() -> {intake.reverse(); indexer.setFeeder(-0.8); indexer.setLeft(-0.8); indexer.setRight(-0.8); }, intake, indexer);
+    outtakeBall.whenReleased(() -> {intake.stop(); indexer.stop(); }, intake, indexer);
 
-    Button shoot = new Button(switchbox::shoot);
-    shoot.whenHeld(new Shoot());
+    Button shoot = new Button(() -> ( switchbox.shoot() || xboxController.getYButton() ) );
+    shoot.whenHeld(new WaitCommand(0.3).andThen(new Shoot()) );
 
     Button shootMoving = new Button(xboxController::getXButton);
     shootMoving.whileHeld(new LeadShotsWhileDriving().alongWith(new ShootMoving()));
@@ -201,10 +201,10 @@ public class RobotContainer {
     rampShooter.whenPressed( new RampShooter() );
  
     Button eject = new Button(switchbox::eject);
-    eject.whileHeld(() -> {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}, shooter, indexer);
+    eject.whileHeld(() -> {shooter.setHood(0.5); shooter.setShooter(1200); indexer.setFeeder(0.8); indexer.index();}, shooter, indexer);
     eject.whenReleased(() -> {shooter.setShooter(0); indexer.setFeeder(0);});
 
-    Button ejectWrongColor = new Button(() -> ( (!switchbox.shoot() && !(pixy.nextCargo().getColorAsAlliance() == Robot.color) && (pixy.nextCargo().getColorAsAlliance() != DriverStation.Alliance.Invalid))) );
+    Button ejectWrongColor = new Button(() -> ( (!(switchbox.shoot() || xboxController.getXButton() || switchbox.stopAutoEject() || xboxController.getYButton()) && !(pixy.nextCargo().getColorAsAlliance() == Robot.color) && (pixy.nextCargo().getColorAsAlliance() != DriverStation.Alliance.Invalid))) );
     ejectWrongColor.whileHeld(() -> {if (pixy.nextCargo().getColorAsAlliance() != Robot.color) {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}}, shooter, indexer );
     ejectWrongColor.whenReleased(new InstantCommand( () -> indexer.stopFeeder() ).andThen( new WaitCommand(0.2) ).andThen(new InstantCommand( () -> shooter.setShooter(0) ) ) );
   }
@@ -343,11 +343,11 @@ public class RobotContainer {
         ).andThen(new InstantCommand( () -> { RobotContainer.shooter.setHoodAngle(0.47533473686797345); } )).andThen(new WaitCommand(0.1))
       ).addTrajectoryCommand(
         new Pose2d(5.35, 1.95, Rotation2d.fromDegrees(197)),
-        new Pose2d(1.75, 0.95+0.1, Rotation2d.fromDegrees(210))
+        new Pose2d(1.35, 0.95+0.55, Rotation2d.fromDegrees(210))
       ).addCommand(
         new WaitCommand(0.5)
       ).addTrajectoryCommand(
-        new Pose2d(1.71, 0.95+0.1, Rotation2d.fromDegrees(210)),
+        new Pose2d(1.55, 0.95+0.55, Rotation2d.fromDegrees(210)),
         new Pose2d(5.61, 1.16, Rotation2d.fromDegrees(42.18))
       ).addCommand(
         new ShootAuto()

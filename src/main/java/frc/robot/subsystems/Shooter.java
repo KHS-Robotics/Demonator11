@@ -68,7 +68,7 @@ public class Shooter extends SubsystemBase {
     hoodServo1.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
     hoodServo2.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
 
-    speedMultiplier = 1.05;
+    speedMultiplier = 1.07;
 
     var tab = Shuffleboard.getTab("Match");
     tab.addNumber("Shooter Multiplier", () -> speedMultiplier);
@@ -132,6 +132,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public void resetMultipler() {
-    speedMultiplier = 1.05;
+    speedMultiplier = 1.07;
   }
 }

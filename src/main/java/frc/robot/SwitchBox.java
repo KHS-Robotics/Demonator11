@@ -20,6 +20,10 @@ public class SwitchBox extends Joystick {
     return this.getRawButton(7);
   }
 
+  public boolean stopAutoEject() {
+    return this.getRawAxis(0) > 0.1;
+  }
+
   public boolean intake() {
     return this.getRawAxis(1) > 0.75;
   }
