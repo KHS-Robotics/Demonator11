@@ -1,15 +1,9 @@
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.drive.rotate.LeadShotsWhileDriving;
-import frc.robot.vision.Limelight;
 
 public class ShootMoving extends Shoot{
-
-
     public ShootMoving() {
         super();
 
@@ -36,9 +30,6 @@ public class ShootMoving extends Shoot{
             debounce.reset();
             RobotContainer.indexer.stopFeeder();
         }
-
-
-
     }
 
     @Override

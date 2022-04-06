@@ -53,7 +53,7 @@ public class LeadShotsWhileDriving extends CommandBase {
         distNew = dist;
         refineShot(dist, 7);
         //distNew -= Math.abs(RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond/3);
-        angleNew -= (Math.PI / 20) * RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond;
+        //angleNew -= (Math.PI / 20) * RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond;
         offsetLimelightAngle = Math.toDegrees(angleNew) + Limelight.getTx();
         if (Limelight.isTarget()) { // && Math.abs(angle - (RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle)) > 1) {
             angle = RobotContainer.swerveDrive.getYaw() - offsetLimelightAngle;
@@ -92,7 +92,7 @@ public class LeadShotsWhileDriving extends CommandBase {
             //estimated travel time based on last iteration
             double t = distNew /  (speed * Math.cos(hoodAngle));
             //angle of the velocity of the bot/ball
-            double a1 = Math.atan2(RobotContainer.swerveDrive.getChassisSpeeds().vyMetersPerSecond, RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond) - (Math.toRadians(Limelight.getTx() + Math.PI / 2));
+            double a1 = Math.atan2(RobotContainer.swerveDrive.getChassisSpeeds().vyMetersPerSecond, RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond) - (Math.toRadians(Limelight.getTx()) + Math.PI / 2);
             //distance travelled by ball from velocity of bot when shot
             double dist2 = Math.sqrt(Math.pow(RobotContainer.swerveDrive.getChassisSpeeds().vyMetersPerSecond, 2) + Math.pow(RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond, 2)) * t;
             //finds distance for robot to aim at
