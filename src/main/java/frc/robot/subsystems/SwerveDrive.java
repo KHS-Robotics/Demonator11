@@ -244,6 +244,10 @@ public class SwerveDrive extends SubsystemBase {
     targetPid.reset();
   }
 
+  public boolean facingInfield() {
+    return (180 - Math.abs(getYaw())) < 10 || Math.abs(getYaw()) < 10;
+  }
+
   public boolean resetEncoders() {
     boolean fl = frontLeft.resetEncoder();
     boolean fr = frontRight.resetEncoder();

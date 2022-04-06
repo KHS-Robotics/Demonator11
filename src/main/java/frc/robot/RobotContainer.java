@@ -204,7 +204,7 @@ public class RobotContainer {
     eject.whileHeld(() -> {shooter.setHood(0.5); shooter.setShooter(1200); indexer.setFeeder(0.8); indexer.index();}, shooter, indexer);
     eject.whenReleased(() -> {shooter.setShooter(0); indexer.setFeeder(0);});
 
-    Button ejectWrongColor = new Button(() -> ( (!(switchbox.shoot() || xboxController.getXButton() || switchbox.stopAutoEject() || xboxController.getYButton()) && !(pixy.nextCargo().getColorAsAlliance() == Robot.color) && (pixy.nextCargo().getColorAsAlliance() != DriverStation.Alliance.Invalid))) );
+    Button ejectWrongColor = new Button(() -> ( (!(switchbox.shoot() || xboxController.getXButton() || switchbox.stopAutoEject() || xboxController.getYButton()) && swerveDrive.facingInfield() && !(pixy.nextCargo().getColorAsAlliance() == Robot.color) && (pixy.nextCargo().getColorAsAlliance() != DriverStation.Alliance.Invalid))) );
     ejectWrongColor.whileHeld(() -> {if (pixy.nextCargo().getColorAsAlliance() != Robot.color) {shooter.setHood(0.5); shooter.setShooter(1000); indexer.setFeeder(0.8); indexer.index();}}, shooter, indexer );
     ejectWrongColor.whenReleased(new InstantCommand( () -> indexer.stopFeeder() ).andThen( new WaitCommand(0.2) ).andThen(new InstantCommand( () -> shooter.setShooter(0) ) ) );
   }
