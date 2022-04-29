@@ -51,7 +51,7 @@ public class LeadShotsWhileDriving extends CommandBase {
             dist = (targetHeight - limelightHeight) / (Math.tan(Math.toRadians(Limelight.getTy() + limelightAngle)) * Math.cos(Math.toRadians((Limelight.getTx())))) + 0.91;
         }
         distNew = dist;
-        refineShot(dist, 7);
+        calcShot(dist);
         //distNew -= Math.abs(RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond/3);
         //angleNew -= (Math.PI / 20) * RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond;
         offsetLimelightAngle = Math.toDegrees(angleNew) + Limelight.getTx();
@@ -78,18 +78,13 @@ public class LeadShotsWhileDriving extends CommandBase {
         return false;
     }
 
-    public static void refineShot(double dist, int iterations) {
-        for(int i = 0; i < iterations; i++) {
-            if (distNew > 2.7) {
-                hoodAngle = Math.atan(((Math.tan(-0.698131701) * (distNew)) - (2 * (targetHeight - robotHeight))) / -distNew);
-            } else {
-                hoodAngle = Math.atan(((Math.tan(-1.21) * (distNew)) - (2 * (targetHeight - robotHeight))) / -distNew);
-            }
+    public static void calcShot(double dist) {
+            calcHood();
 
             double result = (targetHeight - robotHeight);
-            speed = ShootMoving.ridders(3.5, 13.5, hoodAngle, distNew, result, 15);
+            speed = ShootMoving.ridders(3.5, 13.5, hoodAngle, dist, result, 15);
 
-            //estimated travel time based on last iteration
+            //estimated travel time
             double t = distNew /  (speed * Math.cos(hoodAngle));
             //angle of the velocity of the bot/ball
             double a1 = Math.atan2(RobotContainer.swerveDrive.getChassisSpeeds().vyMetersPerSecond, RobotContainer.swerveDrive.getChassisSpeeds().vxMetersPerSecond) - (Math.toRadians(Limelight.getTx()) + Math.PI / 2);
@@ -99,6 +94,14 @@ public class LeadShotsWhileDriving extends CommandBase {
             distNew = Math.sqrt(Math.pow(dist2, 2) + Math.pow(dist, 2) - 2 * dist2 * dist * Math.cos(a1));
             //finds angle for robot to aim at
             angleNew = Math.asin(Math.sin(a1) * dist2 / distNew);
+
+            calcHood();
+    }
+    private static void calcHood() {
+        if (distNew > 2.7) {
+            hoodAngle = Math.atan(((Math.tan(-0.698131701) * (distNew)) - (2 * (targetHeight - robotHeight))) / -distNew);
+        } else {
+            hoodAngle = Math.atan(((Math.tan(-1.21) * (distNew)) - (2 * (targetHeight - robotHeight))) / -distNew);
         }
     }
 
