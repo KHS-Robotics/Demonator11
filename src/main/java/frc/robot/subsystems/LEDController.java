@@ -22,7 +22,10 @@ public class LEDController extends SubsystemBase {
       byte[] piIP = new byte[]{(byte) 10, (byte) 43, (byte) 42, (byte) 13};
       socket = new DatagramSocket();
       socket.connect(InetAddress.getByAddress(piIP), 8123);
-    } catch (Exception e) { e.printStackTrace(); }
+    } catch (Exception e) {
+      // might not want it to print here or in sendPacket()
+      e.printStackTrace();
+    }
   }
 
 
@@ -43,28 +46,26 @@ public class LEDController extends SubsystemBase {
   }
 
   public void changeTeleRed() {
-    if (RobotContainer.pixy.getNumCargo() == 0) {
-      state = State.TELEZERO;
-    } else if (RobotContainer.pixy.getNumCargo() == 1) {
-      state = State.TELEONE;
-    } else if (RobotContainer.pixy.getNumCargo() == 2) {
-      state = State.TELETWO;
-    }
     if (RobotContainer.pixy.hasBlueInFrame()) {
       state = State.TELEWRONG;
+      return;
+    }
+    switch (RobotContainer.pixy.getNumCargo()) {
+      case 0: state = State.TELEZERO; break;
+      case 1: state = State.TELEONE; break;
+      case 2: state = State.TELETWO;
     }
   }
 
   public void changeTeleBlue() {
-    if (RobotContainer.pixy.getNumCargo() == 0) {
-      state = State.TELEZERO;
-    } else if (RobotContainer.pixy.getNumCargo() == 1) {
-      state = State.TELEONE;
-    } else if (RobotContainer.pixy.getNumCargo() == 2) {
-      state = State.TELETWO;
-    }
     if (RobotContainer.pixy.hasRedInFrame()) {
       state = State.TELEWRONG;
+      return;
+    }
+    switch (RobotContainer.pixy.getNumCargo()) {
+      case 0: state = State.TELEZERO; break;
+      case 1: state = State.TELEONE; break;
+      case 2: state = State.TELETWO;
     }
   }
 
@@ -81,8 +82,10 @@ public class LEDController extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // one send a packet every 10 ticks
     if (counter % 10 == 0) {
       sendPacket();
+      counter = 0;
     }
     counter++;
   }
