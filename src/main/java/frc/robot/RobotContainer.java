@@ -62,6 +62,8 @@ public class RobotContainer {
 
   public static final PixyCam pixy = new PixyCam();
 
+  public static final LEDController ledController = new LEDController();
+
   public static final SwerveDrive swerveDrive = new SwerveDrive();
   public static final Intake intake = new Intake();
   public static final Shooter shooter = new Shooter();

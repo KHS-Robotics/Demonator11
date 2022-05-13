@@ -45,6 +45,9 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     SwerveDrive.kMaxSpeed = 3.5;
     SwerveDrive.kMaxAngularSpeed = 2 * Math.PI;
+
+    color = DriverStation.getAlliance();
+    RobotContainer.ledController.changeDisabled();
   }
 
   @Override
@@ -98,7 +101,8 @@ public class Robot extends TimedRobot {
       .andThen(new InstantCommand( () -> RobotContainer.indexer.stopFeeder()))
     )
     .alongWith(selectedAuton.getAsCommand()) );
-    
+
+    RobotContainer.ledController.changeAuto();
     autonCommand.schedule();
   }
 
@@ -118,7 +122,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-
+    if (color.equals(Alliance.Blue)) {
+      RobotContainer.ledController.changeTeleBlue();
+    } else {
+      RobotContainer.ledController.changeTeleRed();
+    }
   }
 
   @Override
